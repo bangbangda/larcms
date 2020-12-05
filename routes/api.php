@@ -14,6 +14,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::namespace('App\Http\Controllers\API')->prefix('v1')->group(function () {
+    Route::post('login', 'CustomerController@login');
+
+
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::get('home', 'HomeController@index');
+        Route::get('shareOrder', 'ShareOrderController@index');
+        Route::get('customerIncome', 'CustomerIncomeController@index');
+        Route::get('activityRule', 'ActivityRuleController@index');
+    });
+
 });

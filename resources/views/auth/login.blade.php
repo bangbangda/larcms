@@ -1,48 +1,59 @@
 <x-guest-layout>
-    <x-jet-authentication-card>
-        <x-slot name="logo">
-            <x-jet-authentication-card-logo />
-        </x-slot>
-
-        <x-jet-validation-errors class="mb-4" />
-
-        @if (session('status'))
-            <div class="mb-4 font-medium text-sm text-green-600">
-                {{ session('status') }}
+    @if ($errors->any())
+        <div class="alert alert-danger alert-dismissible" role="alert">
+            @foreach ($errors->all() as $message)
+                {{ $message }}
+            @endforeach
+        </div>
+    @endif
+    <div class="vertical-align">
+        <div class="vertical-align-middle">
+            <div class="brand text-center">
+                <img class="brand-img" src="https://admui.bangbangda.me/public/images/logo.svg" height="50" alt="Admui">
             </div>
-        @endif
+            <h3 class="title">登录 Admui</h3>
+            <p class="description">Admui 在线演示系统</p>
+            <form class="login-form" method="POST" action="{{ route('login') }}">
+                @csrf
+                <div class="form-group">
+                    <label class="sr-only" for="username">用户名</label>
+                    <input type="text" class="form-control" id="email" name="email" placeholder="请输入用户名">
+                </div>
+                <div class="form-group">
+                    <label class="sr-only" for="password">密码</label>
+                    <input type="password" class="form-control" id="password" name="password" placeholder="请输入密码">
+                </div>
+                <div class="form-group">
+                    <label class="sr-only" for="password">验证码</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" name="validCode" maxlength="4" placeholder="请输入验证码">
+                        <div class="input-group-append">
+                            <a href="javascript:;" class="btn btn-default btn-outline p-0 m-0 reload-vify">
+                                <img src="{{ captcha_src('flat') }}" height="40">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group clearfix">
+                    <div class="checkbox-custom checkbox-inline checkbox-primary float-left">
+                        <input type="checkbox" name="remember">
+                        <label for="remember">自动登录</label>
+                    </div>
+                </div>
+                <div class="collapse" id="forgetPassword" aria-expanded="true">
+                    <div class="alert alert-warning alert-dismissible" role="alert">
+                        请联系管理员重置密码。
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">立即登录</button>
+            </form>
+        </div>
+    </div>
 
-        <form method="POST" action="{{ route('login') }}">
-            @csrf
 
-            <div>
-                <x-jet-label for="email" value="{{ __('Email') }}" />
-                <x-jet-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus />
-            </div>
-
-            <div class="mt-4">
-                <x-jet-label for="password" value="{{ __('Password') }}" />
-                <x-jet-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="current-password" />
-            </div>
-
-            <div class="block mt-4">
-                <label for="remember_me" class="flex items-center">
-                    <input id="remember_me" type="checkbox" class="form-checkbox" name="remember">
-                    <span class="ml-2 text-sm text-gray-600">{{ __('Remember me') }}</span>
-                </label>
-            </div>
-
-            <div class="flex items-center justify-end mt-4">
-                @if (Route::has('password.request'))
-                    <a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('password.request') }}">
-                        {{ __('Forgot your password?') }}
-                    </a>
-                @endif
-
-                <x-jet-button class="ml-4">
-                    {{ __('Login') }}
-                </x-jet-button>
-            </div>
-        </form>
-    </x-jet-authentication-card>
+    <footer class="page-copyright">
+        <p>上海畅控 &copy;
+            <a href="http://www.admui.com" target="_blank">admui.com</a>
+        </p>
+    </footer>
 </x-guest-layout>
