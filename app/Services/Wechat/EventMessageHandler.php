@@ -23,14 +23,17 @@ class EventMessageHandler implements EventHandlerInterface
             $wechatUser = $app->user->get($message['FromUserName']);
             Log::debug($wechatUser);
 
-            Customer::where('unionid', $wechatUser['unionid'])
-                ->update([
+            Customer::updateOrCreate(
+                ['unionid' => $wechatUser['unionid']],
+                [
                     'mp_openid' => $wechatUser['openid'],
                     'avatar_url' => $wechatUser['headimgurl'],
                     'subscribe_scene' => $wechatUser['subscribe_scene'],
                     'qr_scene' => $wechatUser['qr_scene'],
                     'qr_scene_str' => $wechatUser['qr_scene_str']
-                ]);
+                ]
+            );
 
+        }
     }
 }

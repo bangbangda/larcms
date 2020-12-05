@@ -37,9 +37,9 @@ class CustomerController extends Controller
         }
 
         $customer = Customer::firstOrCreate(
-            ['openid' => $wxUser['openid']],
+            ['unionid' => $wxUser['unionid']],
             [
-                'unionid' => $wxUser['unionid'],
+                'openid' => $wxUser['openid'],
                 'session_key' => $wxUser['session_key'],
             ]
         );

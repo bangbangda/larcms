@@ -6,7 +6,6 @@ use App\Services\Wechat\EventMessageHandler;
 use Illuminate\Http\Request;
 use EasyWeChat\Factory;
 use EasyWeChat\Kernel\Messages\Message;
-use Illuminate\Support\Facades\Log;
 
 
 class WechatPushController extends Controller
