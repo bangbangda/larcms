@@ -26,6 +26,7 @@ class EventMessageHandler implements EventHandlerInterface
             Customer::updateOrCreate(
                 ['unionid' => $wechatUser['unionid']],
                 [
+                    'nickname' => $wechatUser['nickname'],
                     'mp_openid' => $wechatUser['openid'],
                     'avatar_url' => $wechatUser['headimgurl'],
                     'subscribe_scene' => $wechatUser['subscribe_scene'],
