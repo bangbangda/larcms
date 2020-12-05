@@ -15,8 +15,8 @@ class CreateCustomerIncomesTable extends Migration
     {
         Schema::create('customer_incomes', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('customer_id')->comment('用户编号');
-            $table->float('amount')->default(0.0)->comment('用户收益总额');
+            $table->foreignId('customer_id')->index()->comment('用户编号');
+            $table->integer('amount')->comment('用户收益总额 单位分');
             $table->softDeletes();
             $table->timestamps();
         });
@@ -29,6 +29,6 @@ class CreateCustomerIncomesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('user_incomes');
+        Schema::dropIfExists('customer_incomes');
     }
 }

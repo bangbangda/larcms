@@ -20,8 +20,8 @@ class Customer extends Model
     use HasFactory, HasApiTokens;
 
     protected $fillable = [
-        'unionid', 'openid', 'mp_openid', 'phone', 'nickname', 'avatar_url', 'qrcode_url', 'subscribe_scene', 'qr_scene',
-        'qr_scene_str', ''
+        'unionid', 'openid', 'mp_openid', 'session_key', 'phone', 'nickname', 'avatar_url',
+        'qrcode_url', 'subscribe_scene', 'qr_scene', 'qr_scene_str'
     ];
 
     /**
@@ -75,11 +75,11 @@ class Customer extends Model
     }
 
     /**
-     * 是否绑定公众号
+     * 是否关注公众号
      *
      * @return bool
      */
-    public function hasBindMp() : bool
+    public function hasSubscribeMp() : bool
     {
         return $this->mp_openid ?? false;
     }

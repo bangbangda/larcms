@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Events\CustomerPhoneBound;
 use App\Http\Controllers\Controller;
 use App\Models\News;
 use App\Models\PopupAd;
@@ -13,6 +14,7 @@ class HomeController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param  Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function index(Request $request)

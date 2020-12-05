@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -22,7 +23,7 @@ class RedpackSetting extends Model
     ];
 
     /**
-     * 基础红包
+     * 指定红包类型
      *
      * @param $query
      * @param  string  $type
@@ -32,6 +33,22 @@ class RedpackSetting extends Model
     public function scopeType($query, $type = 'basis')
     {
         return $query->where('type', $type);
+    }
+
+    /**
+     * 查询有效的红包设置
+     *
+     * @param $query
+     * @return mixed
+     */
+    public function scopeActive($query)
+    {
+        return $query->whereNull('start_date')->whereNull('end_date')
+            ->orWhere(function (Builder $query) {
+                $day = date('Y-m-d H:i:s');
+                $query->where('start_date', '<=', $day)
+                    ->where('end_date', '>=', $day);
+            });
     }
 
 }

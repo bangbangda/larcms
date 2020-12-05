@@ -3,7 +3,9 @@
 namespace App\Http\Requests\API;
 
 
-class CustomerRequest extends FromRequest
+use Faker\Provider\Payment;
+
+class CustomerRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,15 +24,28 @@ class CustomerRequest extends FromRequest
      */
     public function rules()
     {
-        return [
-            'code' => 'required|string'
-        ];
+        switch (request()->route()->getName()) {
+            case 'miniApp.login' :
+                return [
+                    'code' => 'required|string'
+                ];
+            case 'miniApp.decryptPhone' :
+                return [
+                    'iv' => 'required|string',
+                    'encryptedData' => 'required|string',
+                ];
+            default :
+                return [];
+
+        }
     }
 
     public function attributes()
     {
         return [
-            'code' => '小程序用户登录凭证'
+            'code' => '小程序用户登录凭证',
+            'iv' => '加密算法[iv]',
+            'encryptedData' => '加密数据[encryptedData]'
         ];
     }
 }

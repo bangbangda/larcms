@@ -7,7 +7,7 @@ use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Validation\ValidationException;
 
-abstract class FromRequest extends LaravelFormRequest
+abstract class FormRequest extends LaravelFormRequest
 {
 
     abstract public function rules();

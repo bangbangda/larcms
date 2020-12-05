@@ -5,9 +5,10 @@ namespace App\Providers;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
-use Illuminate\Support\Facades\Event;
 use App\Events\CustomerRegistered;
+use App\Events\CustomerPhoneBound;
 use App\Listeners\CreateCustomerQrcode;
+use App\Listeners\NewcomerRedpack;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -20,8 +21,13 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
+        // 客户注册成功后触发事件
         CustomerRegistered::class => [
+            // 生成小程序码
             CreateCustomerQrcode::class
+        ],
+        CustomerPhoneBound::class => [
+            NewcomerRedpack::class
         ]
     ];
 

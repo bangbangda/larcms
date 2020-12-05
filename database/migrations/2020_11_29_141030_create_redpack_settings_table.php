@@ -15,7 +15,7 @@ class CreateRedpackSettingsTable extends Migration
     {
         Schema::create('redpack_settings', function (Blueprint $table) {
             $table->id();
-            $table->enum('type', ['basis', 'group'])->comment('红包类型 基础红包 裂变红包');
+            $table->enum('type', ['basis','newcomer','top'])->comment('红包类型 基础红包 新人红包 裂变红包');
             $table->float('amount', 3, 2)->nullable()->comment('红包金额');
             $table->float('min_random_amount', 3, 2)->nullable()->comment('随机红包区间 最小值');
             $table->float('max_random_amount', 3, 2)->nullable()->comment('随机红包区间 最大值');

@@ -2,21 +2,25 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Events\CustomerPhoneBound;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\API\CustomerRequest;
 use App\Models\Customer;
 use App\Models\ShareOrder;
+use EasyWeChat\Kernel\Exceptions\DecryptException;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use EasyWeChat\Factory;
+use Illuminate\Support\Facades\Log;
 
 class CustomerController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @param  Request  $request
-     * @return void
+     * @param  CustomerRequest  $request
+     * @return JsonResponse
      * @throws \EasyWeChat\Kernel\Exceptions\InvalidConfigException
      */
     public function login(CustomerRequest $request)
@@ -24,8 +28,6 @@ class CustomerController extends Controller
         $miniApp = Factory::miniProgram(config('wechat.mini_app'));
 
         $wxUser = $miniApp->auth->session($request->post('code'));
-
-        $wxUser= $this->initWxUser();
 
         if (isset($wxUser['errcode']) && !empty($wxUser['errcode'])) {
             throw new HttpResponseException(
@@ -45,11 +47,11 @@ class CustomerController extends Controller
         );
 
         $this->shareOrder($customer->id);
-
+        Log::debug('token->' . $customer->updateToken('mini-app')->plainTextToken);
         return response()->json([
             'token' => $customer->updateToken('mini-app')->plainTextToken,
             'bindPhone' => $customer->hasBindPhone(),
-            'bindMp' => $customer->hasBindMp(),
+            'bindMp' => $customer->hasSubscribeMp(),
         ]);
     }
 
@@ -68,6 +70,53 @@ class CustomerController extends Controller
                 ]
             );
         }
+    }
+
+    /**
+     * 解密手机号
+     *
+     * @param  CustomerRequest  $request
+     */
+    public function decryptPhone(CustomerRequest $request)
+    {
+        $miniApp = Factory::miniProgram(config('wechat.mini_app'));
+        Log::debug($request->post());
+        try {
+            $customer = $request->user();
+
+            $decryptedData = $miniApp->encryptor->decryptData(
+                $customer->session_key, $request->post('iv'), $request->post('encryptedData')
+            );
+            // 更新手机号码
+            $customer->update([
+                'phone' => $decryptedData['phoneNumber']
+            ]);
+
+            // 触发绑定手机号事件
+            event(new CustomerPhoneBound($customer));
+
+        } catch (DecryptException $e) {
+            Log::error('解密手机号码失败：' . $e->getMessage());
+            throw new HttpResponseException(
+                response()->json([
+                    'errors' => ['解密手机号码失败'],
+                    'code' => '10023'
+                ])
+            );
+        }
+    }
+
+    /**
+     * 是否关注公众号
+     *
+     * @param  Request  $request
+     * @return JsonResponse
+     */
+    public function hasSubscribeMp(Request $request)
+    {
+        return response()->json([
+            'hasSubscribeMp' => $request->user()->hasSubscribeMp()
+        ]);
     }
 
 
