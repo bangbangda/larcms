@@ -4,6 +4,7 @@ namespace App\Services\Wechat;
 use EasyWeChat\Factory;
 use EasyWeChat\Kernel\Contracts\EventHandlerInterface;
 use \Illuminate\Support\Facades\Log;
+use App\Models\Customer;
 
 class EventMessageHandler implements EventHandlerInterface
 {
@@ -19,11 +20,17 @@ class EventMessageHandler implements EventHandlerInterface
 
         if ($message['Event'] == 'subscribe') {
 
-            $user = $app->user->get($message['FromUserName']);
+            $wechatUser = $app->user->get($message['FromUserName']);
+            Log::debug($wechatUser);
 
-            Log::debug('--------');
-            Log::debug($user);
-        }
+            Customer::where('unionid', $wechatUser['unionid'])
+                ->update([
+                    'mp_openid' => $wechatUser['openid'],
+                    'avatar_url' => $wechatUser['headimgurl'],
+                    'subscribe_scene' => $wechatUser['subscribe_scene'],
+                    'qr_scene' => $wechatUser['qr_scene'],
+                    'qr_scene_str' => $wechatUser['qr_scene_str']
+                ]);
 
     }
 }

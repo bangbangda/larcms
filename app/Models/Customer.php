@@ -20,7 +20,8 @@ class Customer extends Model
     use HasFactory, HasApiTokens;
 
     protected $fillable = [
-        'unionid', 'openid', 'mp_openid', 'phone', 'nickname', 'avatar_url', 'qrcode_url'
+        'unionid', 'openid', 'mp_openid', 'phone', 'nickname', 'avatar_url', 'qrcode_url', 'subscribe_scene', 'qr_scene',
+        'qr_scene_str', ''
     ];
 
     /**
