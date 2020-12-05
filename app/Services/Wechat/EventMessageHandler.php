@@ -17,6 +17,13 @@ class EventMessageHandler implements EventHandlerInterface
 
         $message = $app->server->getMessage();
 
-        Log::debug($message);
+        if ($message['Event'] == 'subscribe') {
+
+            $user = $app->user->get($message['FromUserName']);
+
+            Log::debug('--------');
+            Log::debug($user);
+        }
+
     }
 }

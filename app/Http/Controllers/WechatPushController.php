@@ -6,6 +6,7 @@ use App\Services\Wechat\EventMessageHandler;
 use Illuminate\Http\Request;
 use EasyWeChat\Factory;
 use EasyWeChat\Kernel\Messages\Message;
+use Illuminate\Support\Facades\Log;
 
 
 class WechatPushController extends Controller
@@ -21,5 +22,7 @@ class WechatPushController extends Controller
         $app = Factory::officialAccount(config('wechat.mp'));
 
         $app->server->push(EventMessageHandler::class, Message::EVENT);
+
+        return $app->server->serve();
     }
 }
