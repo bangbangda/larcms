@@ -23,6 +23,7 @@ return [
     'mp' => [
         'app_id' => env('WECHAT_MP_APP_ID'),
         'secret' => env('WECHAT_MP_SECRET'),
+        'token' => env('WECHAT_MP_TOKEN'),
         'response_type' => 'array',
     ]
 ];

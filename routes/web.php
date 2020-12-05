@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\RedpackBasisController;
+use App\Http\Controllers\WechatPushController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,3 +25,6 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
 })->name('dashboard');
 
 Route::resource('redpackBasis', RedpackBasisController::class);
+
+
+Route::any('wechatPush', WechatPushController::class);

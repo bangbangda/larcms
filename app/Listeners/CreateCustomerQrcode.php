@@ -54,7 +54,7 @@ class CreateCustomerQrcode
      */
     private function qrCode($id)
     {
-        $miniApp = Factory::miniProgram(config('wecaht.mini_app'));
+        $miniApp = Factory::miniProgram(config('wechat.mini_app'));
 
         $response = $miniApp->app_code->getUnlimit($id, [
             'is_hyaline' => true

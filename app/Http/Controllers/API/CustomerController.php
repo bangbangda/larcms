@@ -7,10 +7,8 @@ use App\Http\Requests\API\CustomerRequest;
 use App\Models\Customer;
 use App\Models\ShareOrder;
 use Illuminate\Http\Exceptions\HttpResponseException;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use EasyWeChat\Factory;
-use Illuminate\Support\Facades\Log;
 
 class CustomerController extends Controller
 {
@@ -23,7 +21,7 @@ class CustomerController extends Controller
      */
     public function login(CustomerRequest $request)
     {
-        $miniApp = Factory::miniProgram(config('wecaht.mini_app'));
+        $miniApp = Factory::miniProgram(config('wechat.mini_app'));
 
         $wxUser = $miniApp->auth->session($request->post('code'));
 
