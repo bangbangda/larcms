@@ -26,6 +26,7 @@ class CustomerRequest extends FormRequest
     {
         switch (request()->route()->getName()) {
             case 'miniApp.login' :
+            case 'miniApp.hasSubscribeMpByCode' :
                 return [
                     'code' => 'required|string'
                 ];

@@ -30,6 +30,7 @@ class EventMessageHandler implements EventHandlerInterface
                     'mp_openid' => $wechatUser['openid'],
                     'avatar_url' => $wechatUser['headimgurl'],
                     'subscribe_scene' => $wechatUser['subscribe_scene'],
+                    'subscribe_time' => date('Y-m-d H:i:s', $wechatUser['subscribe_time']),
                     'qr_scene' => $wechatUser['qr_scene'],
                     'qr_scene_str' => $wechatUser['qr_scene_str']
                 ]

@@ -15,7 +15,7 @@ class CreateCustomersTable extends Migration
     {
         Schema::create('customers', function (Blueprint $table) {
             $table->id();
-            $table->string('unionid')->comment('统一编号');
+            $table->string('unionid')->nullable()->comment('统一编号');
             $table->string('openid')->nullable()->comment('小程序OPENID');
             $table->string('mp_openid')->nullable()->comment('公众号OPENID');
             $table->string('session_key')->nullable()->comment('小程序解密秘钥');

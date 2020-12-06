@@ -41,18 +41,32 @@ class CustomerController extends Controller
                 ])
             );
         }
+
         // 创建用户
-        $customer = Customer::firstOrCreate([
-                'unionid' => $wxUser['unionid']
+        if (isset($wxUser['unionid'])) {
+            // 已关注公众号时 通过 unionid 查询用户
+            $customer = Customer::firstOrCreate([
+                'unionid' => $wxUser['unionid'],
             ], [
                 'openid' => $wxUser['openid'],
                 'session_key' => $wxUser['session_key'],
-            ]
-        );
+            ]);
+        } else {
+            // 未关注公众号时 通过openid 查询用户
+            $customer = Customer::firstOrCreate([
+                'openid' => $wxUser['openid'],
+            ], [
+                'session_key' => $wxUser['session_key'],
+            ]);
+        }
+
         // 更新用户小程序 session_key
-        $customer->update([
-            'session_key' => $wxUser['session_key']
-        ]);
+        if (! $customer->wasRecentlyCreated) {
+            $customer->update([
+                'openid' => $wxUser['openid'],
+                'session_key' => $wxUser['session_key']
+            ]);
+        }
 
         $this->shareOrder($customer->id);
         Log::debug('token->' . $customer->updateToken('mini-app')->plainTextToken);
@@ -130,6 +144,23 @@ class CustomerController extends Controller
                 'avatar_url' => $request->user()->avatar_url,
                 'qrCode' => $request->user()->qrcode_url
             ]
+        ]);
+    }
+
+    /**
+     * 通过 code 判断是否关注公众号
+     *
+     * @param  Request  $request
+     * @return JsonResponse
+     */
+    public function hasSubscribeMpByCode(CustomerRequest $request)
+    {
+        $miniApp = Factory::miniProgram(config('wechat.mini_app'));
+
+        $wxUser = $miniApp->auth->session($request->post('code'));
+
+        return response()->json([
+            'hasSubscribeMp' => isset($wxUser['unionid'])
         ]);
     }
 

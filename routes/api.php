@@ -24,6 +24,7 @@ Route::namespace('App\Http\Controllers\API')->prefix('v1')->group(function () {
         Route::get('activityRule', 'ActivityRuleController@index')->name('activityRule');
         Route::post('decryptPhone', 'CustomerController@decryptPhone')->name('decryptPhone');
         Route::get('hasSubscribeMp', 'CustomerController@hasSubscribeMp')->name('hasSubscribeMp');
+        Route::post('hasSubscribeMpByCode', 'CustomerController@hasSubscribeMpByCode')->name('hasSubscribeMpByCode');
         Route::get('my', 'CustomerController@show')->name('customerShow');
     });
 
