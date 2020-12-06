@@ -4,22 +4,29 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\Customer;
+use App\Models\CustomerIncome;
+use Illuminate\Support\Facades\Log;
 
 class CustomerIncomeController extends Controller
 {
     public function index()
     {
-        $customers = Customer::with(['income' => function($query) {
-            $query->orderBy('amount', 'DESC');
-        }])->get();
+
+        $customerIncomes = CustomerIncome::with('customer')
+            ->orderBy('amount', 'DESC')
+            ->get();
+
+//        $customers = Customer::with(['income' => function($query) {
+//            $query->orderBy('amount', 'DESC');
+//        }])->get();
 
         $incomes = [];
 
-        foreach ($customers as $customer) {
+        foreach ($customerIncomes as $income) {
             $incomes[] = [
-                'amount' => $customer->income->amount,
-                'nickname' => $customer->nickname,
-                'avatar_url' => $customer->avatar_url,
+                'amount' => $income->amountRmb,
+                'nickname' => $income->customer->nickname ?? '',
+                'avatar_url' => $income->customer->avatar_url ?? '',
             ];
         }
 

@@ -2,6 +2,7 @@
 namespace App\Services\Wechat;
 
 use App\Models\Customer;
+use App\Models\CustomerIncome;
 use App\Models\TransferLog;
 use EasyWeChat\Factory;
 use Illuminate\Support\Facades\Log;
@@ -37,6 +38,10 @@ class TransferMoney
      */
     public function toBalance(int $amount, string $type)
     {
+        if (is_null($this->customer)) {
+            Log::error('发放红包出错，未找到用户');
+            return;
+        }
 
         $result = $this->miniApp->transfer->toBalance([
             'partner_trade_no' => $tradeNo = Str::random(10), // 商户订单号，需保持唯一性(只能是字母或者数字，不能包含有符号)
@@ -49,6 +54,21 @@ class TransferMoney
         Log::debug($result);
         // 创建转账日志
         $this->createLog($result, $amount, $type);
+
+        // 增加用户收益金额
+        if ($this->isSuccess($result) || 1) {
+            $income = CustomerIncome::firstOrCreate([
+                'customer_id' => $this->customer->id
+            ], [
+                'amount' => $amount
+            ]);
+
+            if (! $income->wasRecentlyCreated) {
+                $income->update([
+                    'amount' => $income->amount + $amount
+                ]);
+            }
+        }
     }
 
 

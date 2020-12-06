@@ -7,8 +7,10 @@ use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use App\Events\CustomerRegistered;
 use App\Events\CustomerPhoneBound;
+use App\Events\CustomerInvitationCompleted;
 use App\Listeners\CreateCustomerQrcode;
 use App\Listeners\NewcomerRedpack;
+use App\Listeners\InvitatioPedpack;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -26,8 +28,15 @@ class EventServiceProvider extends ServiceProvider
             // 生成小程序码
             CreateCustomerQrcode::class
         ],
+        // 绑定手机号后触发事件
         CustomerPhoneBound::class => [
+            // 发放新人红包
             NewcomerRedpack::class
+        ],
+        // 邀请成功后触发事件
+        CustomerInvitationCompleted::class => [
+            // 发放邀请红包
+            InvitatioPedpack::class
         ]
     ];
 

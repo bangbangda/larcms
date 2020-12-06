@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Events\CustomerRegistered;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 use Laravel\Sanctum\HasApiTokens;
 use Laravel\Sanctum\NewAccessToken;
@@ -17,7 +18,7 @@ use Laravel\Sanctum\NewAccessToken;
  */
 class Customer extends Model
 {
-    use HasFactory, HasApiTokens;
+    use HasFactory, HasApiTokens, SoftDeletes;
 
     protected $fillable = [
         'unionid', 'openid', 'mp_openid', 'session_key', 'phone', 'nickname', 'avatar_url',

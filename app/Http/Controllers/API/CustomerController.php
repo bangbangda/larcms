@@ -6,13 +6,17 @@ use App\Events\CustomerPhoneBound;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\API\CustomerRequest;
 use App\Models\Customer;
+use App\Models\Project;
 use App\Models\ShareOrder;
+use App\Http\Resources\ProjectResource;
+use App\Services\Wechat\TransferMoney;
 use EasyWeChat\Kernel\Exceptions\DecryptException;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use EasyWeChat\Factory;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 
 class CustomerController extends Controller
 {
@@ -37,14 +41,18 @@ class CustomerController extends Controller
                 ])
             );
         }
-
-        $customer = Customer::firstOrCreate(
-            ['unionid' => $wxUser['unionid']],
-            [
+        // 创建用户
+        $customer = Customer::firstOrCreate([
+                'unionid' => $wxUser['unionid']
+            ], [
                 'openid' => $wxUser['openid'],
                 'session_key' => $wxUser['session_key'],
             ]
         );
+        // 更新用户小程序 session_key
+        $customer->update([
+            'session_key' => $wxUser['session_key']
+        ]);
 
         $this->shareOrder($customer->id);
         Log::debug('token->' . $customer->updateToken('mini-app')->plainTextToken);
@@ -65,8 +73,9 @@ class CustomerController extends Controller
         $parentUserId = request()->post('parent_id') ?? null;
         if (! is_null($parentUserId)) {
             ShareOrder::firstOrCreate([
-                    'customer_id' => $parentUserId,
                     'sub_customer_id' => $customerId
+                ], [
+                    'customer_id' => $parentUserId,
                 ]
             );
         }
@@ -115,18 +124,30 @@ class CustomerController extends Controller
     public function hasSubscribeMp(Request $request)
     {
         return response()->json([
-            'hasSubscribeMp' => $request->user()->hasSubscribeMp()
+            'hasSubscribeMp' => $request->user()->hasSubscribeMp(),
+            'customer' => [
+                'id' => $request->user()->id,
+                'avatar_url' => $request->user()->avatar_url,
+                'qrCode' => $request->user()->qrcode_url
+            ]
         ]);
     }
 
-
-    private function initWxUser() {
-        return [
-            'openid' => '555',
-            'unionid' => '555',
-            'session_key' => '555'
-        ];
+    /**
+     * 个人中心
+     *
+     * @param  Request  $request
+     */
+    public function show(Request $request)
+    {
+        $customer = $request->user();
+        return response()->json([
+            'customer' => [
+                'nickname' => $customer->nickname,
+                'avatar_url' => $customer->avatar_url,
+                'income' => $customer->income->amount ?? 0
+            ],
+            'project' => new  ProjectResource(Project::first())
+        ]);
     }
-
-
 }
