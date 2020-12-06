@@ -56,9 +56,7 @@ class CreateCustomerQrcode
     {
         $miniApp = Factory::miniProgram(config('wechat.mini_app'));
 
-        $response = $miniApp->app_code->getUnlimit($id, [
-            'is_hyaline' => true
-        ]);
+        $response = $miniApp->app_code->get('pages/home/home?parent_id=' . $id);
 
         if (is_array($response)) {
             Log::error('获取小程序码失败');
