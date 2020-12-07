@@ -9,14 +9,12 @@ use App\Models\Customer;
 use App\Models\Project;
 use App\Models\ShareOrder;
 use App\Http\Resources\ProjectResource;
-use App\Services\Wechat\TransferMoney;
 use EasyWeChat\Kernel\Exceptions\DecryptException;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use EasyWeChat\Factory;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Str;
 
 class CustomerController extends Controller
 {
@@ -151,8 +149,9 @@ class CustomerController extends Controller
     /**
      * 通过 code 判断是否关注公众号
      *
-     * @param  Request  $request
+     * @param  CustomerRequest  $request
      * @return JsonResponse
+     * @throws \EasyWeChat\Kernel\Exceptions\InvalidConfigException
      */
     public function hasSubscribeMpByCode(CustomerRequest $request)
     {
