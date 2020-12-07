@@ -56,7 +56,7 @@ class TransferMoney
         $this->createLog($result, $amount, $type);
 
         // 增加用户收益金额
-        if ($this->isSuccess($result) || 1) {
+        if ($this->isSuccess($result)) {
             $income = CustomerIncome::firstOrCreate([
                 'customer_id' => $this->customer->id
             ], [
