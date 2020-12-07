@@ -68,7 +68,7 @@ class CustomerController extends Controller
             ]);
         }
 
-        $this->shareOrder($customer->id);
+        $this->shareOrder($customer);
         Log::debug('token->' . $customer->updateToken('mini-app')->plainTextToken);
         return response()->json([
             'token' => $customer->updateToken('mini-app')->plainTextToken,
@@ -80,14 +80,14 @@ class CustomerController extends Controller
     /**
      * 保存上级分享者
      *
-     * @param  int  $customerId
+     * @param $customer
      */
-    private function shareOrder(int $customerId)
+    private function shareOrder($customer)
     {
         $parentUserId = request()->post('parent_id') ?? null;
-        if (! is_null($parentUserId)) {
+        if (! is_null($parentUserId) && ! is_null($customer->unionid)) {
             ShareOrder::firstOrCreate([
-                    'sub_customer_id' => $customerId
+                    'sub_customer_id' => $customer->id
                 ], [
                     'customer_id' => $parentUserId,
                 ]
