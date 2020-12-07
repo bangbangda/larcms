@@ -176,7 +176,7 @@ class CustomerController extends Controller
             'customer' => [
                 'nickname' => $customer->nickname,
                 'avatar_url' => $customer->avatar_url,
-                'income' => $customer->income->amount ?? 0
+                'income' => $customer->income->amountRmb ?? 0
             ],
             'project' => new  ProjectResource(Project::first())
         ]);
