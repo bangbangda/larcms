@@ -5,6 +5,7 @@ use EasyWeChat\Factory;
 use EasyWeChat\Kernel\Contracts\EventHandlerInterface;
 use \Illuminate\Support\Facades\Log;
 use App\Models\Customer;
+use Illuminate\Support\Str;
 
 class EventMessageHandler implements EventHandlerInterface
 {
@@ -28,7 +29,7 @@ class EventMessageHandler implements EventHandlerInterface
                 [
                     'nickname' => $wechatUser['nickname'],
                     'mp_openid' => $wechatUser['openid'],
-                    'avatar_url' => $wechatUser['headimgurl'],
+                    'avatar_url' => $this->urlToHttps($wechatUser['headimgurl']),
                     'subscribe_scene' => $wechatUser['subscribe_scene'],
                     'subscribe_time' => date('Y-m-d H:i:s', $wechatUser['subscribe_time']),
                     'qr_scene' => $wechatUser['qr_scene'],
@@ -37,5 +38,17 @@ class EventMessageHandler implements EventHandlerInterface
             );
 
         }
+    }
+
+
+    /**
+     * 地址转为HTTPS链接
+     *
+     * @param  String  $headimgUrl
+     * @return string
+     */
+    private function urlToHttps(String $headimgUrl)
+    {
+        return Str::replaceFirst('http:', 'https:', $headimgUrl);
     }
 }
