@@ -108,6 +108,7 @@ class TransferMoney
 
     /**
      * 获取红包类型名称
+     *    12-07： 红包备注统一了，不需要根据类型单独设置
      *
      * @param  string  $type
      * @return string
@@ -116,11 +117,9 @@ class TransferMoney
     {
         switch ($type) {
             case 'newcomer' :
-                return '新人红包';
             case 'top' :
-                return '排行榜红包';
             case 'basis' :
-                return '分享红包';
+                return '汝悦春秋分享红包礼';
             default :
                 return '';
         }
