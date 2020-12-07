@@ -3,12 +3,10 @@
 namespace App\Listeners;
 
 use App\Events\CustomerPhoneBound;
-use App\Models\RedpackSetting;
 use App\Models\TransferLog;
 use App\Services\Wechat\TransferMoney;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Support\Arr;
 
 class NewcomerRedpack
 {
@@ -53,10 +51,28 @@ class NewcomerRedpack
      */
     private function randomMoney() : int
     {
-        $money = [
-            0.88, 1.88, 2.88, 3.88, 4.88, 5.88, 6.88, 7.88, 8.88
-        ];
+        $randomNumber = mt_rand(1, 1000);
 
-        return intval(Arr::random($money) * 100);
+        if ($randomNumber >=1 && $randomNumber <=800)  {
+            $money = 0.88;
+        } else if ($randomNumber >= 801 && $randomNumber <= 880) {
+            $money = 1.88;
+        } else if ($randomNumber >= 881 && $randomNumber <= 930) {
+            $money = 2.88;
+        } else if ($randomNumber >= 931 && $randomNumber <= 960) {
+            $money = 3.88;
+        } else if ($randomNumber >= 961 && $randomNumber <= 980) {
+            $money = 4.88;
+        } else if ($randomNumber >= 981 && $randomNumber <= 990) {
+            $money = 5.88;
+        } else if ($randomNumber >= 991 && $randomNumber <= 997) {
+            $money = 6.88;
+        } else if ($randomNumber >= 998 && $randomNumber <= 999) {
+            $money = 7.88;
+        } else {
+            $money = 8.88;
+        }
+
+        return intval($money * 100);
     }
 }
