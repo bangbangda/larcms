@@ -85,11 +85,12 @@ class CustomerController extends Controller
     private function shareOrder($customer)
     {
         $parentUserId = request()->post('parent_id') ?? null;
-        if (! is_null($parentUserId) && ! is_null($customer->unionid)) {
+        if (! is_null($parentUserId)) {
             ShareOrder::firstOrCreate([
-                    'sub_customer_id' => $customer->id
+                    'sub_openid' => $customer->openid,
                 ], [
                     'customer_id' => $parentUserId,
+                    'sub_customer_id' => $customer->id,
                 ]
             );
         }

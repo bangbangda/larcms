@@ -17,6 +17,7 @@ class CreateShareOrdersTable extends Migration
             $table->id();
             $table->foreignId('customer_id')->comment('客户编号');
             $table->integer('sub_customer_id')->comment('下级用户编号');
+            $table->string('sub_openid')->comment('下级用户小程序openid');
             $table->boolean('pay_state')->default(false)->comment('支付状态');
             $table->softDeletes();
             $table->timestamps();
