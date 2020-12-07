@@ -8,6 +8,7 @@ use App\Models\TransferLog;
 use App\Services\Wechat\TransferMoney;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Support\Arr;
 
 class NewcomerRedpack
 {
@@ -52,8 +53,10 @@ class NewcomerRedpack
      */
     private function randomMoney() : int
     {
-        $setting = RedpackSetting::type(self::TYPE)->active()->first();
+        $money = [
+            0.88, 1.88, 2.88, 3.88, 4.88, 5.88, 6.88, 7.88, 8.88
+        ];
 
-        return mt_rand($setting->min_random_amount * 100 , $setting->max_random_amount * 100);
+        return intval(Arr::random($money) * 100);
     }
 }
