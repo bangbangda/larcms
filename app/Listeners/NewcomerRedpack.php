@@ -37,7 +37,7 @@ class NewcomerRedpack
         $transferred = TransferLog::where([
             'customer_id' => $customer->id,
             'type' => self::TYPE
-        ])->exists();
+        ])->whereNotNull('payment_no')->exists();
 
         // 新人红包只发放一次 如果已发放 则不需要在发放
         if (! $transferred) {
