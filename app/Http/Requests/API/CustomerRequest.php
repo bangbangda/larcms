@@ -1,9 +1,6 @@
 <?php
-
 namespace App\Http\Requests\API;
 
-
-use Faker\Provider\Payment;
 
 class CustomerRequest extends FormRequest
 {

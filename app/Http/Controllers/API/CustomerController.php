@@ -178,7 +178,7 @@ class CustomerController extends Controller
                 'avatar_url' => $customer->avatar_url,
                 'income' => $customer->income->amountRmb ?? 0
             ],
-            'project' => new  ProjectResource(Project::first())
+            'project' => new ProjectResource(Project::first())
         ]);
     }
 }
