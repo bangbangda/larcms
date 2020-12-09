@@ -3,17 +3,18 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\ActivityRule as ActivityRuleResource;
 use App\Models\ActivityRule;
-use Illuminate\Http\Request;
 
 class ActivityRuleController extends Controller
 {
     public function index()
     {
-        $rules = ActivityRule::select('title', 'content')
-            ->orderBy('sort_field', 'desc')
+        $rules = ActivityRule::orderBy('sort_field', 'desc')
             ->get();
 
-        return response()->json($rules);
+        return response()->json(
+            ActivityRuleResource::collection($rules)
+        );
     }
 }

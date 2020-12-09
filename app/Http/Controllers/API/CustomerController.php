@@ -8,7 +8,7 @@ use App\Http\Requests\API\CustomerRequest;
 use App\Models\Customer;
 use App\Models\Project;
 use App\Models\ShareOrder;
-use App\Http\Resources\ProjectResource;
+use App\Http\Resources\Project as ProjectResource;
 use EasyWeChat\Kernel\Exceptions\DecryptException;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\JsonResponse;
