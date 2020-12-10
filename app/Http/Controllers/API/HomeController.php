@@ -31,6 +31,7 @@ class HomeController extends Controller
                 'avatar_url' => $request->user()->avatar_url,
                 'qrCode' => $request->user()->qrcode_url
             ],
+            'headImage' => 'https://larcms.bangbangda.me/storage/P2Ang8E2H9.jpg',
             'popupAd' => $popupAd ?? [],
             'shareImages' => $images,
             'news' => $news
