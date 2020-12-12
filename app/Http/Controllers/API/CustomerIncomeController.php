@@ -14,7 +14,7 @@ class CustomerIncomeController extends Controller
 
         $customerIncomes = CustomerIncome::with('customer')
             ->orderBy('amount', 'DESC')
-            ->limit(10)
+            ->limit(20)
             ->get();
 
 //        $customers = Customer::with(['income' => function($query) {
