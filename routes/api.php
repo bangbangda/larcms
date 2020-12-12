@@ -19,7 +19,8 @@ Route::namespace('App\Http\Controllers\API')->prefix('v1')->group(function () {
 
     Route::middleware('auth:sanctum')->name('miniApp.')->group(function () {
         Route::get('home', 'HomeController@index')->name('home');
-        Route::get('shareOrder', 'ShareOrderController@index')->name('shareOrder');
+        Route::get('shareOrder', 'ShareOrderController@index')->name('shareOrder.index');
+        Route::post('shareOrder', 'ShareOrderController@store')->name('shareOrder.store');
         Route::get('customerIncome', 'CustomerIncomeController@index')->name('customerIncome');
         Route::get('activityRule', 'ActivityRuleController@index')->name('activityRule');
         Route::post('decryptPhone', 'CustomerController@decryptPhone')->name('decryptPhone');
