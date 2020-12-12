@@ -66,7 +66,7 @@ class CustomerController extends Controller
             ]);
         }
 
-        $this->shareOrder($customer);
+//        $this->shareOrder($customer);
         Log::debug('token->' . $customer->updateToken('mini-app')->plainTextToken);
         return response()->json([
             'token' => $customer->updateToken('mini-app')->plainTextToken,
