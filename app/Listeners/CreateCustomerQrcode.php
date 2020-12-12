@@ -60,6 +60,7 @@ class CreateCustomerQrcode
 
         if (is_array($response)) {
             Log::error('获取小程序码失败');
+            Log::error($response);
             return '';
         }
 
