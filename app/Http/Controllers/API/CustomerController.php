@@ -48,6 +48,7 @@ class CustomerController extends Controller
             ], [
                 'openid' => $wxUser['openid'],
                 'session_key' => $wxUser['session_key'],
+                'parent_id' => $request->post('parent_id'),
             ]);
         } else {
             // 未关注公众号时 通过openid 查询用户
@@ -55,6 +56,7 @@ class CustomerController extends Controller
                 'openid' => $wxUser['openid'],
             ], [
                 'session_key' => $wxUser['session_key'],
+                'parent_id' => $request->post('parent_id'),
             ]);
         }
 
