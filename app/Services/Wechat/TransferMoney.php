@@ -44,6 +44,8 @@ class TransferMoney
             return;
         }
 
+        Log::debug("开始发放红包 {$type} {$this->customer->mp_openid}");
+
         $result = $this->miniApp->transfer->toBalance([
             'partner_trade_no' => $tradeNo = Str::random(10), // 商户订单号，需保持唯一性(只能是字母或者数字，不能包含有符号)
             'openid' => $this->customer->mp_openid,

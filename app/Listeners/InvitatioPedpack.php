@@ -34,11 +34,14 @@ class InvitatioPedpack implements ShouldQueue
     public function handle(CustomerPhoneBound $event)
     {
         $customer = $event->customer;
-
         // 有上级时 向上级发放佣金
         if ($this->isSend($customer)) {
 
-            $customer = Customer::find($customer->parent_id);
+            $shareOrder = ShareOrder::where([
+                'sub_openid' => $customer->openid
+            ])->first();
+
+            $customer = Customer::find($shareOrder->customer_id);
 
             $transferMoney = new TransferMoney($customer);
             $transferMoney->toBalance($this->getMoney(), self::TYPE);
@@ -64,19 +67,10 @@ class InvitatioPedpack implements ShouldQueue
      */
     private function isSend(Customer $customer) : bool
     {
-        // 用户有上级
-        if (! is_null($customer->parent_id)) {
-            $shareOrder = ShareOrder::where([
-                'customer_id' => $customer->parent_id,
-                'sub_openid' => $customer->openid,
-                'pay_state' => 0
-            ])->count();
+        return ShareOrder::where([
+            'sub_openid' => $customer->openid,
+            'pay_state' => 0
+        ])->exists();
 
-            if ($shareOrder === 1) {
-                return true;
-            }
-            Log::error('用户编号：' . $customer->parent_id . ' 不符合发放条件条件');
-        }
-        return false;
     }
 }

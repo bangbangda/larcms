@@ -117,20 +117,6 @@ class CustomerController extends Controller
                 'phone' => $decryptedData['phoneNumber'],
             ]);
 
-            // 处理多重数据的问题
-            $miniCustomer = Customer::where('openid', $customer['openid'])
-                ->whereNull('mp_openid')
-                ->whereNotNull('parent_id')
-                ->first();
-            // 更新上级
-            if ($miniCustomer) {
-                $customer->update([
-                    'parent_id' => $miniCustomer['parent_id'],
-                ]);
-
-                $customer = Customer::find($customer['id']);
-            }
-
             // 触发绑定手机号事件
             event(new CustomerPhoneBound($customer));
 
