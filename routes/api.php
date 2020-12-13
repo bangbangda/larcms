@@ -17,7 +17,7 @@ Route::namespace('App\Http\Controllers\API')->prefix('v1')->group(function () {
     Route::post('login', 'CustomerController@login')->name('miniApp.login');
 
 
-    Route::middleware('auth:sanctum')->name('miniApp.')->group(function () {
+    Route::middleware(['auth:sanctum', 'throttle:api'])->name('miniApp.')->group(function () {
         Route::get('home', 'HomeController@index')->name('home');
         Route::get('shareOrder', 'ShareOrderController@index')->name('shareOrder.index');
         Route::post('shareOrder', 'ShareOrderController@store')->name('shareOrder.store');

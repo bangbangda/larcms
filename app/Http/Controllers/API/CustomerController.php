@@ -104,9 +104,10 @@ class CustomerController extends Controller
     public function decryptPhone(CustomerRequest $request)
     {
         $miniApp = Factory::miniProgram(config('wechat.mini_app'));
-        Log::debug($request->post());
+
         try {
             $customer = $request->user();
+            Log::debug("解密手机号: {$request->ip()}  {$customer->id}" );
 
             $decryptedData = $miniApp->encryptor->decryptData(
                 $customer->session_key, $request->post('iv'), $request->post('encryptedData')
