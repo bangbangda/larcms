@@ -3,6 +3,7 @@ namespace App\Services\Wechat;
 
 use App\Models\Customer;
 use App\Models\CustomerIncome;
+use App\Models\ShareOrder;
 use App\Models\TransferLog;
 use EasyWeChat\Factory;
 use Illuminate\Support\Facades\Log;
@@ -55,8 +56,8 @@ class TransferMoney
         // 创建转账日志
         $this->createLog($result, $amount, $type);
 
-        // 增加用户收益金额
         if ($this->isSuccess($result)) {
+            // 增加用户收益金额
             $income = CustomerIncome::firstOrCreate([
                 'customer_id' => $this->customer->id
             ], [
@@ -66,6 +67,14 @@ class TransferMoney
             if (! $income->wasRecentlyCreated) {
                 $income->update([
                     'amount' => $income->amount + $amount
+                ]);
+            }
+            // 更新付款状态
+            if ($type == 'basis') {
+                ShareOrder::where([
+                    'sub_openid' => $this->customer->openid
+                ])->update([
+                    'pay_state' => 1
                 ]);
             }
         }
