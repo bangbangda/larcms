@@ -75,8 +75,8 @@ class InvitatioPedpack implements ShouldQueue
             if ($shareOrder === 1) {
                 return true;
             }
+            Log::error('用户编号：' . $customer->parent_id . ' 不符合发放条件条件');
         }
-        Log::error('用户编号：' . $customer->parent_id . ' 不符合发放条件条件');
         return false;
     }
 }
