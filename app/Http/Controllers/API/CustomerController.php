@@ -107,7 +107,7 @@ class CustomerController extends Controller
 
         try {
             $customer = $request->user();
-            Log::debug("解密手机号: {$request->ip()}  {$customer->id}" );
+            Log::debug("解密手机号: {$request->ip()} {$request->userAgent()} {$customer->id}" );
 
             $decryptedData = $miniApp->encryptor->decryptData(
                 $customer->session_key, $request->post('iv'), $request->post('encryptedData')
