@@ -59,8 +59,18 @@ class EventMessageHandler implements EventHandlerInterface
      */
     private function sayHello()
     {
-        $text = new Text();
-        $text->content = "欢迎关注!";
+        $text = new Text("");
+        $text->content = "相遇淹南 际会新贵
+ 汲取千年淹城人居精神
+匠著现代美学豪宅住区
+淹南芯     双地铁
+双商综 百年名校
+约100-160㎡奢装地暖洋房
+
+- 汝悦春秋 华彩敬献 -
+咨询热线：0519-8599 3333
+项目地址：常州武进区九州喜来登酒店南100米";
+
         return $text;
     }
 
