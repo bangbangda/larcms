@@ -9,11 +9,13 @@ use App\Models\Customer;
 use App\Models\Project;
 use App\Models\ShareOrder;
 use App\Http\Resources\Project as ProjectResource;
+use App\Services\IpSearch;
 use EasyWeChat\Kernel\Exceptions\DecryptException;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use EasyWeChat\Factory;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 
 class CustomerController extends Controller
@@ -118,9 +120,19 @@ class CustomerController extends Controller
                 'phone' => $decryptedData['phoneNumber'],
             ]);
 
-            // 触发绑定手机号事件
-            event(new CustomerPhoneBound($customer));
+            // 屏蔽非常州市IP发放红包
+            if (! Cache::tags('black')->has($request->ip())) {
+                // IP地址查询
+                $ipSearch = new IpSearch();
+                $ipInfo = $ipSearch->getInfo($request->ip());
 
+                if ($ipInfo[2] == '常州') {
+                    // 触发绑定手机号事件
+                    event(new CustomerPhoneBound($customer));
+                } else {
+                    Cache::tags('black')->put($request->ip(), "1");
+                }
+            }
         } catch (DecryptException $e) {
             Log::error('解密手机号码失败：' . $e->getMessage());
             throw new HttpResponseException(
