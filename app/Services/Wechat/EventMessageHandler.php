@@ -28,7 +28,7 @@ class EventMessageHandler implements EventHandlerInterface
             $wechatUser = $app->user->get($message['FromUserName']);
             // 关注欢迎词
             return $this->sayHello();
-        } else if ($message['Event'] == 'click') {  // 点击事件
+        } else if ($message['Event'] == 'CLICK') {  // 点击事件
             // 根据不同的 key 返回欢迎词
             return $this->clickMessage($message['EventKey']);
         }
