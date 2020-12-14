@@ -25,7 +25,8 @@ class EventMessageHandler implements EventHandlerInterface
         // 关注公众号推送
         if ($message['Event'] == 'subscribe') {
             // 更新或创建用户信息
-            $wechatUser = $app->user->get($message['FromUserName']);
+            $this->updateUser($app->user->get($message['FromUserName']));
+
             // 关注欢迎词
             return $this->sayHello();
         } else if ($message['Event'] == 'CLICK') {  // 点击事件
