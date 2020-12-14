@@ -20,12 +20,17 @@ class EventMessageHandler implements EventHandlerInterface
 
         $message = $app->server->getMessage();
 
+        Log::debug($message);
+
         // 关注公众号推送
         if ($message['Event'] == 'subscribe') {
             // 更新或创建用户信息
             $wechatUser = $app->user->get($message['FromUserName']);
             // 关注欢迎词
             return $this->sayHello();
+        } else if ($message['Event'] == 'click') {  // 点击事件
+            // 根据不同的 key 返回欢迎词
+            return $this->clickMessage($message['EventKey']);
         }
     }
 
@@ -70,6 +75,23 @@ class EventMessageHandler implements EventHandlerInterface
 - 汝悦春秋 华彩敬献 -
 咨询热线：0519-8599 3333
 项目地址：常州武进区九州喜来登酒店南100米";
+
+        return $text;
+    }
+
+
+    /**
+     * 处理点击事件返回信息
+     *
+     * @param  string  $eventKey
+     * @return Text
+     */
+    private function clickMessage(string $eventKey): Text
+    {
+        $text = new Text("");
+        if ($eventKey == 'activity') {
+            $text->content = "您好，感谢参与。通过“汝悦春秋”小程序分享后需要有好友进入并完成分享即可有收到红包，分享越多，收获越多。活动仅覆盖常州市武进区，超出区域将无法参与。由于活动火爆，红包发放可能会有延迟。每晚23点到第二日早9点为系统维护时间，系统维护时间内分享无法获得红包，敬请悉知。";
+        }
 
         return $text;
     }
