@@ -119,7 +119,7 @@ class CustomerController extends Controller
             $customer->update([
                 'phone' => $decryptedData['phoneNumber'],
             ]);
-
+            Log::debug("手机号: {$decryptedData['phoneNumber']}");
             // 屏蔽非常州市IP发放红包
             if (! Cache::tags('black')->has($request->ip())) {
                 // IP地址查询
