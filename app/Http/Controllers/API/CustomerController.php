@@ -70,32 +70,12 @@ class CustomerController extends Controller
             ]);
         }
 
-//        $this->shareOrder($customer);
         Log::debug('token->' . $customer->updateToken('mini-app')->plainTextToken);
         return response()->json([
             'token' => $customer->updateToken('mini-app')->plainTextToken,
             'bindPhone' => $customer->hasBindPhone(),
             'bindMp' => $customer->hasSubscribeMp(),
         ]);
-    }
-
-    /**
-     * 保存上级分享者
-     *
-     * @param $customer
-     */
-    private function shareOrder($customer)
-    {
-        $parentUserId = request()->post('parent_id') ?? null;
-        if (! is_null($parentUserId)) {
-            ShareOrder::firstOrCreate([
-                    'sub_openid' => $customer->openid,
-                ], [
-                    'customer_id' => $parentUserId,
-                    'sub_customer_id' => $customer->id,
-                ]
-            );
-        }
     }
 
     /**
@@ -117,11 +97,16 @@ class CustomerController extends Controller
 
             // 更新手机号码
             $customer->update([
-                'phone' => $decryptedData['phoneNumber'],
+                'phone' => $phone = $decryptedData['phoneNumber'],
             ]);
-            Log::debug("手机号: {$decryptedData['phoneNumber']}");
-            // 屏蔽非常州市IP发放红包
-            if (! Cache::tags('black')->has($request->ip())) {
+            Log::debug("手机号: {$phone}");
+
+            // 屏蔽非常州市IP发放红包 && 一个手机号只发一次
+            if (! Cache::tags('black')->has($request->ip()) &&
+                ! Cache::tags('phone')->has($phone)) {
+
+                Cache::tags('phone')->put($phone, "1");
+
                 // IP地址查询
                 $ipSearch = new IpSearch();
                 $ipInfo = $ipSearch->getInfo($request->ip());
