@@ -2,13 +2,14 @@
 
 namespace App\Listeners;
 
-use App\Events\CustomerPhoneBound;
+use App\Events\CustomerInvitationCompleted;
 use App\Models\Customer;
 use App\Models\RedpackSetting;
 use App\Models\ShareOrder;
 use App\Services\Wechat\TransferMoney;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Log;
 
 class InvitatioPedpack implements ShouldQueue
@@ -28,18 +29,14 @@ class InvitatioPedpack implements ShouldQueue
     /**
      * Handle the event.
      *
-     * @param  CustomerPhoneBound  $event
+     * @param  CustomerInvitationCompleted  $event
      * @return void
      */
-    public function handle(CustomerPhoneBound $event)
+    public function handle(CustomerInvitationCompleted $event)
     {
-        $customer = $event->customer;
+        $shareOrder = $event->shareOrder;
         // 有上级时 向上级发放佣金
-        if ($this->isSend($customer)) {
-
-            $shareOrder = ShareOrder::where([
-                'sub_openid' => $customer->openid
-            ])->first();
+        if ($this->isSend($shareOrder)) {
 
             $customer = Customer::find($shareOrder->customer_id);
 
@@ -55,22 +52,18 @@ class InvitatioPedpack implements ShouldQueue
      */
     private function getMoney() : int
     {
-        $setting = RedpackSetting::type(self::TYPE)->active()->first();
+//        $setting = RedpackSetting::type(self::TYPE)->active()->first();
 
-        return $setting['amount'] * 100;
+        return intval(Arr::random([0.88, 1.88]) * 100);
     }
 
 
     /**
-     * @param  Customer  $customer
+     * @param  ShareOrder  $shareOrder
      * @return bool
      */
-    private function isSend(Customer $customer) : bool
+    private function isSend(ShareOrder $shareOrder) : bool
     {
-        return ShareOrder::where([
-            'sub_openid' => $customer->openid,
-            'pay_state' => 0
-        ])->exists();
-
+        return $shareOrder->pay_state === 0;
     }
 }

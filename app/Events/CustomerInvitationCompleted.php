@@ -20,7 +20,7 @@ class CustomerInvitationCompleted
     /**
      * Create a new event instance.
      *
-     * @return void
+     * @param  ShareOrder  $shareOrder
      */
     public function __construct(ShareOrder $shareOrder)
     {

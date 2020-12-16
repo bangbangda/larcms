@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Models\ShareOrder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 /**
  * 邀请记录
@@ -47,14 +48,18 @@ class ShareOrderController extends Controller
     public function store(Request $request)
     {
         $customer = $request->user();
-
+        // 上级用户编号
         $parentUserId = request()->post('parent_id') ?? null;
-        if (! is_null($parentUserId)) {
+
+        if (! is_null($parentUserId) && ! Cache::tags('share')->has($customer->openid)) {
+
+            Cache::tags('share')->put($customer->openid, 1);
+
             ShareOrder::firstOrCreate([
                 'sub_openid' => $customer->openid,
             ], [
-                    'customer_id' => $parentUserId,
-                    'sub_customer_id' => $customer->id,
+                'customer_id' => $parentUserId,
+                'sub_customer_id' => $customer->id,
             ]);
         }
     }
