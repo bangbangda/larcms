@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Console\Commands\MiniDailyVisitTrend;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -13,7 +14,8 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        //
+        // 查询获取用户访问小程序数据日趋势
+        MiniDailyVisitTrend::class,
     ];
 
     /**
@@ -24,7 +26,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')->hourly();
+        // 每日午夜2点查询获取用户访问小程序数据日趋势
+        $schedule->command('MiniDailyVisitTrend')->dailyAt('02:00');
     }
 
     /**
