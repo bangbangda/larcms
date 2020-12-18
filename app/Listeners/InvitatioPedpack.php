@@ -54,7 +54,7 @@ class InvitatioPedpack implements ShouldQueue
     {
 //        $setting = RedpackSetting::type(self::TYPE)->active()->first();
 
-        return intval(Arr::random([0.88, 1.88]) * 100);
+        return intval(Arr::random([0.88, 1.88, 2.88]) * 100);
     }
 
 
