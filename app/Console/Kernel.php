@@ -27,8 +27,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('MiniDailyVisitTrend')->dailyAt('02:00');
-        $schedule->command('MiniUserPortrait')->dailyAt('02:00');
+        $schedule->command('MiniDailyVisitTrend')->dailyAt('13:00');
+        $schedule->command('MiniUserPortrait')->dailyAt('13:10');
     }
 
     /**
