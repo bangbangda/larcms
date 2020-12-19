@@ -4,6 +4,7 @@ namespace App\Services\Wechat;
 use EasyWeChat\Factory;
 use EasyWeChat\Kernel\Contracts\EventHandlerInterface;
 use EasyWeChat\Kernel\Messages\Text;
+use EasyWeChat\Kernel\Messages\Video;
 use \Illuminate\Support\Facades\Log;
 use App\Models\Customer;
 use Illuminate\Support\Str;
@@ -89,12 +90,14 @@ class EventMessageHandler implements EventHandlerInterface
      */
     private function clickMessage(string $eventKey): Text
     {
-        $text = new Text("");
-        if ($eventKey == 'activity') {
-            $text->content = "您好，感谢参与。通过“汝悦春秋”小程序分享后需要有好友进入并完成分享即可有收到红包，分享越多，收获越多。活动仅覆盖常州市武进区，超出区域将无法参与。由于活动火爆，红包发放可能会有延迟。每晚23点到第二日早9点为系统维护时间，系统维护时间内分享无法获得红包，敬请悉知。";
-        }
+        if ($eventKey == 'video') {
+            $video = new Video('Ll2fS-iivndSj1wHzgPKjUnadx-HKirQw_9_nuirEsc', [
+                'title' => '汝悦春秋小视频-初话',
+                'description' => '汝悦春秋小视频-初话',
+            ]);
 
-        return $text;
+            return $video;
+        }
     }
 
 

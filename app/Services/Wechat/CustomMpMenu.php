@@ -32,9 +32,9 @@ class CustomMpMenu
                 'pagepath' => 'pages/home/home'
             ],
             [
-                'name' => '活动介绍',
+                'name' => '武进买房人',
                 'type' => 'click',
-                'key' => 'activity',
+                'key' => 'video',
             ]
         ];
 
