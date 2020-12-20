@@ -24,6 +24,10 @@ class VideoController extends Controller
             ->orderBy('updated_at', 'DESC')
             ->paginate();
 
-        return response()->json(WechatMaterialResource::collection($videoMaterial));
+        return response()->json([
+            'headImage' => 'https://larcms.bangbangda.me/storage/P2Ang8E2H9.jpg',
+            'videos' => WechatMaterialResource::collection($videoMaterial),
+            'footerImage' => 'https://vision-image.oss-cn-shanghai.aliyuncs.com/mvkfxZf7bZ.jpg',
+        ]);
     }
 }
