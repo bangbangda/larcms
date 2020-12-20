@@ -37,6 +37,9 @@
         <!-- Site CSS -->
         <link rel="stylesheet" href="https://admui.bangbangda.me/public/themes/base/css/site.css" id="admui-siteStyle">
 
+        <!-- 插件 -->
+        <script src="https://admui.bangbangda.me/public/vendor/jquery/jquery.min.js"></script>
+
         <!-- 插件 CSS -->
         <link rel="stylesheet" href="https://admui.bangbangda.me/public/vendor/animsition/animsition.css">
 
@@ -82,4 +85,15 @@
         </div>
         @livewireScripts
     </body>
+
+    <script type="text/javascript">
+        $(function () {
+            $('.reload-vify').on('click', function() {
+                var $img = $(this).children('img');
+                var URL = $img.prop('src');
+
+                $img.prop('src', URL + '?tm=' + Math.random());
+            });
+        })
+    </script>
 </html>

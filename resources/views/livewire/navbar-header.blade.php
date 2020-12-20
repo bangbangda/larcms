@@ -169,10 +169,11 @@
                         <span>账户信息</span>
                     </a>
                     <div class="dropdown-divider" role="presentation"></div>
-                    <a class="dropdown-item" href="/html/login.html" role="menuitem">
+                    <a class="dropdown-item" id="logout" role="menuitem">
                         <i class="icon wb-power"></i>
                         <span>退出</span>
                     </a>
+                    <form id="logoutForm" action="{{ route('logout') }}" method="post">@csrf</form>
                 </div>
             </li>
         </ul>

@@ -103,6 +103,13 @@
     @stack('pageScript')
 <!-- Livewire JS -->
 @livewireScripts
-
+    <script type="text/javascript">
+        $(function () {
+            $('#logout').click(function () {
+                $('#logoutForm').submit();
+            });
+        })
+    </script>
+    @include('layouts._message')
 </body>
 </html>

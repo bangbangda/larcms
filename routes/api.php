@@ -27,6 +27,7 @@ Route::namespace('App\Http\Controllers\API')->prefix('v1')->group(function () {
         Route::get('hasSubscribeMp', 'CustomerController@hasSubscribeMp')->name('hasSubscribeMp');
         Route::post('hasSubscribeMpByCode', 'CustomerController@hasSubscribeMpByCode')->name('hasSubscribeMpByCode');
         Route::get('my', 'CustomerController@show')->name('customerShow');
+        Route::get('video', 'VideoController@index')->name('video');
     });
 
 });

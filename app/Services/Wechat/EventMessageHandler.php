@@ -88,7 +88,7 @@ class EventMessageHandler implements EventHandlerInterface
      * @param  string  $eventKey
      * @return Text
      */
-    private function clickMessage(string $eventKey): Text
+    private function clickMessage(string $eventKey)
     {
         if ($eventKey == 'video') {
             $video = new Video('Ll2fS-iivndSj1wHzgPKjUnadx-HKirQw_9_nuirEsc', [

@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\WechatMaterialController;
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\RedpackBasisController;
 use App\Http\Controllers\WechatPushController;
 
@@ -20,11 +22,24 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
-    return view('dashboard');
-})->name('dashboard');
+Route::middleware(['auth'])->group(function () {
+    Route::get('/dashboard', DashboardController::class)->name('dashboard');
 
-Route::resource('redpackBasis', RedpackBasisController::class);
+    // 红包设置
+    Route::name('redpack.')->group(function () {
+        // 基础红包
+        Route::get('redpackBasis', [RedpackBasisController::class, 'index'])->name('basis');
+    });
+
+    // 素材管理
+    Route::name('material.')->group(function() {
+        Route::get('wechatMaterial/json', [WechatMaterialController::class, 'json'])->name('wechatMaterial.json');
+        Route::resource('wechatMaterial', WechatMaterialController::class);
+    });
+
+});
 
 
+
+// 微信服务器推送
 Route::any('wechatPush', WechatPushController::class);
