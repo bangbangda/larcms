@@ -6,6 +6,7 @@ use App\Console\Commands\MiniDailyVisitTrend;
 use App\Console\Commands\MiniUserPortrait;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use Illuminate\Support\Facades\Log;
 
 class Kernel extends ConsoleKernel
 {
@@ -27,8 +28,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('MiniDailyVisitTrend')->dailyAt('13:00');
-        $schedule->command('MiniUserPortrait')->dailyAt('13:10');
+        $schedule->command(MiniDailyVisitTrend::class)->dailyAt('13:00');
+        $schedule->command(MiniUserPortrait::class)->dailyAt('13:10');
     }
 
     /**
