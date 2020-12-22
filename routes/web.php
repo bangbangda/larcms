@@ -18,9 +18,9 @@ use App\Http\Controllers\WechatPushController;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+// 默认显示登录页面
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('/login');
 });
 
 Route::middleware(['auth'])->group(function () {
