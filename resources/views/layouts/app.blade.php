@@ -80,14 +80,11 @@
     </main>
 
 <footer class="site-footer">
-    <div class="site-footer-legal">上海畅控 &copy;
-        <a href="http://www.admui.com" target="_blank">admui.com</a>
+    <div class="site-footer-legal">大连起缘科技 &copy;
+        <a href="https://www.qiyuankeji.cn" target="_blank">qiyuankeji.cn</a>
     </div>
     <div class="site-footer-right">
-        当前版本：v2.1.0 (更新于2019-4-11)
-        <a class="ml-5" data-toggle="tooltip" title="购买或升级" href="http://www.admui.com/buy" target="_blank">
-            <i class="icon fa-cloud-upload"></i>
-        </a>
+        当前版本：v2.1.0
     </div>
 </footer>
 <!-- 插件 -->

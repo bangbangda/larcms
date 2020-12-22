@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use EasyWeChat\Factory;
+use App\Models\Customer;
+use App\Models\DailySummary;
+use App\Models\TransferLog;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
@@ -15,8 +17,15 @@ class DashboardController extends Controller
      */
     public function __invoke(Request $request)
     {
+        $totalRedpack = TransferLog::totalRedpack();
 
-        return view('dashboard');
+        $totalUser = Customer::totalUser();
+
+        $dailySummary = DailySummary::latest()->first();
+
+        return view('dashboard', compact('totalRedpack', 'totalUser', 'dailySummary'));
     }
+
+
 
 }

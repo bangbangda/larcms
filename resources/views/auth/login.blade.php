@@ -11,8 +11,8 @@
             <div class="brand text-center">
                 <img class="brand-img" src="https://admui.bangbangda.me/public/images/logo.svg" height="50" alt="Admui">
             </div>
-            <h3 class="title">登录 Admui</h3>
-            <p class="description">Admui 在线演示系统</p>
+            <h3 class="title">登录LARCMS</h3>
+            <p class="description">房产营销专业管理平台</p>
             <form class="login-form" method="POST" action="{{ route('login') }}">
                 @csrf
                 <div class="form-group">
@@ -52,8 +52,8 @@
 
 
     <footer class="page-copyright">
-        <p>上海畅控 &copy;
-            <a href="http://www.admui.com" target="_blank">admui.com</a>
+        <p>大连起缘科技 &copy;
+            <a href="https://www.qiyuankeji.cn" target="_blank">qiyuankeji.cn</a>
         </p>
     </footer>
 </x-guest-layout>

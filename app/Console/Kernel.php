@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Console\Commands\MiniDailySummary;
 use App\Console\Commands\MiniDailyVisitTrend;
 use App\Console\Commands\MiniUserPortrait;
 use Illuminate\Console\Scheduling\Schedule;
@@ -16,7 +17,8 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         MiniDailyVisitTrend::class, // 查询获取用户访问小程序数据日趋势
-        MiniUserPortrait::class,   // 查询小程序新增或活跃用户的画像分布数据
+        MiniUserPortrait::class,    // 查询小程序新增或活跃用户的画像分布数据
+        MiniDailySummary::class,    // 获取用户访问小程序数据概况
     ];
 
     /**
@@ -28,7 +30,8 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->command(MiniDailyVisitTrend::class)->dailyAt('13:00');
-        $schedule->command(MiniUserPortrait::class)->dailyAt('13:10');
+        $schedule->command(MiniUserPortrait::class)->dailyAt('13:05');
+        $schedule->command(MiniDailySummary::class)->dailyAt('13:10');
     }
 
     /**

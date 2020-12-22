@@ -102,4 +102,17 @@ class Customer extends Model
 
         return new NewAccessToken($token, $token->id.'|'.$plainTextToken);
     }
+
+    /**
+     * 用户数据总计
+     *
+     * @return array
+     */
+    public function scopeTotalUser() : array
+    {
+        $totalPhone = $this->whereNotNull('phone')->count();
+        $totalUser = $this->count();
+
+        return compact('totalPhone', 'totalUser');
+    }
 }

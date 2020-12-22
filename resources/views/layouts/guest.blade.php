@@ -51,33 +51,26 @@
     <body class="page-login layout-full page-dark">
         <div class="page h-full">
             <div class="page-content h-full">
-                <div class="page-brand-info vertical-align animation-slide-left d-none d-sm-block">
-                    <div class="page-brand vertical-align-middle">
-                        <div class="brand">
-                            <img class="brand-img" src="../public/images/logo-white.svg" height="50" alt="Admui">
-                        </div>
-                        <h2 class="title">Admui 通用管理系统快速开发框架</h2>
-                        <ul class="list-icons description">
-                            <li>
-                                <i class="wb-check" aria-hidden="true"></i> Admui 是一个基于最新 Web
-                                技术的企业级通用管理系统快速开发框架，可以帮助企业极大的提高工作效率，节省开发成本，提升品牌形象。
-                            </li>
-                            <li>
-                                <i class="wb-check" aria-hidden="true"></i> 您可以 Admui 为基础，快速开发各种MIS系统，如CMS、OA、CRM、ERP、POS等。</li>
-                            <li>
-                                <i class="wb-check" aria-hidden="true"></i> Admui 紧贴业务特性，涵盖了大量的常用组件和基础功能，最大程度上帮助企业节省时间成本和费用开支。
-                            </li>
-                        </ul>
-                        <div class="description">
-                            <a href="http://www.admui.com" class="btn btn-primary mr-5" target="_blank">
-                                <i class="icon wb-home"></i> 访问官网
-                            </a>
-                            <a href="http://docs.admui.com/basic/" class="btn btn-success" target="_blank">
-                                <i class="icon wb-book"></i> 开发文档
-                            </a>
-                        </div>
-                    </div>
-                </div>
+{{--                <div class="page-brand-info vertical-align animation-slide-left d-none d-sm-block">--}}
+{{--                    <div class="page-brand vertical-align-middle">--}}
+{{--                        <div class="brand">--}}
+{{--                            <img class="brand-img" src="../public/images/logo-white.svg" height="50" alt="Admui">--}}
+{{--                        </div>--}}
+{{--                        <h2 class="title">Admui 通用管理系统快速开发框架</h2>--}}
+{{--                        <ul class="list-icons description">--}}
+{{--                            <li>--}}
+{{--                                <i class="wb-check" aria-hidden="true"></i> Admui 是一个基于最新 Web--}}
+{{--                                技术的企业级通用管理系统快速开发框架，可以帮助企业极大的提高工作效率，节省开发成本，提升品牌形象。--}}
+{{--                            </li>--}}
+{{--                            <li>--}}
+{{--                                <i class="wb-check" aria-hidden="true"></i> 您可以 Admui 为基础，快速开发各种MIS系统，如CMS、OA、CRM、ERP、POS等。</li>--}}
+{{--                            <li>--}}
+{{--                                <i class="wb-check" aria-hidden="true"></i> Admui 紧贴业务特性，涵盖了大量的常用组件和基础功能，最大程度上帮助企业节省时间成本和费用开支。--}}
+{{--                            </li>--}}
+{{--                        </ul>--}}
+
+{{--                    </div>--}}
+{{--                </div>--}}
                 <div class="page-login-main animation-fade">
                     {{ $slot }}
                 </div>
