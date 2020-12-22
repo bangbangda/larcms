@@ -4,13 +4,11 @@ namespace App\Listeners;
 
 use App\Events\CustomerInvitationCompleted;
 use App\Models\Customer;
-use App\Models\RedpackSetting;
 use App\Models\ShareOrder;
 use App\Services\Wechat\TransferMoney;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Log;
 
 class InvitatioPedpack implements ShouldQueue
 {
@@ -52,8 +50,6 @@ class InvitatioPedpack implements ShouldQueue
      */
     private function getMoney() : int
     {
-//        $setting = RedpackSetting::type(self::TYPE)->active()->first();
-
         return intval(Arr::random([0.88, 1.88, 2.88]) * 100);
     }
 

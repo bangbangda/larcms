@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\ShareOrder;
+use App\Services\IpSearch;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 
@@ -51,16 +52,26 @@ class ShareOrderController extends Controller
         // 上级用户编号
         $parentUserId = request()->post('parent_id') ?? null;
 
-        if (! is_null($parentUserId) && ! Cache::tags('share')->has($customer->openid)) {
+        if (! is_null($parentUserId) &&
+            ! Cache::tags('share')->has($customer->openid) &&
+            ! Cache::tags('black')->has($request->ip())) {
 
             Cache::tags('share')->put($customer->openid, 1);
 
-            ShareOrder::firstOrCreate([
-                'sub_openid' => $customer->openid,
-            ], [
-                'customer_id' => $parentUserId,
-                'sub_customer_id' => $customer->id,
-            ]);
+            // IP地址查询
+            $ipSearch = new IpSearch();
+            $ipInfo = $ipSearch->getInfo($request->ip());
+
+            if ($ipInfo[2] == '常州') {
+                ShareOrder::firstOrCreate([
+                    'sub_openid' => $customer->openid,
+                ], [
+                    'customer_id' => $parentUserId,
+                    'sub_customer_id' => $customer->id,
+                ]);
+            } else {
+                Cache::tags('black')->put($request->ip(), "1");
+            }
         }
     }
 }

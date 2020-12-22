@@ -53,24 +53,20 @@ class NewcomerRedpack implements ShouldQueue
     {
         $randomNumber = mt_rand(1, 1000);
 
-        if ($randomNumber >=1 && $randomNumber <=800)  {
+        if ($randomNumber >=1 && $randomNumber <=200)  {
             $money = 0.88;
-        } else if ($randomNumber >= 801 && $randomNumber <= 880) {
+        } else if ($randomNumber >= 201 && $randomNumber <= 400) {
             $money = 1.88;
-        } else if ($randomNumber >= 881 && $randomNumber <= 930) {
+        } else if ($randomNumber >= 401 && $randomNumber <= 700) {
             $money = 2.88;
-        } else if ($randomNumber >= 931 && $randomNumber <= 960) {
+        } else if ($randomNumber >= 701 && $randomNumber <= 800) {
             $money = 3.88;
-        } else if ($randomNumber >= 961 && $randomNumber <= 980) {
+        } else if ($randomNumber >= 801 && $randomNumber <= 900) {
             $money = 4.88;
-        } else if ($randomNumber >= 981 && $randomNumber <= 990) {
+        } else if ($randomNumber >= 901 && $randomNumber <= 950) {
             $money = 5.88;
-        } else if ($randomNumber >= 991 && $randomNumber <= 997) {
+        } else if ($randomNumber >= 951 && $randomNumber <= 1000) {
             $money = 6.88;
-        } else if ($randomNumber >= 998 && $randomNumber <= 999) {
-            $money = 7.88;
-        } else {
-            $money = 8.88;
         }
 
         return intval($money * 100);
