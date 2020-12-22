@@ -15,12 +15,10 @@ class CreateRedpackSettingsTable extends Migration
     {
         Schema::create('redpack_settings', function (Blueprint $table) {
             $table->id();
-            $table->enum('type', ['basis','newcomer','top'])->comment('红包类型 基础红包 新人红包 裂变红包');
-            $table->float('amount', 3, 2)->nullable()->comment('红包金额');
-            $table->float('min_random_amount', 3, 2)->nullable()->comment('随机红包区间 最小值');
-            $table->float('max_random_amount', 3, 2)->nullable()->comment('随机红包区间 最大值');
-            $table->integer('min_people_num')->default(0)->comment('达标人数 最小值');
-            $table->integer('max_people_num')->default(0)->comment('达标人数 最大值');
+            $table->string('type')->comment('红包类型');
+            $table->float('amount', 3, 2)->comment('红包金额');
+            $table->float('step_amount' , 3, 2)->comment('阶梯金额');
+            $table->float('hit_rate' , 3, 1)->comment('命中率');
             $table->dateTime('start_date')->nullable()->comment('有效开始时间');
             $table->dateTime('end_date')->nullable()->comment('有效结束时间');
             $table->softDeletes();

@@ -2,6 +2,7 @@
 
 use App\Providers\RouteServiceProvider;
 use Laravel\Fortify\Features;
+use Laravel\Fortify\Fortify;
 
 return [
 
@@ -141,4 +142,22 @@ return [
         ]),
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | 自定义登录业务验证信息
+    |--------------------------------------------------------------------------
+    |
+    | 在登录业务中，添加额外的验证规则。
+    | 例如：
+    |    登录时，额外增加验证的必须输入和正确性验证
+    |
+    */
+
+    'rules' => [
+        'login' => [
+            Fortify::username() => 'required|string',
+            'password' => 'required|string',
+            'validCode' => 'required|captcha'
+        ]
+    ],
 ];

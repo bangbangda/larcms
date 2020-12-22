@@ -1,10 +1,11 @@
 <?php
 
+use App\Http\Controllers\ShareImageController;
 use App\Http\Controllers\WechatMaterialController;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\RedpackBasisController;
+use App\Http\Controllers\RedpackSettingController;
 use App\Http\Controllers\WechatPushController;
 
 /*
@@ -26,15 +27,20 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', DashboardController::class)->name('dashboard');
 
     // 红包设置
-    Route::name('redpack.')->group(function () {
-        // 基础红包
-        Route::get('redpackBasis', [RedpackBasisController::class, 'index'])->name('basis');
-    });
+    Route::get('redpack-setting/json', [RedpackSettingController::class, 'json'])->name('redpack-setting.json');
+    Route::resource('redpack-setting', RedpackSettingController::class);
 
     // 素材管理
     Route::name('material.')->group(function() {
         Route::get('wechatMaterial/json', [WechatMaterialController::class, 'json'])->name('wechatMaterial.json');
         Route::resource('wechatMaterial', WechatMaterialController::class);
+    });
+
+    // 活动管理
+    Route::name('activity.')->group(function () {
+        // 分享图片
+        Route::get('shareImage/json', [ShareImageController::class, 'json'])->name('shareImage.json');
+        Route::resource('shareImage', ShareImageController::class);
     });
 
 });

@@ -28,7 +28,7 @@
                     <div class="input-group">
                         <input type="text" class="form-control" name="validCode" maxlength="4" placeholder="请输入验证码">
                         <div class="input-group-append">
-                            <a href="javascript:;" class="btn btn-default btn-outline p-0 m-0 reload-vify">
+                            <a href="#" class="btn btn-default btn-outline p-0 m-0 reload-vify">
                                 <img src="{{ captcha_src('flat') }}" height="40">
                             </a>
                         </div>

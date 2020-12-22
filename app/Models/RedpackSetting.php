@@ -2,20 +2,20 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Builder;
+use App\Models\Traits\BsTableTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
- * 红包配置表
+ * 红包金额设置
  *
- * Class RedpackSettings
+ * Class RedpackSetting
  * @package App\Models
  */
 class RedpackSetting extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, BsTableTrait;
 
     protected $casts = [
         'start_date' => 'datetime',
@@ -50,5 +50,4 @@ class RedpackSetting extends Model
                     ->where('end_date', '>=', $day);
             });
     }
-
 }

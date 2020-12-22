@@ -1,10 +1,9 @@
 <?php
-
 namespace App\Http\Controllers;
 
-use App\Models\Customer;
-use Illuminate\Http\Request;
+use App\Http\Requests\RedpackSettingRequest;
 use App\Models\RedpackSetting;
+use Illuminate\Http\Request;
 
 /**
  * 基础红包配置
@@ -12,7 +11,7 @@ use App\Models\RedpackSetting;
  * Class RedpackBasisController
  * @package App\Http\Controllers
  */
-class RedpackBasisController extends Controller
+class RedpackSettingController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -21,16 +20,13 @@ class RedpackBasisController extends Controller
      */
     public function index()
     {
-        $customer = Customer::find(1);
-        $token = $customer->createToken('mini-app');
 
-        dd($token);
+        return view('redpack.index');
+    }
 
-        $redpackSetting = new RedpackSetting();
-        $redpack = $redpackSetting->type('basis')->first();
-
-        //
-        return view('redpack.basis', compact('redpack'));
+    public function json()
+    {
+        return (new RedpackSetting())->bsTable();
     }
 
     /**
@@ -40,7 +36,7 @@ class RedpackBasisController extends Controller
      */
     public function create()
     {
-        //
+        return view('redpack.create');
     }
 
     /**
@@ -49,7 +45,7 @@ class RedpackBasisController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(RedpackSettingRequest $request)
     {
         //
     }

@@ -17,8 +17,10 @@
         "laravel/sanctum": "^2.6",
         "laravel/telescope": "^4.3",
         "laravel/tinker": "^2.5",
+        "laravelista/ekko": "^3.2",
         "livewire/livewire": "^2.0",
         "mews/captcha": "^3.2",
+        "overtrue/easy-sms": "^1.2",
         "overtrue/laravel-wechat": "^6.0"
     },
     "require-dev": {
