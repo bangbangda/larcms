@@ -20,7 +20,7 @@ class MiniDailySummary extends Command
      *
      * @var string
      */
-    protected $signature = 'mini:dailySummary';
+    protected $signature = 'mini:dailySummary {date?}';
 
     /**
      * The console command description.
@@ -46,15 +46,21 @@ class MiniDailySummary extends Command
      */
     public function handle()
     {
+        $this->info('开始获取用户访问小程序数据概况..');
         $miniApp = Factory::miniProgram(config('wechat.mini_app'));
 
-        $date = Carbon::yesterday()->format('Ymd');
-
+        if (! empty($this->argument('date'))) {
+            $date = $this->argument('date');
+        } else {
+            $date = Carbon::yesterday()->format('Ymd');
+        }
+        $this->info("获取数据日期为 $date");
         $summaryTrend = $miniApp->data_cube->summaryTrend($date, $date);
 
         $dailySummary = new DailySummary;
         $dailySummary->fill($summaryTrend['list'][0])->save();
 
+        $this->info('结束获取用户访问小程序数据概况..');
         return 0;
     }
 }
