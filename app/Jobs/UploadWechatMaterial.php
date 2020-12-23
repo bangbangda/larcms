@@ -10,6 +10,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Storage;
 
 /**
  * 将素材上传至微信服务器
@@ -73,6 +74,6 @@ class UploadWechatMaterial implements ShouldQueue
      */
     private function getFilePath() : string
     {
-        return storage_path('app/' . $this->wechatMaterial->file_path);
+        return Storage::path($this->wechatMaterial->file_path);
     }
 }

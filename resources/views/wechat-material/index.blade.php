@@ -147,7 +147,7 @@
                 },
                 callback: function (result) {
                     if (result) {
-                        $('#delete-form').attr('action', "{{ config('app.url') }}" + "wechatMaterial/" + id);
+                        $('#delete-form').attr('action', "{{ config('app.url') }}" + "/wechatMaterial/" + id);
                         $('#delete-form').submit();
                     }
                 }
