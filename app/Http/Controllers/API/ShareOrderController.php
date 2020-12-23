@@ -58,20 +58,12 @@ class ShareOrderController extends Controller
 
             Cache::tags('share')->put($customer->openid, 1);
 
-            // IP地址查询
-            $ipSearch = new IpSearch();
-            $ipInfo = $ipSearch->getInfo($request->ip());
-
-            if ($ipInfo[2] == '常州') {
-                ShareOrder::firstOrCreate([
-                    'sub_openid' => $customer->openid,
-                ], [
-                    'customer_id' => $parentUserId,
-                    'sub_customer_id' => $customer->id,
-                ]);
-            } else {
-                Cache::tags('black')->put($request->ip(), "1");
-            }
+            ShareOrder::firstOrCreate([
+                'sub_openid' => $customer->openid,
+            ], [
+                'customer_id' => $parentUserId,
+                'sub_customer_id' => $customer->id,
+            ]);
         }
     }
 }
