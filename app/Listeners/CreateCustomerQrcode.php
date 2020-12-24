@@ -4,6 +4,7 @@ namespace App\Listeners;
 
 use App\Events\CustomerRegistered;
 use EasyWeChat\Factory;
+use EasyWeChat\Kernel\Http\StreamResponse;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Queue\InteractsWithQueue;
@@ -55,8 +56,10 @@ class CreateCustomerQrcode
     private function qrCode($id)
     {
         $miniApp = Factory::miniProgram(config('wechat.mini_app'));
-
-        $response = $miniApp->app_code->get('pages/home/home?parent_id=' . $id);
+        // 使用 getUnlimited 接口获取小程序码
+        $response = $miniApp->app_code->getUnlimit($id, [
+            'page'  => 'pages/home/home',
+        ]);
 
         if (is_array($response)) {
             Log::error('获取小程序码失败');
@@ -64,7 +67,7 @@ class CreateCustomerQrcode
             return '';
         }
 
-        if ($response instanceof \EasyWeChat\Kernel\Http\StreamResponse) {
+        if ($response instanceof StreamResponse) {
             $fileName = $response->saveAs(public_path('storage/qrcode/'), Str::random(8) . '.png');
         }
 
