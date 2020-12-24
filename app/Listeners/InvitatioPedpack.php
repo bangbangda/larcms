@@ -50,7 +50,17 @@ class InvitatioPedpack implements ShouldQueue
      */
     private function getMoney() : int
     {
-        return intval(Arr::random([0.88, 0.88, 0.88, 0.88, 0.88, 0.88, 0.88, 1.88, 1.88, 1.88, 2.88]) * 100);
+        $randomNumber = mt_rand(1, 1000);
+
+        if ($randomNumber >= 1 && $randomNumber <= 800)  {
+            $money = 0.88;
+        } else if ($randomNumber >= 801 && $randomNumber <= 950) {
+            $money = 1.88;
+        } else if ($randomNumber >= 951 && $randomNumber <= 1000) {
+            $money = 2.88;
+        }
+
+        return intval($money * 100);
     }
 
 
