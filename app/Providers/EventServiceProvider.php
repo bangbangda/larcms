@@ -11,6 +11,7 @@ use App\Events\CustomerInvitationCompleted;
 use App\Listeners\CreateCustomerQrcode;
 use App\Listeners\NewcomerRedpack;
 use App\Listeners\InvitatioPedpack;
+use App\Listeners\TeamRedpack;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -34,8 +35,8 @@ class EventServiceProvider extends ServiceProvider
             NewcomerRedpack::class,
         ],
         CustomerInvitationCompleted::class => [
-            // 发放邀请红包
-            InvitatioPedpack::class,
+            InvitatioPedpack::class, // 发放邀请红包
+            TeamRedpack::class,      // 发放团队红包
         ]
     ];
 

@@ -131,6 +131,8 @@ class TransferMoney
             case 'top' :
             case 'basis' :
                 return '汝悦春秋分享红包礼';
+            case 'team':
+                return '汝悦春秋分享红包礼（团队红包）';
             default :
                 return '';
         }
