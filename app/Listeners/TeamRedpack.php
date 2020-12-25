@@ -6,7 +6,7 @@ use App\Events\CustomerInvitationCompleted;
 use App\Models\Customer;
 use App\Services\Wechat\TransferMoney;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Filesystem\Cache;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Log;
 
