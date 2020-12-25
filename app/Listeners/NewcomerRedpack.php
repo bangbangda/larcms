@@ -53,9 +53,9 @@ class NewcomerRedpack implements ShouldQueue
     {
         $randomNumber = mt_rand(1, 1000);
 
-        if ($randomNumber >=1 && $randomNumber <=400)  {
+        if ($randomNumber >=1 && $randomNumber <=300)  {
             $money = 0.88;
-        } else if ($randomNumber >= 401 && $randomNumber <= 600) {
+        } else if ($randomNumber >= 301 && $randomNumber <= 600) {
             $money = 1.88;
         } else if ($randomNumber >= 601 && $randomNumber <= 800) {
             $money = 2.88;
