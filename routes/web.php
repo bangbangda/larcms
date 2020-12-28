@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\ShareImageController;
 use App\Http\Controllers\WechatMaterialController;
 use Illuminate\Support\Facades\Route;
@@ -43,6 +44,9 @@ Route::middleware(['auth'])->group(function () {
         Route::resource('shareImage', ShareImageController::class);
     });
 
+    // 客户管理
+    Route::get('customer/json', [CustomerController::class, 'json'])->name('customer.json');
+    Route::resource('customer', CustomerController::class);
 });
 
 

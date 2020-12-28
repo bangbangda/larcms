@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use App\Events\CustomerRegistered;
+use App\Models\Traits\BsTableTrait;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -18,12 +20,26 @@ use Laravel\Sanctum\NewAccessToken;
  */
 class Customer extends Model
 {
-    use HasFactory, HasApiTokens, SoftDeletes;
+    use HasFactory, HasApiTokens, SoftDeletes, BsTableTrait;
 
     protected $fillable = [
         'unionid', 'openid', 'mp_openid', 'session_key', 'phone', 'nickname', 'avatar_url',
         'qrcode_url', 'subscribe_scene', 'qr_scene', 'qr_scene_str', 'parent_id'
     ];
+
+    protected $casts = [
+        'created_at' => 'datetime:Y-m-d H:i:s'
+    ];
+
+    /**
+     * bsTable 中不为null的检索字段
+     *
+     * @return string[]
+     */
+    public function bsWhereNotNull() : array
+    {
+        return ['phone'];
+    }
 
     /**
      * 模型的事件映射

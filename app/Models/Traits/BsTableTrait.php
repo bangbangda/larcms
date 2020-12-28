@@ -1,6 +1,7 @@
 <?php
 namespace App\Models\Traits;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Str;
 
 /**
@@ -114,7 +115,7 @@ trait BsTableTrait
      */
     public function getBsTableTotal() : int
     {
-        return $this->where($this->_where)->count();
+        return $this->getBsBuilder()->count();
     }
 
     /**
@@ -126,10 +127,29 @@ trait BsTableTrait
     {
         $param = $this->getBsTableParam();
 
-        return $this->where($this->_where)
+        return $this->getBsBuilder()
             ->orderBy($param['sort'], $param['order'])
             ->offset($param['offset'])
             ->limit($param['limit'])
             ->get();
+    }
+
+    /**
+     * 获取检索条件
+     *
+     * @return Builder
+     */
+    private function getBsBuilder() : Builder
+    {
+        $builder = $this->where($this->_where);
+
+        // 不为空的字段
+        if (method_exists($this, 'bsWhereNotNull')) {
+            foreach ($this->bsWhereNotNull() as $column) {
+                $builder->whereNotNull($column);
+            }
+        }
+
+        return $builder;
     }
 }

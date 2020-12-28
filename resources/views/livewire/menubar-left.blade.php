@@ -40,6 +40,12 @@
                         </li>
                     </ul>
                 </li>
+                <li class="site-menu-item {{ Ekko::isActiveRoute('customer.*') }}">
+                    <a href="{{ route('customer.index') }}">
+                        <i class="site-menu-icon fa-user-circle" aria-hidden="true"></i>
+                        <span class="site-menu-title">客户管理</span>
+                    </a>
+                </li>
                 <li class="site-menu-category">活动管理</li>
                 <li class="site-menu-item has-sub {{ Ekko::isActiveRoute('activity.*', 'open') }}">
                     <a href="javascript:;">
