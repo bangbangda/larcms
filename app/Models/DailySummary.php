@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 /**
  * 用户访问小程序数据概况
@@ -34,7 +35,7 @@ class DailySummary extends Model
 
         $weekData = [];
         foreach ($data as $val) {
-            $weekData['ref_date'][] = $val['ref_date'];
+            $weekData['ref_date'][] = Str::substr($val['ref_date'], 5);
             $weekData['visit_total'][] = $val['visit_total'];
             $weekData['share_pv'][] = $val['share_pv'];
             $weekData['share_uv'][] = $val['share_uv'];

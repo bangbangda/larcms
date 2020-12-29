@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 /**
  * 获取用户关注公众号数据概况
@@ -36,7 +37,7 @@ class MpDailySummary extends Model
 
         $weekData = [];
         foreach ($data as $val) {
-            $weekData['ref_date'][] = $val['ref_date'];
+            $weekData['ref_date'][] = Str::substr($val['ref_date'], 5);
             $weekData['new_user'][] = $val['sum(new_user)'];
             $weekData['cancel_user'][] = $val['sum(cancel_user)'];
             $weekData['cumulate_user'][] = $val['max(cumulate_user)'];
