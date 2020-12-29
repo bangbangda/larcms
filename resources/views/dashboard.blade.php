@@ -68,31 +68,130 @@
                     </div>
                 </div>
 
-                <div class="col-12" id="ecommerceChartView">
+                <div class="col-6" id="">
                     <div class="card card-shadow">
                         <div class="card-header card-header-transparent py-20">
                             <div class="btn-group dropdown chart-menu">
-                                分享数据
+                                小程序数据
                             </div>
-                            <ul class="nav nav-pills nav-pills-rounded chart-action" id="chartViewNav">
-                                <li class="nav-item">
-                                    <a class="nav-link active" data-toggle="tab" href="#scoreLineToDay">本日</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" data-toggle="tab" href="#scoreLineToWeek">本周</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" data-toggle="tab" href="#scoreLineToMonth">本月</a>
-                                </li>
-                            </ul>
                         </div>
                         <div class="tab-content bg-white p-20">
+                            <div class="panel-body p-0 h-400 w-full" id="miniApp"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6" id="">
+                    <div class="card card-shadow">
+                        <div class="card-header card-header-transparent py-20">
+                            <div class="btn-group dropdown chart-menu">
+                                公众号数据
+                            </div>
+                        </div>
+                        <div class="tab-content bg-white p-20">
+                            <div class="panel-body p-0 h-400 w-full" id="mpApp"></div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    <script type="text/javascript">
+        // 基于准备好的dom，初始化echarts实例
+        let mpChart = echarts.init(document.getElementById('mpApp'));
+        mpChart.setOption(option = {
+            tooltip: {
+                trigger: 'axis'
+            },
+            legend: {
+                data: ['新增关注', '取消关注', '关注总量']
+            },
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                containLabel: true
+            },
+            xAxis: {
+                type: 'category',
+                boundaryGap: false,
+                data: @json($mpWeekData['ref_date'])
+            },
+            yAxis: {
+                type: 'value'
+            },
+            series: [
+                {
+                    name: '新增关注',
+                    type: 'line',
+                    stack: 'new_user',
+                    data: @json($mpWeekData['new_user'])
+                },
+                {
+                    name: '取消关注',
+                    type: 'line',
+                    stack: 'cancel_user',
+                    data: @json($mpWeekData['cancel_user'])
+                },
+                {
+                    name: '关注总量',
+                    type: 'line',
+                    stack: 'cumulate_user',
+                    data: @json($mpWeekData['cumulate_user'])
+                }
+            ]
+        });
+
+
+        // 基于准备好的dom，初始化echarts实例
+        let miniChart = echarts.init(document.getElementById('miniApp'));
+
+        // 指定图表的配置项和数据
+        var option = {
+            tooltip: {
+                trigger: 'axis'
+            },
+            legend: {
+                data:['累计用户数', '转发次数', '转发人数']
+            },
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                containLabel: true
+            },
+            xAxis: {
+                type: 'category',
+                boundaryGap: false,
+                data: @json($miniWeekData['ref_date'])
+            },
+            yAxis: {
+                type: 'value'
+            },
+            series: [
+                {
+                    name: '转发人数',
+                    type: 'line',
+                    stack: 'new_user',
+                    data: @json($miniWeekData['share_uv'])
+                },
+                {
+                    name: '转发次数',
+                    type: 'line',
+                    stack: 'cancel_user',
+                    data: @json($miniWeekData['share_pv'])
+                },
+                {
+                    name: '累计用户数',
+                    type: 'line',
+                    stack: 'cumulate_user',
+                    data: @json($miniWeekData['visit_total'])
+                }
+            ]
+        };
+
+        // 使用刚指定的配置项和数据显示图表。
+        miniChart.setOption(option);
+    </script>
 @endsection
 
 @push('pageCss')

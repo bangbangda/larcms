@@ -45,8 +45,8 @@ Route::middleware(['auth'])->group(function () {
     });
 
     // 客户管理
+    Route::get('customer', [CustomerController::class, 'index'])->name('customer.index');
     Route::get('customer/json', [CustomerController::class, 'json'])->name('customer.json');
-    Route::resource('customer', CustomerController::class);
 });
 
 

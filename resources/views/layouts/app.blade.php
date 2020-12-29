@@ -40,6 +40,7 @@
     <!-- Page CSS -->
     @stack('pageCss')
 
+    <script src="{{ asset('js/app.js') }}"></script>
     <!-- 插件 -->
     <script src="https://admui.bangbangda.me/public/vendor/jquery/jquery.min.js"></script>
     <script src="https://admui.bangbangda.me/public/vendor/bootstrap/bootstrap.bundle.min.js"></script>
