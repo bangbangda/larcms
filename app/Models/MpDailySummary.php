@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
@@ -31,9 +32,13 @@ class MpDailySummary extends Model
     {
         $data = $this->select('ref_date', DB::raw('sum(new_user), sum(cancel_user), max(cumulate_user)'))
             ->groupBy('ref_date')
-            ->orderBy('ref_date')
+            ->orderBy('ref_date', 'desc')
             ->limit(7)
             ->get();
+        // 根据日期进行排序 符合人类思维
+        $data = Arr::sort($data, function ($value) {
+            return $value['ref_date'];
+        });
 
         $weekData = [];
         foreach ($data as $val) {
