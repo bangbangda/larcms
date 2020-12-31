@@ -35,7 +35,7 @@ class TransferLog extends Model
     {
         $data = $this->select('type', DB::raw("count(type) as num, sum(amount)  / 100 as amount, date(created_at) as create_date"))
             ->whereNotNull('payment_no')
-            ->whereDate('created_at', '>=',  Carbon::parse('-7 days')->toDateString())
+            ->whereDate('created_at', '>',  Carbon::parse('-7 days')->toDateString())
             ->groupBy('type')
             ->groupBy('create_date')
             ->orderBy('create_date')
