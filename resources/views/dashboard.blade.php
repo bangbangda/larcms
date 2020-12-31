@@ -68,7 +68,7 @@
                     </div>
                 </div>
 
-                <div class="col-6" id="">
+                <div class="col-6">
                     <div class="card card-shadow">
                         <div class="card-header card-header-transparent py-20">
                             <div class="btn-group dropdown chart-menu">
@@ -80,7 +80,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-6" id="">
+                <div class="col-6">
                     <div class="card card-shadow">
                         <div class="card-header card-header-transparent py-20">
                             <div class="btn-group dropdown chart-menu">
@@ -92,11 +92,23 @@
                         </div>
                     </div>
                 </div>
+                <div class="col-12">
+                    <div class="card card-shadow">
+                        <div class="card-header card-header-transparent py-20">
+                            <div class="btn-group dropdown chart-menu">
+                                红包数据
+                            </div>
+                        </div>
+                        <div class="tab-content bg-white p-20">
+                            <div class="panel-body p-0 h-500 w-full" id="redpack"></div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
     <script type="text/javascript">
-        // 基于准备好的dom，初始化echarts实例
+        // 公众号
         let mpChart = echarts.init(document.getElementById('mpApp'));
         mpChart.setOption(option = {
             tooltip: {
@@ -141,12 +153,10 @@
             ]
         });
 
-
-        // 基于准备好的dom，初始化echarts实例
+        // 小程序
         let miniChart = echarts.init(document.getElementById('miniApp'));
-
-        // 指定图表的配置项和数据
-        var option = {
+        // 使用刚指定的配置项和数据显示图表。
+        miniChart.setOption({
             tooltip: {
                 trigger: 'axis'
             },
@@ -187,10 +197,82 @@
                     data: @json($miniWeekData['visit_total'])
                 }
             ]
-        };
+        });
 
-        // 使用刚指定的配置项和数据显示图表。
-        miniChart.setOption(option);
+        // 红包
+        let redpackLabelOption = {
+            show: true,
+            position: 'insideBottom',
+            distance: 15,
+            align: 'left',
+            verticalAlign: 'middle',
+            rotate: 90,
+            formatter: '{c}元  {name|{a}}',
+            fontSize: 16,
+            rich: {
+                name: {
+                }
+            }
+        };
+        let redpackChart = echarts.init(document.getElementById('redpack'));
+        redpackChart.setOption({
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                    type: 'shadow'
+                },
+
+            },
+            legend: {
+                data: ['分享', '团队', '手机号']
+            },
+            xAxis: [
+                {
+                    type: 'category',
+                    axisTick: {show: true},
+                    data: @json($redpackWeekData['sendDate'])
+                }
+            ],
+            yAxis: [
+                {
+                    type: 'value',
+                    axisLabel: {
+                        formatter: '{value} 元'
+                    }
+                }
+            ],
+            series: [
+                {
+                    name: '分享',
+                    type: 'bar',
+                    barGap: 0,
+                    label: redpackLabelOption,
+                    emphasis: {
+                        focus: 'series'
+                    },
+                    data: @json($redpackWeekData['basisData'])
+                },
+                {
+                    name: '团队',
+                    type: 'bar',
+                    label: redpackLabelOption,
+                    emphasis: {
+                        focus: 'series'
+                    },
+                    data: @json($redpackWeekData['teamData'])
+                },
+                {
+                    name: '手机号',
+                    type: 'bar',
+                    label: redpackLabelOption,
+                    emphasis: {
+                        focus: 'series'
+                    },
+                    data: @json($redpackWeekData['newcomerData'])
+                }
+            ]
+        });
+
     </script>
 @endsection
 
@@ -199,5 +281,5 @@
 @endpush
 
 @push('pageScript')
-    <script src="https://admui.bangbangda.me/public/js/examples/pages/home/ecommerce.js"></script>
+{{--    <script src="https://admui.bangbangda.me/public/js/examples/pages/home/ecommerce.js"></script>--}}
 @endpush

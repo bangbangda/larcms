@@ -7,7 +7,6 @@ use App\Models\DailySummary;
 use App\Models\MpDailySummary;
 use App\Models\TransferLog;
 use Illuminate\Http\Request;
-use Illuminate\Support\Arr;
 
 class DashboardController extends Controller
 {
@@ -30,9 +29,11 @@ class DashboardController extends Controller
         $mpWeekData = $mpDailySummary->weekData();
         // 小程序图表数据
         $miniWeekData = (new DailySummary)->weekData();
+        // 红包发放图表
+        $redpackWeekData = (new TransferLog())->weekData();
 
         return view('dashboard', compact(
-            'totalRedpack', 'totalUser', 'dailySummary', 'mpWeekData', 'miniWeekData'
+            'totalRedpack', 'totalUser', 'dailySummary', 'mpWeekData', 'miniWeekData', 'redpackWeekData'
         ));
     }
 
