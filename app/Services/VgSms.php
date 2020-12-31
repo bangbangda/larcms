@@ -70,7 +70,7 @@ class VgSms
      */
     public function contentSecCheck(string $content) : array
     {
-        $result = Http::asForm()->post($this->apiUrl . '/api/sms/balance', [
+        $result = Http::asForm()->post($this->apiUrl . '/api/sms/keyword', [
             'userid' => config('vgsms.user_id'),
             'ts' => $ts = Carbon::now()->getPreciseTimestamp(3),
             'sign' => $this->generateSign($ts),
