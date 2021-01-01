@@ -46,6 +46,13 @@
                         <span class="site-menu-title">客户管理</span>
                     </a>
                 </li>
+
+                <li class="site-menu-item {{ Ekko::isActiveRoute('sms.*') }}">
+                    <a href="{{ route('sms.index') }}">
+                        <i class="site-menu-icon fa-envelope" aria-hidden="true"></i>
+                        <span class="site-menu-title">短信管理</span>
+                    </a>
+                </li>
                 <li class="site-menu-category">活动管理</li>
                 <li class="site-menu-item has-sub {{ Ekko::isActiveRoute('activity.*', 'open') }}">
                     <a href="javascript:;">

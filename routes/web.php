@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\ShareImageController;
+use App\Http\Controllers\SmsController;
+use App\Http\Controllers\SmsReportController;
 use App\Http\Controllers\WechatMaterialController;
 use Illuminate\Support\Facades\Route;
 
@@ -47,9 +49,14 @@ Route::middleware(['auth'])->group(function () {
     // 客户管理
     Route::get('customer', [CustomerController::class, 'index'])->name('customer.index');
     Route::get('customer/json', [CustomerController::class, 'json'])->name('customer.json');
+
+    // 短信管理
+    Route::get('sms/json', [SmsController::class, 'json'])->name('sms.json');
+    Route::post('sms/checkContent', [SmsController::class, 'checkContent'])->name('sms.checkContent');
+    Route::resource('sms', SmsController::class);
 });
 
-
-
+// 短信回调
+Route::post('smsReport', SmsReportController::class);
 // 微信服务器推送
 Route::any('wechatPush', WechatPushController::class);

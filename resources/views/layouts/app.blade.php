@@ -20,6 +20,8 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="apple-mobile-web-app-title" content="Admui">
 
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
     <title>@yield('title', '管理后台') - Admui</title>
 
     <!-- Bootstrap CSS -->

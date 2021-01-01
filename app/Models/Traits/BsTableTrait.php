@@ -57,7 +57,7 @@ trait BsTableTrait
             if (is_numeric($value) || $this->isDate($value)) {
                 $where[] = [$key, '=', $value];
             } else {
-                $where[] = [$key, 'like', $value.'%'];
+                $where[] = [$key, 'like', '%'.$value.'%'];
             }
         }
 

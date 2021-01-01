@@ -8,10 +8,12 @@ use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvi
 use App\Events\CustomerRegistered;
 use App\Events\CustomerPhoneBound;
 use App\Events\CustomerInvitationCompleted;
+use App\Events\SmsMessageSaved;
 use App\Listeners\CreateCustomerQrcode;
 use App\Listeners\NewcomerRedpack;
 use App\Listeners\InvitatioPedpack;
 use App\Listeners\TeamRedpack;
+use App\Listeners\SendSmsMessageTask;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -37,6 +39,9 @@ class EventServiceProvider extends ServiceProvider
         CustomerInvitationCompleted::class => [
             InvitatioPedpack::class, // 发放邀请红包
             TeamRedpack::class,      // 发放团队红包
+        ],
+        SmsMessageSaved::class => [
+            SendSmsMessageTask::class
         ]
     ];
 
