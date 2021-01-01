@@ -9,6 +9,7 @@ use App\Services\Wechat\TransferMoney;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Log;
 
 class InvitatioPedpack implements ShouldQueue
 {
@@ -58,6 +59,9 @@ class InvitatioPedpack implements ShouldQueue
             $money = 1.88;
         } else if ($randomNumber >= 951 && $randomNumber <= 1000) {
             $money = 2.88;
+        } else {
+            $money = 3.88;
+            Log::info("随机数：{$randomNumber}");
         }
 
         return intval($money * 100);
