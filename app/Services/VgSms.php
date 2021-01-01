@@ -36,7 +36,7 @@ class VgSms
             'messageid' => $message->uuid,
         ])->json();
 
-        if ($result['code'] > 0) {
+        if ($result['code'] != 0) {
             Log::error("短信发送失败：{$result['msg']}");
         }
 
