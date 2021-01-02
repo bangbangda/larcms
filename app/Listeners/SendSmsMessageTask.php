@@ -4,8 +4,6 @@ namespace App\Listeners;
 
 use App\Events\SmsMessageSaved;
 use App\Models\Customer;
-use App\Models\PopupAd;
-use App\Models\SmsSendMessageTask;
 use App\Services\VgSms;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
@@ -34,13 +32,13 @@ class SendSmsMessageTask
         $smsMessage = $event->smsMessage;
 
         $vgSms = new VgSms();
-        Customer::select('phone')
-            ->whereNotNUll('phone')
-            ->where('id', '>', 16599)
+        Customer::whereNotNUll('phone')
+            ->whereRaw('length(phone) = 11')
             ->oldest()
-            ->chunk(950, function ($customers) use($vgSms, $smsMessage) {
+            ->pluck('phone')
+            ->chunk(950, function ($phones) use($vgSms, $smsMessage) {
                 // 发送短信
-                $result = $vgSms->send($smsMessage, $this->getPhone($customers));
+                $result = $vgSms->send($smsMessage, $phones->toArray());
                 Log::debug($result);
                 if ($result['code'] != 0) {
                     $smsMessage->update([
@@ -54,27 +52,10 @@ class SendSmsMessageTask
                     // 保存任务编号
                     $smsMessage->tasks()->create([
                         'task_id' => $result['data']['taskid'],
-                        'total' => count($customers),
+                        'total' => count($phones),
                     ]);
                 }
             }
         );
-    }
-
-    /**
-     * 获取符合条件的手机号
-     *
-     * @param $customers
-     * @return array
-     */
-    private function getPhone($customers) : array
-    {
-        $phone = [];
-        foreach ($customers as $customer) {
-            if (strlen($customer->phone) == 11) {
-                $phone[] = $customer->phone;
-            }
-        }
-        return $phone;
     }
 }
