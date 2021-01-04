@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\SmsSendMessageReport;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 
 /**
  * 短信发送回调
