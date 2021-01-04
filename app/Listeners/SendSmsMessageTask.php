@@ -33,7 +33,6 @@ class SendSmsMessageTask
         $vgSms = new VgSms();
         Customer::whereNotNUll('phone')
             ->whereRaw('length(phone) = 11')
-            ->where('id', '>', 11327)
             ->oldest()
             ->chunk(950, function ($customers) use($vgSms, $smsMessage) {
                 $phones = $customers->pluck('phone')->toArray();
