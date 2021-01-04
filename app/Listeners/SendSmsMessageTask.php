@@ -33,10 +33,12 @@ class SendSmsMessageTask
         $vgSms = new VgSms();
         Customer::whereNotNUll('phone')
             ->whereRaw('length(phone) = 11')
+            ->where('id', '>', 11327)
             ->oldest()
             ->chunk(950, function ($customers) use($vgSms, $smsMessage) {
+                $phones = $customers->pluck('phone')->toArray();
                 // 发送短信
-                $result = $vgSms->send($smsMessage, $customers->pluck('phone')->toArray());
+                $result = $vgSms->send($smsMessage, $phones);
                 Log::debug($result);
                 if ($result['code'] != 0) {
                     $smsMessage->update([
