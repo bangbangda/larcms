@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\SmsSendMessageReport;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Date;
 
 /**
  * 短信发送回调
@@ -46,6 +47,8 @@ class SmsReportController extends Controller
                 'message' => $report['msg'],
                 'phone' => $report['mobile'],
                 'received_time' => $report['time'],
+                'created_at' => Date::now(),
+                'updated_at' => Date::now(),
             ];
         }
 
