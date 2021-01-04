@@ -30,15 +30,13 @@ class SendSmsMessageTask
     public function handle(SmsMessageSaved $event)
     {
         $smsMessage = $event->smsMessage;
-
         $vgSms = new VgSms();
         Customer::whereNotNUll('phone')
             ->whereRaw('length(phone) = 11')
             ->oldest()
-            ->pluck('phone')
-            ->chunk(950, function ($phones) use($vgSms, $smsMessage) {
+            ->chunk(950, function ($customers) use($vgSms, $smsMessage) {
                 // 发送短信
-                $result = $vgSms->send($smsMessage, $phones->toArray());
+                $result = $vgSms->send($smsMessage, $customers->pluck('phone')->toArray());
                 Log::debug($result);
                 if ($result['code'] != 0) {
                     $smsMessage->update([
