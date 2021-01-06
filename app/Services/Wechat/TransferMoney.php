@@ -143,6 +143,8 @@ class TransferMoney
                 return '汝悦春秋分享红包礼';
             case 'team':
                 return '汝悦春秋分享红包礼（团队红包）';
+            case 'video':
+                return '汝悦春秋分享视频号红包';
             default :
                 return '';
         }
