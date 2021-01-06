@@ -59,6 +59,7 @@ class TransferMoney
             'amount' => $amount, // 付款金额，单位为分
             'desc' => $this->getTypeName($type), // 企业付款操作说明信息。必填
         ]);
+        Log::debug($result);
 
         if ($this->isSuccess($result)) {
             // 增加用户收益金额
@@ -122,8 +123,6 @@ class TransferMoney
      */
     private function isSuccess(array $result) : bool
     {
-        Log::debug($result);
-
         return $result['return_code'] == 'SUCCESS' && $result['result_code'] == 'SUCCESS';
     }
 
