@@ -98,6 +98,13 @@ class HomeController extends Controller
                     ])
                 );
             }
+        } else {
+            throw new HttpResponseException(
+                response()->json([
+                    'errors' => ['您已经领过红包啦'],
+                    'code' => 'E20001',
+                ])
+            );
         }
     }
 }
