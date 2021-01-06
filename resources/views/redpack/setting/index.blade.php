@@ -11,7 +11,7 @@
                     <a href="{{ route('dashboard') }}">首页</a>
                 </li>
                 <li class="breadcrumb-item">
-                    <a href="{{ route('redpack-setting.index') }}">红包设置</a>
+                    <a href="{{ route('redpack.setting.index') }}">红包设置</a>
                 </li>
                 <li class="breadcrumb-item active">红包设置列表</li>
             </ol>
@@ -20,7 +20,7 @@
             <div class="panel">
                 <div class="panel-heading">
                     <div class="panel-actions">
-                        <a href="{{ route('redpack-setting.create') }}">
+                        <a href="{{ route('redpack.setting.create') }}">
                             <button type="button" class="btn btn-success">添加红包</button>
                         </a>
                     </div>
@@ -87,7 +87,7 @@
             var $table = $("#bs-table"),selections = [];
 
             $table.bootstrapTable({
-                url: "{{ route('redpack-setting.json') }}",
+                url: "{{ route('redpack.setting.json') }}",
                 sortName: 'id',
                 sortOrder: 'desc',
                 pagination: true,

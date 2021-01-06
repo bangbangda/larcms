@@ -1,17 +1,19 @@
 <?php
-namespace App\Http\Controllers;
 
-use App\Http\Requests\RedpackSettingRequest;
-use App\Models\RedpackSetting;
+namespace App\Http\Controllers\Redpack;
+
+use App\Http\Controllers\Controller;
+use App\Models\RandomCodeRedpack;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 /**
- * 基础红包配置
+ * 随机码发放红包
  *
- * Class RedpackBasisController
+ * Class RandomCodeRedpack
  * @package App\Http\Controllers
  */
-class RedpackSettingController extends Controller
+class RandomCodeController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -20,13 +22,15 @@ class RedpackSettingController extends Controller
      */
     public function index()
     {
-
-        return view('redpack.index');
+        return view('redpack.randomCode.index');
     }
 
+    /**
+     * 列表
+     */
     public function json()
     {
-        return (new RedpackSetting())->bsTable();
+        return (new RandomCodeRedpack())->bsTable();
     }
 
     /**
@@ -36,7 +40,7 @@ class RedpackSettingController extends Controller
      */
     public function create()
     {
-        return view('redpack.create');
+        //
     }
 
     /**
@@ -45,9 +49,15 @@ class RedpackSettingController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(RedpackSettingRequest $request)
+    public function store(Request $request)
     {
-        //
+        RandomCodeRedpack::create([
+            'code' => Str::random('13'),
+            'amount' => 880,
+        ]);
+
+        return redirect()->route('redpack.randomCode.index')
+            ->with('success', '保存成功');
     }
 
     /**

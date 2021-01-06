@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\Redpack\RandomCodeController;
+use App\Http\Controllers\Redpack\SettingController;
 use App\Http\Controllers\ShareImageController;
 use App\Http\Controllers\SmsController;
 use App\Http\Controllers\SmsReportController;
@@ -8,7 +10,6 @@ use App\Http\Controllers\WechatMaterialController;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\RedpackSettingController;
 use App\Http\Controllers\WechatPushController;
 
 /*
@@ -29,9 +30,16 @@ Route::get('/', function () {
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', DashboardController::class)->name('dashboard');
 
-    // 红包设置
-    Route::get('redpack-setting/json', [RedpackSettingController::class, 'json'])->name('redpack-setting.json');
-    Route::resource('redpack-setting', RedpackSettingController::class);
+    // 红包管理
+    Route::name('redpack.')->group(function () {
+        // 红包设置
+        Route::get('setting/json', [SettingController::class, 'json'])->name('setting.json');
+        Route::resource('setting', SettingController::class);
+
+        // 随机码红包
+        Route::get('randomCode/json', [RandomCodeController::class, 'json'])->name('randomCode.json');
+        Route::resource('randomCode', RandomCodeController::class);
+    });
 
     // 素材管理
     Route::name('material.')->group(function() {

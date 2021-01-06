@@ -13,6 +13,17 @@ class TransferLog extends Model
 {
     use HasFactory, SoftDeletes;
 
+
+    /**
+     * 获取支付状态
+     *
+     * @return string
+     */
+    public function getStatusAttribute(): string
+    {
+        return is_null($this->payment_no) ? 'error' : 'success';
+    }
+
     /**
      * 红包总计
      *

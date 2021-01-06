@@ -6,9 +6,9 @@ use App\Models\CustomerIncome;
 use App\Models\ShareOrder;
 use App\Models\TransferLog;
 use EasyWeChat\Factory;
+use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
-
 
 /**
  * 微信转账
@@ -36,12 +36,18 @@ class TransferMoney
      *
      * @param  int  $amount
      * @param  string  $type
+     * @return int
      */
-    public function toBalance(int $amount, string $type)
+    public function toBalance(int $amount, string $type): int
     {
         if (is_null($this->customer)) {
             Log::error('发放红包出错，未找到用户');
-            return;
+            throw new HttpResponseException(
+                response()->json([
+                    'errors' => ['发放红包出错，未找到用户'],
+                    'code' => 'E10002',
+                ])
+            );
         }
 
         Log::debug("开始发放红包 {$type} {$this->customer->mp_openid}");
@@ -53,10 +59,6 @@ class TransferMoney
             'amount' => $amount, // 付款金额，单位为分
             'desc' => $this->getTypeName($type), // 企业付款操作说明信息。必填
         ]);
-
-        Log::debug($result);
-        // 创建转账日志
-        $this->createLog($result, $amount, $type);
 
         if ($this->isSuccess($result)) {
             // 增加用户收益金额
@@ -80,6 +82,9 @@ class TransferMoney
                 ]);
             }
         }
+
+        // 创建转账日志
+        return $this->createLog($result, $amount, $type);
     }
 
 
@@ -89,8 +94,9 @@ class TransferMoney
      * @param  array  $result
      * @param  int  $amount
      * @param  string  $type
+     * @return int
      */
-    private function createLog(array $result, int $amount, string $type)
+    private function createLog(array $result, int $amount, string $type): int
     {
         $transferLog = new TransferLog;
         $transferLog->customer_id = $this->customer->id;
@@ -103,6 +109,8 @@ class TransferMoney
         $transferLog->api_result = json_encode($result);
 
         $transferLog->save();
+
+        return $transferLog->id;
     }
 
 
@@ -114,6 +122,8 @@ class TransferMoney
      */
     private function isSuccess(array $result) : bool
     {
+        Log::debug($result);
+
         return $result['return_code'] == 'SUCCESS' && $result['result_code'] == 'SUCCESS';
     }
 

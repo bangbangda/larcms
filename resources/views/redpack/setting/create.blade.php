@@ -11,7 +11,7 @@
                     <a href="{{ route('dashboard') }}">首页</a>
                 </li>
                 <li class="breadcrumb-item">
-                    <a href="{{ route('redpack-setting.index') }}">红包设置</a>
+                    <a href="{{ route('redpack.setting.index') }}">红包设置</a>
                 </li>
                 <li class="breadcrumb-item active">添加红包设置</li>
             </ol>
@@ -27,7 +27,7 @@
                 <div class="panel-body container-fluid">
                     <div class="row row-lg">
                         <div class="col-md-12 col-lg-10">
-                            <form class="form-horizontal" action="{{ route('redpack-setting.store') }}" method="post">
+                            <form class="form-horizontal" action="{{ route('redpack.setting.store') }}" method="post">
                                 @if ($errors->any())
                                     <div class="summary-errors alert alert-danger alert-dismissible">
                                         <button type="button" class="close" aria-label="Close" data-dismiss="alert">

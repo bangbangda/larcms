@@ -11,16 +11,21 @@
                     </a>
                 </li>
                 <li class="site-menu-category">微信管理</li>
-                <li class="site-menu-item has-sub {{ Ekko::isActiveRoute('redpack-setting.*', 'open') }}">
+                <li class="site-menu-item has-sub {{ Ekko::isActiveRoute('redpack.*', 'open') }}">
                     <a href="javascript:;">
                         <i class="site-menu-icon fa-laptop" aria-hidden="true"></i>
                         <span class="site-menu-title">红包管理</span>
                         <span class="site-menu-arrow"></span>
                     </a>
                     <ul class="site-menu-sub">
-                        <li class="site-menu-item {{ Ekko::isActiveRoute('redpack-setting.*') }}" >
-                            <a href="{{ route('redpack-setting.index') }}">
-                                <span class="site-menu-title">基础红包</span>
+                        <li class="site-menu-item {{ Ekko::isActiveRoute('redpack.setting.*') }}" >
+                            <a href="{{ route('redpack.setting.index') }}">
+                                <span class="site-menu-title">红包设置</span>
+                            </a>
+                        </li>
+                        <li class="site-menu-item {{ Ekko::isActiveRoute('redpack.randomCode.*') }}" >
+                            <a href="{{ route('redpack.randomCode.index') }}">
+                                <span class="site-menu-title">随机码红包</span>
                             </a>
                         </li>
                     </ul>
