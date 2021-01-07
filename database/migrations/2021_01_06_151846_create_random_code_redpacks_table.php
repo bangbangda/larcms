@@ -21,7 +21,7 @@ class CreateRandomCodeRedpacksTable extends Migration
         Schema::create('random_code_redpacks', function (Blueprint $table) {
             $table->id();
             $table->char('code', 13)->comment('随机领取码');
-            $table->integer('amount')->default('880')->comment('红包金额 单位 分');
+            $table->integer('amount')->default('888')->comment('红包金额 单位 分');
             $table->dateTime('receive_time')->nullable()->comment('领取时间');
             $table->bigInteger('customer_id')->nullable()->comment('领取人编号');
             $table->string('nickname', 50)->nullable()->comment('领取人昵称');

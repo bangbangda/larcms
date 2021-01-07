@@ -53,7 +53,7 @@ class RandomCodeController extends Controller
     {
         RandomCodeRedpack::create([
             'code' => Str::random('13'),
-            'amount' => 880,
+            'amount' => 888,
         ]);
 
         return redirect()->route('redpack.randomCode.index')
