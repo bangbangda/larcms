@@ -16,10 +16,10 @@ use Illuminate\Support\Facades\Route;
 Route::namespace('App\Http\Controllers\API')->prefix('v1')->group(function () {
     Route::post('login', 'CustomerController@login')->name('miniApp.login');
 
-//middleware('throttle:api-redpack')->
+
     Route::middleware(['auth:sanctum'])->name('miniApp.')->group(function () {
         Route::get('home', 'HomeController@index')->name('home');
-        Route::post('randomCodeRedpack', 'HomeController@randomCodeRedpack')->name('home.randomCodeRedpack');
+        Route::middleware('throttle:api-redpack')->post('randomCodeRedpack', 'HomeController@randomCodeRedpack')->name('home.randomCodeRedpack');
         Route::get('shareOrder', 'ShareOrderController@index')->name('shareOrder.index');
         Route::post('shareOrder', 'ShareOrderController@store')->name('shareOrder.store');
         Route::get('customerIncome', 'CustomerIncomeController@index')->name('customerIncome');
