@@ -55,6 +55,16 @@ class HomeController extends Controller
      */
     public function randomCodeRedpack(HomeRequest $request)
     {
+        // 验证是否关注公众号
+        if (is_null($request->user()->mp_openid)) {
+            throw new HttpResponseException(
+                response()->json([
+                    'errors' => ['请先关注公众号在来领取红包'],
+                    'code' => 'E10002',
+                ])
+            );
+        }
+
         $randomCode = $request->post('randomCode');
 
         if (! Cache::tags('randomCode')->has($randomCode) &&

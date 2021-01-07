@@ -19,7 +19,7 @@ class RandomCodeRedpack extends Model
 {
     use HasFactory, SoftDeletes, BsTableTrait;
 
-    protected $fillable = ['code'];
+    protected $fillable = ['code', 'amount'];
 
     protected $casts = [
 //        'amount' => Amount::class
