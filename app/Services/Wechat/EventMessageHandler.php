@@ -97,13 +97,11 @@ class EventMessageHandler implements EventHandlerInterface
      */
     private function clickMessage(string $eventKey)
     {
-        if ($eventKey == 'video') {
-            $video = new Video('Ll2fS-iivndSj1wHzgPKjUnadx-HKirQw_9_nuirEsc', [
-                'title' => '汝悦春秋小视频-初话',
-                'description' => '汝悦春秋小视频-初话',
-            ]);
+        if ($eventKey == 'tel') {
+            $text = new Text();
+            $text->content = '汝悦春秋咨询热线：0519-8599 3333';
 
-            return $video;
+            return $text;
         }
     }
 
