@@ -38,14 +38,14 @@ class CustomMpMenu
                         'url' => 'https://t.cn/A65yBdEE'
                     ],
                     [
-                        'type' => 'media_id',
+                        'type' => 'view',
                         'name' => '户型赏析',
-                        'media_id' => 'iivndSj1wHzgPKjUkR9TxBs4p2gqxES9rxyQU',
+                        'media_id' => 'https://mp.weixin.qq.com/s/Yzo6xNQmP8rKIcTsmekdPw',
                     ],
                     [
                         'type' => 'click',
                         'name' => '客服热线',
-                        'key' => 'TEL',
+                        'key' => 'tel',
                     ],
                     [
                         'type' => 'view',
