@@ -9,7 +9,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Log;
 
-class SendSmsMessageTask
+class SendSmsMessageTask implements ShouldQueue
 {
     /**
      * Create the event listener.
@@ -31,9 +31,10 @@ class SendSmsMessageTask
     {
         $smsMessage = $event->smsMessage;
         $vgSms = new VgSms();
-        Customer::whereNotNUll('phone')
+        Customer::select('phone')
+            ->whereNotNUll('phone')
             ->whereRaw('length(phone) = 11')
-            ->oldest()
+            ->groupBy('phone')
             ->chunk(950, function ($customers) use($vgSms, $smsMessage) {
                 $phones = $customers->pluck('phone')->toArray();
                 // 发送短信

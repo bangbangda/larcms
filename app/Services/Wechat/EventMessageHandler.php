@@ -3,6 +3,7 @@ namespace App\Services\Wechat;
 
 use EasyWeChat\Factory;
 use EasyWeChat\Kernel\Contracts\EventHandlerInterface;
+use EasyWeChat\Kernel\Messages\Image;
 use EasyWeChat\Kernel\Messages\Text;
 use EasyWeChat\Kernel\Messages\Video;
 use \Illuminate\Support\Facades\Log;

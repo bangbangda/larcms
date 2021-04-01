@@ -4,11 +4,11 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\API\HomeRequest;
+use App\Models\Banner;
 use App\Models\Customer;
+use App\Models\House;
 use App\Models\News;
-use App\Models\PopupAd;
 use App\Models\RandomCodeRedpack;
-use App\Models\ShareImage;
 use App\Models\TransferLog;
 use App\Services\Wechat\TransferMoney;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -27,22 +27,10 @@ class HomeController extends Controller
      */
     public function index(Request $request)
     {
-        $images = ShareImage::select('url')->active()->get();
-
-        $news = News::orderBy('publish_date', 'desc')->get();
-
-        $popupAd = PopupAd::select(['url', 'auto_close', 'close_second'])->active()->first();
-
         return response()->json([
-            'customer' => [
-                'id' => $request->user()->id,
-                'avatar_url' => $request->user()->avatar_url,
-                'qrCode' => $request->user()->qrcode_url
-            ],
-            'headImage' => 'https://larcms.bangbangda.me/storage/P2Ang8E2H9.jpg',
-            'popupAd' => $popupAd ?? [],
-            'shareImages' => $images,
-            'news' => $news
+            'banners' => Banner::select('jump_path', 'jump_url', 'image_url')->orderBy('weight')->get(),
+            'houses' => (new House())->homeData(),
+            'news' => News::orderBy('publish_date', 'desc')->get(),
         ]);
     }
 
