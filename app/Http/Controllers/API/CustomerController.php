@@ -1,0 +1,185 @@
+<?php
+
+namespace App\Http\Controllers\API;
+
+use App\Events\CustomerPhoneBound;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\API\CustomerRequest;
+use App\Models\Customer;
+use App\Models\Project;
+use App\Models\ShareOrder;
+use App\Http\Resources\Project as ProjectResource;
+use App\Services\IpSearch;
+use EasyWeChat\Kernel\Exceptions\DecryptException;
+use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use EasyWeChat\Factory;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
+
+class CustomerController extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     *
+     * @param  CustomerRequest  $request
+     * @return JsonResponse
+     * @throws \EasyWeChat\Kernel\Exceptions\InvalidConfigException
+     */
+    public function login(CustomerRequest $request)
+    {
+        $miniApp = Factory::miniProgram(config('wechat.mini_app'));
+
+        $wxUser = $miniApp->auth->session($request->post('code'));
+
+        if (isset($wxUser['errcode']) && !empty($wxUser['errcode'])) {
+            throw new HttpResponseException(
+                response()->json([
+                    'errors' => [$wxUser['errmsg']],
+                    'code' => $wxUser['errcode']
+                ])
+            );
+        }
+
+        // 创建用户
+        if (isset($wxUser['unionid'])) {
+            // 已关注公众号时 通过 unionid 查询用户
+            $customer = Customer::firstOrCreate([
+                'unionid' => $wxUser['unionid'],
+            ], [
+                'openid' => $wxUser['openid'],
+                'session_key' => $wxUser['session_key'],
+                'parent_id' => $request->post('parent_id'),
+            ]);
+        } else {
+            // 未关注公众号时 通过openid 查询用户
+            $customer = Customer::firstOrCreate([
+                'openid' => $wxUser['openid'],
+            ], [
+                'session_key' => $wxUser['session_key'],
+                'parent_id' => $request->post('parent_id'),
+            ]);
+        }
+
+        // 更新用户小程序 session_key
+        if (! $customer->wasRecentlyCreated) {
+            $customer->update([
+                'openid' => $wxUser['openid'],
+                'session_key' => $wxUser['session_key']
+            ]);
+        }
+
+        Log::debug('token->' . $customer->updateToken('mini-app')->plainTextToken);
+        return response()->json([
+            'token' => $customer->updateToken('mini-app')->plainTextToken,
+            'bindPhone' => $customer->hasBindPhone(),
+            'bindMp' => $customer->hasSubscribeMp(),
+        ]);
+    }
+
+    /**
+     * 解密手机号
+     *
+     * @param  CustomerRequest  $request
+     */
+    public function decryptPhone(CustomerRequest $request)
+    {
+        $miniApp = Factory::miniProgram(config('wechat.mini_app'));
+
+        try {
+            $customer = $request->user();
+            Log::debug("解密手机号: {$request->ip()} {$request->userAgent()} {$customer->id}" );
+
+            $decryptedData = $miniApp->encryptor->decryptData(
+                $customer->session_key, $request->post('iv'), $request->post('encryptedData')
+            );
+
+            // 更新手机号码
+            $customer->update([
+                'phone' => $phone = $decryptedData['phoneNumber'],
+            ]);
+            Log::debug("手机号: {$phone}");
+
+            // 屏蔽非常州市IP发放红包 && 一个手机号只发一次
+            if (! Cache::tags('black')->has($request->ip()) &&
+                ! Cache::tags('phone')->has($phone)) {
+
+                Cache::tags('phone')->put($phone, "1");
+
+                // IP地址查询
+                $ipSearch = new IpSearch();
+                $ipInfo = $ipSearch->getInfo($request->ip());
+
+                if ($ipInfo[2] == '常州') {
+                    // 触发绑定手机号事件
+                    event(new CustomerPhoneBound($customer));
+                } else {
+                    Cache::tags('black')->put($request->ip(), "1");
+                }
+            }
+        } catch (DecryptException $e) {
+            Log::error('解密手机号码失败：' . $e->getMessage());
+            throw new HttpResponseException(
+                response()->json([
+                    'errors' => ['解密手机号码失败'],
+                    'code' => '10023'
+                ])
+            );
+        }
+    }
+
+    /**
+     * 是否关注公众号
+     *
+     * @param  Request  $request
+     * @return JsonResponse
+     */
+    public function hasSubscribeMp(Request $request)
+    {
+        return response()->json([
+            'hasSubscribeMp' => $request->user()->hasSubscribeMp(),
+            'customer' => [
+                'id' => $request->user()->id,
+                'avatar_url' => $request->user()->avatar_url,
+                'qrCode' => $request->user()->qrcode_url
+            ]
+        ]);
+    }
+
+    /**
+     * 通过 code 判断是否关注公众号
+     *
+     * @param  CustomerRequest  $request
+     * @return JsonResponse
+     * @throws \EasyWeChat\Kernel\Exceptions\InvalidConfigException
+     */
+    public function hasSubscribeMpByCode(CustomerRequest $request)
+    {
+        $miniApp = Factory::miniProgram(config('wechat.mini_app'));
+
+        $wxUser = $miniApp->auth->session($request->post('code'));
+
+        return response()->json([
+            'hasSubscribeMp' => isset($wxUser['unionid'])
+        ]);
+    }
+
+    /**
+     * 个人中心
+     *
+     * @param  Request  $request
+     */
+    public function show(Request $request)
+    {
+        $customer = $request->user();
+        return response()->json([
+            'customer' => [
+                'nickname' => $customer->nickname,
+                'avatar_url' => $customer->avatar_url,
+                'income' => $customer->income->amountRmb ?? 0
+            ],
+            'project' => new ProjectResource(Project::first())
+        ]);
+    }
+}
