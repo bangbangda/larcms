@@ -4,7 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\ShareOrder;
-use App\Services\IpSearch;
+use App\Services\GdIpSearch;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 
@@ -59,10 +59,10 @@ class ShareOrderController extends Controller
             Cache::tags('share')->put($customer->openid, 1);
 
             // IP地址查询
-            $ipSearch = new IpSearch();
+            $ipSearch = new GdIpSearch();
             $ipInfo = $ipSearch->getInfo($request->ip());
 
-            if ($ipInfo[2] == '常州') {
+            if ($ipInfo['city'] == '包头市') {
                 ShareOrder::firstOrCreate([
                     'sub_openid' => $customer->openid,
                 ], [

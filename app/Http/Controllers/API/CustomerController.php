@@ -7,9 +7,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\API\CustomerRequest;
 use App\Models\Customer;
 use App\Models\Project;
-use App\Models\ShareOrder;
 use App\Http\Resources\Project as ProjectResource;
-use App\Services\IpSearch;
+use App\Services\GdIpSearch;
 use EasyWeChat\Kernel\Exceptions\DecryptException;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\JsonResponse;
@@ -108,10 +107,10 @@ class CustomerController extends Controller
                 Cache::tags('phone')->put($phone, "1");
 
                 // IP地址查询
-                $ipSearch = new IpSearch();
+                $ipSearch = new GdIpSearch();
                 $ipInfo = $ipSearch->getInfo($request->ip());
 
-                if ($ipInfo[2] == '常州') {
+                if ($ipInfo['city'] == '包头市') {
                     // 触发绑定手机号事件
                     event(new CustomerPhoneBound($customer));
                 } else {
