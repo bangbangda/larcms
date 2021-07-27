@@ -15,10 +15,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        if ($this->app->isLocal()) {
-            $this->app->register(\Laravel\Telescope\TelescopeServiceProvider::class);
-        }
-
         // 自定义退出登录
         $this->app->singleton(LogoutResponseContract::class, Logout::class);
     }

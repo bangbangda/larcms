@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Anan\Oss\Facades\EasyOss;
 use App\Http\Requests\ShareImageReqeust;
 use App\Models\ShareImage;
 use Illuminate\Http\Request;
@@ -46,7 +47,7 @@ class ShareImageController extends Controller
         ShareImage::create([
             'start_date' => $request->post('start_date'),
             'end_date' => $request->post('end_date'),
-            'url' => Storage::url($request->file('image')->store('share-images')),
+            'url' => EasyOss::uploadFile(Storage::path($request->file('image')->store('share-images'))),
         ]);
 
         return redirect()->route('activity.shareImage.index')
@@ -86,7 +87,7 @@ class ShareImageController extends Controller
     {
         $image = [];
         if ($request->hasFile('image')) {
-            $image['url'] = Storage::url($request->file('image')->store('share-images'));
+            $image['url'] = EasyOss::uploadFile(Storage::path($request->file('image')->store('share-images')));
         }
         ShareImage::where('id', $id)->update(array_merge(
             $image,
