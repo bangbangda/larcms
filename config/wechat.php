@@ -38,5 +38,22 @@ return [
         'secret' => env('WECHAT_MP_SECRET'),
         'token' => env('WECHAT_MP_TOKEN'),
         'response_type' => 'array',
+        'log' => [
+            'default' => env('WECHAT_MINI_LOG_CHANNEL', 'dev'), // 默认使用的 channel，生产环境可以改为下面的 prod
+            'channels' => [
+                // 测试环境
+                'dev' => [
+                    'driver' => 'single',
+                    'path' => '/tmp/easywechat.log',
+                    'level' => 'debug',
+                ],
+                // 生产环境
+                'prod' => [
+                    'driver' => 'daily',
+                    'path' => '/tmp/easywechat.log',
+                    'level' => 'info',
+                ],
+            ],
+        ],
     ]
 ];
