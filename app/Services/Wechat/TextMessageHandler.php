@@ -21,7 +21,7 @@ class TextMessageHandler implements EventHandlerInterface
     {
         $app = Factory::officialAccount(config('wechat.mp'));
         // 对应 octane
-        $app->request->initialize(request()->query(), request()->post());
+        $app->request->initialize(request()->query(), request()->post(), [], [], [], request()->server(), request()->getContent());
 
         $message = $app->server->getMessage();
 
