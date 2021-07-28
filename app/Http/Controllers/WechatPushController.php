@@ -19,7 +19,7 @@ class WechatPushController extends Controller
      */
     public function __invoke(Request $request)
     {
-        $app = Factory::officialAccount(config('wechat.mp'));dd($request->query());
+        $app = Factory::officialAccount(config('wechat.mp'));
         // 对应 octane
         $app->request->initialize($request->query(), $request->post());
         // 事件消息
