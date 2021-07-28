@@ -19,6 +19,9 @@ class EventMessageHandler implements EventHandlerInterface
     {
         $app = Factory::officialAccount(config('wechat.mp'));
 
+        // 对应 octane
+        $app->request->initialize(request()->query(), request()->post());
+
         $message = $app->server->getMessage();
 
         Log::debug($message);
