@@ -29,7 +29,7 @@ class HomeController extends Controller
     {
         $images = ShareImage::select('url')->active()->get();
 
-        $news = News::orderBy('publish_date', 'desc')->get();
+        $news = News::latest('updated_at')->get();
 
         $popupAd = PopupAd::select(['url', 'auto_close', 'close_second'])->active()->first();
 
