@@ -8,7 +8,6 @@ use Illuminate\Http\Request;
 use EasyWeChat\Factory;
 use EasyWeChat\Kernel\Messages\Message;
 
-
 class WechatPushController extends Controller
 {
     /**

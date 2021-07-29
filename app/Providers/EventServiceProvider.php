@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Events\CustomerSubscribed;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -14,6 +15,7 @@ use App\Listeners\NewcomerRedpack;
 use App\Listeners\InvitatioPedpack;
 use App\Listeners\TeamRedpack;
 use App\Listeners\SendSmsMessageTask;
+use App\Listeners\SendMiniProgramPage;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -42,6 +44,11 @@ class EventServiceProvider extends ServiceProvider
         ],
         SmsMessageSaved::class => [
             SendSmsMessageTask::class
+        ],
+        // 用户关注公众号
+        CustomerSubscribed::class => [
+            // 公众号自动发送小程序
+            SendMiniProgramPage::class,
         ]
     ];
 

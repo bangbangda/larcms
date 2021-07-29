@@ -4,9 +4,9 @@ namespace App\Services\Wechat;
 use EasyWeChat\Factory;
 use EasyWeChat\Kernel\Contracts\EventHandlerInterface;
 use EasyWeChat\Kernel\Messages\Text;
-use EasyWeChat\Kernel\Messages\Video;
-use \Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Log;
 use App\Models\Customer;
+use App\Events\CustomerSubscribed;
 use Illuminate\Support\Str;
 
 class EventMessageHandler implements EventHandlerInterface
@@ -17,19 +17,24 @@ class EventMessageHandler implements EventHandlerInterface
      */
     public function handle($payload = null)
     {
-        $app = Factory::officialAccount(config('wechat.mp'));
+        $this->app = Factory::officialAccount(config('wechat.mp'));
 
         // 对应 octane
-        $app->request->initialize(request()->query(), request()->post(), [], [], [], request()->server(), request()->getContent());
+        $this->app->request->initialize(request()->query(), request()->post(), [], [], [], request()->server(), request()->getContent());
 
-        $message = $app->server->getMessage();
+        $message = $this->app->server->getMessage();
 
         Log::debug($message);
 
         // 关注公众号推送
         if ($message['Event'] == 'subscribe') {
             // 更新或创建用户信息
-            $this->updateUser($app->user->get($message['FromUserName']));
+            $this->updateUser($this->app->user->get($message['FromUserName']));
+
+            // 扫码关注场景
+            if (isset($message['EventKey'])) {
+                CustomerSubscribed::dispatch($message);
+            }
 
             // 关注欢迎词
             return $this->sayHello();
