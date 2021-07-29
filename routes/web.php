@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\NewsController;
 use App\Http\Controllers\Redpack\RandomCodeController;
 use App\Http\Controllers\Redpack\SettingController;
 use App\Http\Controllers\ShareImageController;
@@ -52,6 +53,10 @@ Route::middleware(['auth'])->group(function () {
         // 分享图片
         Route::get('shareImage/json', [ShareImageController::class, 'json'])->name('shareImage.json');
         Route::resource('shareImage', ShareImageController::class);
+
+        // 新闻
+        Route::get('news/json', [NewsController::class, 'json'])->name('news.json');
+        Route::resource('news', NewsController::class);
     });
 
     // 客户管理

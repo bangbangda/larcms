@@ -62,7 +62,7 @@
                 <li class="site-menu-item has-sub {{ Ekko::isActiveRoute('activity.*', 'open') }}">
                     <a href="javascript:;">
                         <i class="site-menu-icon fa-share-alt" aria-hidden="true"></i>
-                        <span class="site-menu-title">首页管理</span>
+                        <span class="site-menu-title">活动管理</span>
                         <span class="site-menu-arrow"></span>
                     </a>
                     <ul class="site-menu-sub">
@@ -71,9 +71,9 @@
                                 <span class="site-menu-title">分享图片</span>
                             </a>
                         </li>
-                        <li class="site-menu-item " >
-                            <a href="">
-                                <span class="site-menu-title">推文管理</span>
+                        <li class="site-menu-item {{ Ekko::isActiveRoute('activity.news.*') }}" >
+                            <a href="{{ route('activity.news.index') }}">
+                                <span class="site-menu-title">新闻管理</span>
                             </a>
                         </li>
                     </ul>
