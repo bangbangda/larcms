@@ -5,7 +5,7 @@ namespace App\Console\Commands;
 use EasyWeChat\Factory;
 use Illuminate\Console\Command;
 
-class CreateMpMenu extends Command
+class MpCreateMenu extends Command
 {
     /**
      * The name and signature of the console command.
