@@ -7,6 +7,12 @@ use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
+/**
+ * 用户关注公众号事件
+ *
+ * Class CustomerSubscribed
+ * @package App\Events
+ */
 class CustomerSubscribed
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;

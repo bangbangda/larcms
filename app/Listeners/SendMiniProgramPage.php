@@ -10,6 +10,12 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
+/**
+ * 用户关注公众号-自动发送小程序卡片
+ *
+ * Class SendMiniProgramPage
+ * @package App\Listeners
+ */
 class SendMiniProgramPage implements ShouldQueue
 {
     /**

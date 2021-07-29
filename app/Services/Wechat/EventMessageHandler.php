@@ -26,15 +26,10 @@ class EventMessageHandler implements EventHandlerInterface
 
         Log::debug($message);
 
-        // 关注公众号推送
+        // 关注公众号
         if ($message['Event'] == 'subscribe') {
             // 更新或创建用户信息
-            $this->updateUser($this->app->user->get($message['FromUserName']));
-
-            // 扫码关注场景
-            if (isset($message['EventKey'])) {
-                CustomerSubscribed::dispatch($message);
-            }
+            $this->updateUser($message);
 
             // 关注欢迎词
             return $this->sayHello();
@@ -47,24 +42,45 @@ class EventMessageHandler implements EventHandlerInterface
     /**
      * 更新或创建用户信息
      *
-     * @param  array  $wechatUser
+     * @param array $message
      */
-    private function updateUser(array $wechatUser)
+    private function updateUser(array $message)
     {
+        // 获取用户基本信息
+        $wechatUser = $this->app->user->get($message['FromUserName']);
         Log::debug($wechatUser);
 
-        Customer::updateOrCreate(
-            ['unionid' => $wechatUser['unionid']],
-            [
+        // 处理原有用户，重新扫码带参数二维码后，更新上级编号
+        if (isset($message['EventKey']) &&
+            Customer::where('unionid', $wechatUser['unionid'])->whereNull('parent_id')->exists()) {
+            // 更新上级编号
+            $customer = Customer::where('unionid', $wechatUser['unionid'])->get();
+            $customer->parent_id = Str::replaceFirst('qrscene_', '', $message['EventKey']);
+            $customer->save();
+
+            // 发送小程序卡片
+            CustomerSubscribed::dispatch($message);
+        }
+
+        // 处理新用户关注
+        if (Customer::where('unionid', $wechatUser['unionid'])->doesntExist()) {
+            Customer::create([
+                'unionid' => $wechatUser['unionid'],
                 'nickname' => $wechatUser['nickname'],
                 'mp_openid' => $wechatUser['openid'],
                 'avatar_url' => $this->urlToHttps($wechatUser['headimgurl']),
                 'subscribe_scene' => $wechatUser['subscribe_scene'],
                 'subscribe_time' => date('Y-m-d H:i:s', $wechatUser['subscribe_time']),
                 'qr_scene' => $wechatUser['qr_scene'],
-                'qr_scene_str' => $wechatUser['qr_scene_str']
-            ]
-        );
+                'qr_scene_str' => $wechatUser['qr_scene_str'],
+                'parent_id' => isset($message['EventKey']) ? Str::replaceFirst('qrscene_', '', $message['EventKey']) : null,
+            ]);
+
+            // 扫码关注场景
+            if (isset($message['EventKey'])) {
+                CustomerSubscribed::dispatch($message);
+            }
+        }
     }
 
     /**
@@ -72,26 +88,26 @@ class EventMessageHandler implements EventHandlerInterface
      *
      * @return Text
      */
-    private function sayHello()
+    private function sayHello(): Text
     {
-        $text = new Text("");
-        $text->content = "相遇淹南 际会新贵
- 汲取千年淹城人居精神
-匠著现代美学豪宅住区
-淹南芯     双地铁
-双商综 百年名校
-约100-160㎡奢装地暖洋房
-
-【你买房我买单】
-未来三个月内如有在武进区购房（限住宅）计划
-<全武进，不限项目>
-<不含公寓/商业/别墅>
-欢迎来汝悦春秋售楼处登记参加本活动
-将有机会获得最高200万现金购房赞助
-
-- 汝悦春秋 华彩敬献 -
-咨询热线：0519-8599 3333
-项目地址：常州武进区九州喜来登酒店南100米";
+        $text = new Text();
+        $text->content = "欢迎关注【远洲·大都汇】公众号！
+ 
+新都核芯 市政府旁 
+钢三小远洲校区正式动工
+约110-160㎡全程生活场
+新品预约登记，火热进行中~
+ 
+【远洲狂欢水世界】
+这个8月去哪儿玩？来远洲·大都汇
+万人水上狂欢，闯关赢惊喜大奖！
+快点击右下角链接填写信息报名吧！！！
+<活动时间>  8月7日--8月29日
+<活动地点>  远洲·大都汇营销中心旁
+ 
+- 美好生活 都汇呈现 -
+咨询热线：0472-216 6666
+项目地址：新市政府东200米";
 
         return $text;
     }
@@ -112,7 +128,6 @@ class EventMessageHandler implements EventHandlerInterface
             return $text;
         }
     }
-
 
     /**
      * 地址转为HTTPS链接
