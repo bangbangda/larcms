@@ -135,17 +135,11 @@ class TransferMoney
      */
     private function getTypeName(string $type) : string
     {
-        switch ($type) {
-            case 'newcomer' :
-            case 'top' :
-            case 'basis' :
-                return '汝悦春秋分享红包礼';
-            case 'team':
-                return '汝悦春秋分享红包礼（团队红包）';
-            case 'video':
-                return '汝悦春秋分享视频号红包';
-            default :
-                return '';
-        }
+        return match ($type) {
+            'newcomer', 'top', 'basis' => '远洲大都汇分享红包礼',
+            'team' => '远洲大都汇分享红包礼（团队红包）',
+            'video' => '远洲大都汇分享视频号红包',
+            default => '',
+        };
     }
 }
