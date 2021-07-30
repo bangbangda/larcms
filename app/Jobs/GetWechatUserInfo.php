@@ -10,6 +10,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Carbon;
 
 /**
  * 批量获取用户信息
@@ -55,5 +56,15 @@ class GetWechatUserInfo implements ShouldQueue
                 ]);
             }
         }
+    }
+
+    /**
+     * 确定任务应该超时的时间
+     *
+     * @return Carbon
+     */
+    public function retryUntil(): Carbon
+    {
+        return now()->addMinutes(10);
     }
 }

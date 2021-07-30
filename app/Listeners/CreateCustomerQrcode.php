@@ -2,12 +2,10 @@
 
 namespace App\Listeners;
 
+use Anan\Oss\Facades\EasyOss;
 use App\Events\CustomerRegistered;
 use EasyWeChat\Factory;
-use EasyWeChat\Kernel\Http\StreamResponse;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Http\Exceptions\HttpResponseException;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
@@ -17,7 +15,7 @@ use Illuminate\Support\Str;
  * Class CreateCustomerQrcode
  * @package App\Listeners
  */
-class CreateCustomerQrcode
+class CreateCustomerQrcode implements ShouldQueue
 {
     /**
      * Create the event listener.
@@ -50,10 +48,8 @@ class CreateCustomerQrcode
      *
      * @param $id
      * @return string
-     * @throws \EasyWeChat\Kernel\Exceptions\InvalidArgumentException
-     * @throws \EasyWeChat\Kernel\Exceptions\RuntimeException
      */
-    private function qrCode($id)
+    private function qrCode($id): string
     {
         $miniApp = Factory::miniProgram(config('wechat.mini_app'));
         // 使用 getUnlimited 接口获取小程序码
@@ -66,11 +62,10 @@ class CreateCustomerQrcode
             Log::error($response);
             return '';
         }
+        Log::debug('获取小程序码成功');
 
-        if ($response instanceof StreamResponse) {
-            $fileName = $response->saveAs(public_path('storage/qrcode/'), Str::random(8) . '.png');
-        }
+        $fileName = $response->saveAs(public_path('storage/qrcode/'), Str::random(8) . '.png');
 
-        return config('app.url'). '/storage/qrcode/'. $fileName;
+        return EasyOss::uploadFile(public_path('storage/qrcode/' . $fileName));
     }
 }

@@ -35,6 +35,8 @@ class Kernel extends ConsoleKernel
         $schedule->command(MiniUserPortrait::class)->dailyAt('13:05');
         $schedule->command(MiniDailySummary::class)->dailyAt('13:10');
         $schedule->command(MpDailySummary::class)->dailyAt('13:15');
+        // 每5分钟缓存一次数据
+        $schedule->command('horizon:snapshot')->everyFiveMinutes();
     }
 
     /**
