@@ -69,12 +69,11 @@ class SendMiniProgramPage implements ShouldQueue
      */
     private function getMiniProgramPage(string $nickname)
     {
-
         return [
             'title' => "你的好友【{$nickname}】送你一个大红包，点击领取。",
             'appid' => config('wechat.mini_app.app_id'),
             'pagepath' => 'pages/home/home',
-            'thumb_media_id' => '0X7Gg9TRbh5YkTm1MpkpF-LVEDzeqn8Di9Rs1VCh6WQ'
+            'thumb_media_id' => '0X7Gg9TRbh5YkTm1MpkpF6K8BfFQ_aWvK7lwvU5UImE'
         ];
     }
 
