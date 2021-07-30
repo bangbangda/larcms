@@ -45,6 +45,7 @@ class CreateCustomerMpQrcode implements ShouldQueue
             $model->update([
                 'mp_qrcode_url' => $this->baseUri . $result['ticket']
             ]);
+            Log::info("生成公众号带参数二维码成功");
         } else {
             Log::error("生成公众号带参数二维码失败：{$result}");
         }

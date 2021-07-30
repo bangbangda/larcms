@@ -38,11 +38,20 @@ class SendMiniProgramPage implements ShouldQueue
         $app = Factory::officialAccount(config('wechat.mp'));
 
         $message = $event->message;
+
+        // 获取用户信息
+        $customer = Customer::find($this->getEventKey($message['EventKey']));
+
+        if (is_null($customer)) {
+            Log::error("用户关注公众号上级编号不存在 {$this->getEventKey($message['EventKey'])}");
+            return ;
+        }
+
         // 发送小程序名片
         $result = $app->customer_service->send([
             'touser' => $message['FromUserName'],
             'msgtype' => 'miniprogrampage',
-            'miniprogrampage' => $this->getMiniProgramPage($this->getEventKey($message['EventKey'])),
+            'miniprogrampage' => $this->getMiniProgramPage($customer->nickname),
         ]);
 
         if ($this->isOk($result)) {
@@ -55,21 +64,14 @@ class SendMiniProgramPage implements ShouldQueue
     /**
      * 获取小程序卡片信息
      *
-     * @param int $parentUserId
+     * @param string $nickname
      * @return array
      */
-    private function getMiniProgramPage(int $parentUserId)
+    private function getMiniProgramPage(string $nickname)
     {
-        // 获取用户信息
-        $customer = Customer::find($parentUserId);
-
-        if (is_null($customer)) {
-            Log::error("用户关注公众号上级编号不存在 {$parentUserId}");
-            return ;
-        }
 
         return [
-            'title' => "你的好友【{$customer->nickname}】送你一个大红包，点击领取。",
+            'title' => "你的好友【{$nickname}】送你一个大红包，点击领取。",
             'appid' => config('wechat.mini_app.app_id'),
             'pagepath' => 'pages/home/home',
             'thumb_media_id' => '0X7Gg9TRbh5YkTm1MpkpF-LVEDzeqn8Di9Rs1VCh6WQ'
