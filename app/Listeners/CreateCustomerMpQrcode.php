@@ -41,23 +41,13 @@ class CreateCustomerMpQrcode implements ShouldQueue
 
         $result = $app->qrcode->temporary($model->id, 60 * 60 * 24 * 29);
 
-        if ($this->isOk($result)) {
+        if (isset($result['ticket'])) {
             $model->update([
                 'mp_qrcode_url' => $this->baseUri . $result['ticket']
             ]);
         } else {
-            Log::error("生成公众号带参数二维码失败：{$result['errcode']}");
+            Log::error("生成公众号带参数二维码失败：{$result}");
         }
     }
 
-    /**
-     * 验证接口返回结果
-     *
-     * @param array $result
-     * @return bool
-     */
-    private function isOk(array $result): bool
-    {
-        return $result['errcode'] == '0' && $result['errmsg'] == 'ok';
-    }
 }

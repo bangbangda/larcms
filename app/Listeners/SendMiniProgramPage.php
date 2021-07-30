@@ -63,6 +63,11 @@ class SendMiniProgramPage implements ShouldQueue
         // 获取用户信息
         $customer = Customer::find($parentUserId);
 
+        if (is_null($customer)) {
+            Log::error("用户关注公众号上级编号不存在 {$parentUserId}");
+            return ;
+        }
+
         return [
             'title' => "你的好友【{$customer->nickname}】送你一个大红包，点击领取。",
             'appid' => config('wechat.mini_app.app_id'),
