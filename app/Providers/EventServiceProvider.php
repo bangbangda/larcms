@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Events\CustomerSubscribed;
+use App\Listeners\CreateCustomerMpQrcode;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -31,7 +32,9 @@ class EventServiceProvider extends ServiceProvider
         // 客户注册成功后触发事件
         CustomerRegistered::class => [
             // 生成小程序码
-            CreateCustomerQrcode::class
+            CreateCustomerQrcode::class,
+            // 生成公众号带参数二维码
+            CreateCustomerMpQrcode::class,
         ],
         // 绑定手机号后触发事件
         CustomerPhoneBound::class => [

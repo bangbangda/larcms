@@ -50,7 +50,7 @@ class EventMessageHandler implements EventHandlerInterface
         $wechatUser = $this->app->user->get($message['FromUserName']);
         Log::debug($wechatUser);
 
-        // 处理原有用户，重新扫码带参数二维码后，更新上级编号
+        // 处理原有用户，重新扫码带参数二维码后，且该用户没有上级时，更新上级编号
         if (isset($message['EventKey']) &&
             Customer::where('unionid', $wechatUser['unionid'])->whereNull('parent_id')->exists()) {
             // 更新上级编号
@@ -80,6 +80,23 @@ class EventMessageHandler implements EventHandlerInterface
             if (isset($message['EventKey'])) {
                 CustomerSubscribed::dispatch($message);
             }
+        }
+
+        // 用户先打开小程序端 后关注公众号 直接更新公众号信息
+        if (Customer::where('unionid', $wechatUser['unionid'])->whereNull('mp_openid')->exists()) {
+            $customer = Customer::where('unionid', $wechatUser['unionid'])
+                ->whereNull('mp_openid')
+                ->first();
+
+            $customer->update([
+                'nickname' => $wechatUser['nickname'],
+                'mp_openid' => $wechatUser['openid'],
+                'avatar_url' => $this->urlToHttps($wechatUser['headimgurl']),
+                'subscribe_scene' => $wechatUser['subscribe_scene'],
+                'subscribe_time' => date('Y-m-d H:i:s', $wechatUser['subscribe_time']),
+                'qr_scene' => $wechatUser['qr_scene'],
+                'qr_scene_str' => $wechatUser['qr_scene_str'],
+            ]);
         }
     }
 
