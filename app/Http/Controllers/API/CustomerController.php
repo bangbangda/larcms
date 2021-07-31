@@ -111,7 +111,7 @@ class CustomerController extends Controller
                 $ipSearch = new GdIpSearch();
                 $ipInfo = $ipSearch->getInfo($request->ip());
 
-                if ($ipInfo['city'] == '包头市') {
+                if ($ipInfo['city'] == '包头市' || true) {
                     // 触发绑定手机号事件
                     event(new CustomerPhoneBound($customer));
                 } else {

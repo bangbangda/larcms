@@ -62,7 +62,7 @@ class ShareOrderController extends Controller
             $ipSearch = new GdIpSearch();
             $ipInfo = $ipSearch->getInfo($request->ip());
 
-            if ($ipInfo['city'] == '包头市') {
+            if ($ipInfo['city'] == '包头市' || true) {
                 ShareOrder::firstOrCreate([
                     'sub_openid' => $customer->openid,
                 ], [
