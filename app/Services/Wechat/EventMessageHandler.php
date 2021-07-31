@@ -77,9 +77,7 @@ class EventMessageHandler implements EventHandlerInterface
             ]);
 
             // 扫码关注场景
-            if (isset($message['EventKey'])) {
-                CustomerSubscribed::dispatch($message);
-            }
+            CustomerSubscribed::dispatch($message);
         }
 
         // 用户先打开小程序端 后关注公众号 直接更新公众号信息
