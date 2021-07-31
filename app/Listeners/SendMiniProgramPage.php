@@ -51,7 +51,7 @@ class SendMiniProgramPage implements ShouldQueue
         $result = $app->customer_service->send([
             'touser' => $message['FromUserName'],
             'msgtype' => 'miniprogrampage',
-            'miniprogrampage' => $this->getMiniProgramPage($customer->nickname),
+            'miniprogrampage' => $this->getMiniProgramPage($customer->nickname, $this->getEventKey($message['EventKey'])),
         ]);
 
         if ($this->isOk($result)) {
@@ -65,14 +65,15 @@ class SendMiniProgramPage implements ShouldQueue
      * 获取小程序卡片信息
      *
      * @param string $nickname
+     * @param int $parentId
      * @return array
      */
-    private function getMiniProgramPage(string $nickname)
+    private function getMiniProgramPage(string $nickname, int $parentId)
     {
         return [
             'title' => "你的好友【{$nickname}】送你一个大红包，点击领取。",
             'appid' => config('wechat.mini_app.app_id'),
-            'pagepath' => 'pages/home/home',
+            'pagepath' => 'pages/home/home?parent_id=' . $parentId,
             'thumb_media_id' => '0X7Gg9TRbh5YkTm1MpkpF6K8BfFQ_aWvK7lwvU5UImE'
         ];
     }

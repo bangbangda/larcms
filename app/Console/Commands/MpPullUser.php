@@ -39,19 +39,22 @@ class MpPullUser extends Command
      */
     public function handle()
     {
-        $mpApp = Factory::officialAccount(config('wechat.mp'));
-        // 获取所有用户
-        $users = $mpApp->user->list();
+        if ($this->confirm('请确认要将公众号粉丝全部导入吗？')) {
+            $mpApp = Factory::officialAccount(config('wechat.mp'));
+            // 获取所有用户
+            $users = $mpApp->user->list();
 
-        $this->info("公众号总用户数：{$users['total']}");
-        $this->info("本次拉取用户数：{$users['count']}");
-        // 拆分200个用户为一个队列，批量获取用户信息
-        $openidArr = array_chunk($users['data']['openid'], 200);
+            $this->info("公众号总用户数：{$users['total']}");
+            $this->info("本次拉取用户数：{$users['count']}");
 
-        foreach ($openidArr as $openid) {
-            GetWechatUserInfo::dispatch($openid);
+            // 拆分200个用户为一个队列，批量获取用户信息
+            $openidArr = array_chunk($users['data']['openid'], 200);
+
+            foreach ($openidArr as $openid) {
+                GetWechatUserInfo::dispatch($openid);
+            }
+            $this->info('队列添加完成，请确认数据是否更新完成');
         }
-        $this->info('队列添加完成，请确认数据是否更新完成');
 
         return 0;
     }
