@@ -161,7 +161,9 @@ class CustomerController extends Controller
         $wxUser = $miniApp->auth->session($request->post('code'));
 
         return response()->json([
-            'hasSubscribeMp' => isset($wxUser['unionid'])
+            'hasSubscribeMp' => Customer::where('openid', $wxUser['openid'])
+                ->first()
+                ->hasSubscribeMp()
         ]);
     }
 
