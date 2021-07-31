@@ -11,6 +11,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Str;
 
 /**
  * 批量获取用户信息
@@ -48,7 +49,7 @@ class GetWechatUserInfo implements ShouldQueue
                     'unionid' => $user['unionid'],
                     'mp_openid' => $openId,
                     'nickname' => $user['nickname'],
-                    'avatar_url' => $user['headimgurl'],
+                    'avatar_url' => $this->urlToHttps($user['headimgurl']),
                     'subscribe_time' => $user['subscribe_time'],
                     'subscribe_scene' => $user['subscribe_scene'],
                     'qr_scene' => $user['qr_scene'],
@@ -56,6 +57,17 @@ class GetWechatUserInfo implements ShouldQueue
                 ]);
             }
         }
+    }
+
+    /**
+     * 地址转为HTTPS链接
+     *
+     * @param  String  $headimgUrl
+     * @return string
+     */
+    private function urlToHttps(String $headimgUrl)
+    {
+        return Str::replaceFirst('http:', 'https:', $headimgUrl);
     }
 
     /**
