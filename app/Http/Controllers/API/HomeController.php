@@ -37,7 +37,7 @@ class HomeController extends Controller
             'customer' => [
                 'id' => $request->user()->id,
                 'avatar_url' => $request->user()->avatar_url,
-                'qrCode' => $request->user()->mp_qrcode_url
+                'qrCode' => $request->user()->qrcode_url
             ],
             'headImage' => 'https://baotouyuanzhou.oss-cn-huhehaote.aliyuncs.com/home-banner-bg.png',
             'popupAd' => $popupAd ?? [],
