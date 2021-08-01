@@ -30,7 +30,7 @@ class HomeController extends Controller
         return response()->json([
             'banners' => Banner::select('jump_path', 'jump_url', 'image_url')->orderBy('weight')->get(),
             'houses' => (new House())->homeData(),
-            'news' => News::orderBy('publish_date', 'desc')->get(),
+            'news' => News::orderBy('updated_at', 'desc')->get(),
         ]);
     }
 
