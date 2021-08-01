@@ -24,7 +24,7 @@ class ShareImageController extends Controller
     {
         $images = ShareImage::select('url')->active()->get();
 
-        $news = News::orderBy('publish_date', 'desc')->get();
+        $news = News::orderBy('updated_at', 'desc')->get();
 
         $popupAd = PopupAd::select(['url', 'auto_close', 'close_second'])->active()->first();
 
