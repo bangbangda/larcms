@@ -41,33 +41,27 @@ class CustomerController extends Controller
             );
         }
 
-        // 创建用户
-        if (isset($wxUser['unionid'])) {
-            // 已关注公众号时 通过 unionid 查询用户
-            $customer = Customer::firstOrCreate([
-                'unionid' => $wxUser['unionid'],
-            ], [
-                'openid' => $wxUser['openid'],
-                'session_key' => $wxUser['session_key'],
-                'parent_id' => $request->post('parent_id'),
-            ]);
-        } else {
-            // 未关注公众号时 通过openid 查询用户
-            $customer = Customer::firstOrCreate([
-                'openid' => $wxUser['openid'],
-            ], [
-                'session_key' => $wxUser['session_key'],
-                'parent_id' => $request->post('parent_id'),
-            ]);
-        }
-
-        // 更新用户小程序 session_key
-        if (! $customer->wasRecentlyCreated) {
-            $customer->update([
+        if (Customer::where('unionid', $wxUser['unionid'])->exist()) {
+            Customer::where('unionid', $wxUser['unionid'])->update([
                 'openid' => $wxUser['openid'],
                 'session_key' => $wxUser['session_key']
             ]);
+
+            $notParentId = Customer::where('unionid', $wxUser['unionid'])
+                ->whereNull('parent_id');
+
+            if ($notParentId->exist()) {
+                $notParentId->update(['parent_id' => $request->post('parent_id')]);
+            }
+        } else {
+            Customer::create([
+                'unionid' => $wxUser['unionid'],
+                'openid' => $wxUser['openid'],
+                'session_key' => $wxUser['session_key'],
+                'parent_id' => $request->post('parent_id')
+            ]);
         }
+        $customer = Customer::where('unionid', $wxUser['unionid'])->first();
 
         Log::debug('token->' . $customer->updateToken('mini-app')->plainTextToken);
         return response()->json([

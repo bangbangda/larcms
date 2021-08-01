@@ -56,7 +56,7 @@ class EventMessageHandler implements EventHandlerInterface
             Customer::where('unionid', $wechatUser['unionid'])->whereNull('parent_id')->exists()) {
             // 更新上级编号
             $customer = Customer::where('unionid', $wechatUser['unionid'])->get();
-            $customer->parent_id = Str::replaceFirst('qrscene_', '', $message['EventKey']);
+            $customer->parent_id = $this->getQrScene($message);
             $customer->save();
 
             // 发送小程序卡片
@@ -74,7 +74,7 @@ class EventMessageHandler implements EventHandlerInterface
                 'subscribe_time' => date('Y-m-d H:i:s', $wechatUser['subscribe_time']),
                 'qr_scene' => $wechatUser['qr_scene'],
                 'qr_scene_str' => $wechatUser['qr_scene_str'],
-                'parent_id' => isset($message['EventKey']) ? Str::replaceFirst('qrscene_', '', $message['EventKey']) : null,
+                'parent_id' => $this->getQrScene($message),
             ]);
 
             // 扫码关注场景
@@ -96,6 +96,12 @@ class EventMessageHandler implements EventHandlerInterface
                 'qr_scene' => $wechatUser['qr_scene'],
                 'qr_scene_str' => $wechatUser['qr_scene_str'],
             ]);
+
+            if (is_null($customer->parent_id)) {
+                $customer->update([
+                    'parent_id' => $this->getQrScene($message)
+                ]);
+            }
         }
     }
 
@@ -154,5 +160,16 @@ class EventMessageHandler implements EventHandlerInterface
     private function urlToHttps(String $headimgUrl)
     {
         return Str::replaceFirst('http:', 'https:', $headimgUrl);
+    }
+
+    /**
+     * 获取二维码参数
+     *
+     * @param array $message
+     * @return string|null
+     */
+    private function getQrScene(array $message)
+    {
+        return isset($message['EventKey']) ? Str::replaceFirst('qrscene_', '', $message['EventKey']) : null;
     }
 }
