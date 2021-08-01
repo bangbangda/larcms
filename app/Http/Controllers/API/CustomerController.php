@@ -41,7 +41,7 @@ class CustomerController extends Controller
             );
         }
 
-        if (Customer::where('unionid', $wxUser['unionid'])->exist()) {
+        if (Customer::where('unionid', $wxUser['unionid'])->exists()) {
             Customer::where('unionid', $wxUser['unionid'])->update([
                 'openid' => $wxUser['openid'],
                 'session_key' => $wxUser['session_key']
@@ -50,7 +50,7 @@ class CustomerController extends Controller
             $notParentId = Customer::where('unionid', $wxUser['unionid'])
                 ->whereNull('parent_id');
 
-            if ($notParentId->exist()) {
+            if ($notParentId->exists()) {
                 $notParentId->update(['parent_id' => $request->post('parent_id')]);
             }
         } else {
