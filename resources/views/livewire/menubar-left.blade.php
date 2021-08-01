@@ -59,7 +59,7 @@
                     </a>
                 </li>
                 <li class="site-menu-category">活动管理</li>
-                <li class="site-menu-item has-sub {{ Ekko::isActiveRoute('activity.*', 'open') }}">
+                <li class="site-menu-item has-sub {{ Ekko::isActiveRoute(['activity.*', 'club.*', 'salesman.*'], 'open') }}">
                     <a href="javascript:;">
                         <i class="site-menu-icon fa-share-alt" aria-hidden="true"></i>
                         <span class="site-menu-title">活动管理</span>
@@ -74,6 +74,16 @@
                         <li class="site-menu-item {{ Ekko::isActiveRoute('activity.news.*') }}" >
                             <a href="{{ route('activity.news.index') }}">
                                 <span class="site-menu-title">新闻管理</span>
+                            </a>
+                        </li>
+                        <li class="site-menu-item {{ Ekko::isActiveRoute('club.*') }}" >
+                            <a href="{{ route('club.index') }}">
+                                <span class="site-menu-title">会所管理</span>
+                            </a>
+                        </li>
+                        <li class="site-menu-item {{ Ekko::isActiveRoute('salesman.*') }}" >
+                            <a href="{{ route('salesman.index') }}">
+                                <span class="site-menu-title">专属顾问管理</span>
                             </a>
                         </li>
                     </ul>

@@ -61,7 +61,6 @@ class InvitatioPedpack implements ShouldQueue
             $money = 2.88;
         } else {
             $money = 3.88;
-            Log::info("随机数：{$randomNumber}");
         }
 
         return intval($money * 100);

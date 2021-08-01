@@ -1,9 +1,11 @@
 <?php
 
+use App\Http\Controllers\ClubController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\Redpack\RandomCodeController;
 use App\Http\Controllers\Redpack\SettingController;
+use App\Http\Controllers\SalesmanController;
 use App\Http\Controllers\ShareImageController;
 use App\Http\Controllers\SmsController;
 use App\Http\Controllers\SmsReportController;
@@ -67,6 +69,15 @@ Route::middleware(['auth'])->group(function () {
     Route::get('sms/json', [SmsController::class, 'json'])->name('sms.json');
     Route::post('sms/checkContent', [SmsController::class, 'checkContent'])->name('sms.checkContent');
     Route::resource('sms', SmsController::class);
+
+    // 会所管理
+    Route::get('club/json', [ClubController::class, 'json'])->name('club.json');
+    Route::resource('club', ClubController::class);
+
+    // 专属顾问
+    Route::get('salesman/json', [SalesmanController::class, 'json'])->name('salesman.json');
+    Route::resource('salesman', SalesmanController::class);
+
 });
 
 // 短信回调

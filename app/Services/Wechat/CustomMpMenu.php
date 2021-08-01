@@ -40,7 +40,7 @@ class CustomMpMenu
                     [
                         'type' => 'view',
                         'name' => '户型赏析',
-                        'media_id' => 'https://mp.weixin.qq.com/s/Yzo6xNQmP8rKIcTsmekdPw',
+                        'url' => 'https://mp.weixin.qq.com/s/Yzo6xNQmP8rKIcTsmekdPw',
                     ],
                     [
                         'type' => 'click',
