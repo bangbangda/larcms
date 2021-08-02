@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ClubController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\HouseController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\Redpack\RandomCodeController;
 use App\Http\Controllers\Redpack\SettingController;
@@ -77,6 +78,11 @@ Route::middleware(['auth'])->group(function () {
     // 专属顾问
     Route::get('salesman/json', [SalesmanController::class, 'json'])->name('salesman.json');
     Route::resource('salesman', SalesmanController::class);
+
+    // 户型管理
+    Route::get('house/json', [HouseController::class, 'json'])->name('house.json');
+    Route::post('house/storeImage', [HouseController::class, 'storeImage'])->name('house.storeImage');
+    Route::resource('house', HouseController::class);
 
 });
 

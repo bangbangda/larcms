@@ -25,7 +25,7 @@ class VideoController extends Controller
             ->paginate();
 
         return response()->json([
-            'headImage' => 'https://larcms.bangbangda.me/storage/P2Ang8E2H9.jpg',
+            'headImage' => 'https://baotouyuanzhou.oss-cn-huhehaote.aliyuncs.com/wx/zaIpb0F30.jpg',
             'videos' => WechatMaterialResource::collection($videoMaterial),
             'footerImage' => '',
         ]);

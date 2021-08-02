@@ -86,6 +86,11 @@
                                 <span class="site-menu-title">专属顾问管理</span>
                             </a>
                         </li>
+                        <li class="site-menu-item {{ Ekko::isActiveRoute('house.*') }}" >
+                            <a href="{{ route('house.index') }}">
+                                <span class="site-menu-title">户型管理</span>
+                            </a>
+                        </li>
                     </ul>
                 </li>
             </ul>
