@@ -3,6 +3,7 @@
 use App\Http\Controllers\ClubController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\HouseController;
+use App\Http\Controllers\HouseRoomController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\Redpack\RandomCodeController;
 use App\Http\Controllers\Redpack\SettingController;
@@ -83,6 +84,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('house/json', [HouseController::class, 'json'])->name('house.json');
     Route::post('house/storeImage', [HouseController::class, 'storeImage'])->name('house.storeImage');
     Route::resource('house', HouseController::class);
+
+    // 户型房间管理
+    Route::get('house-room/json', [HouseRoomController::class, 'json'])->name('house-room.json');
+    Route::resource('house.rooms', HouseRoomController::class);
 
 });
 

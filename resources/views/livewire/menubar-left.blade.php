@@ -59,7 +59,7 @@
                     </a>
                 </li>
                 <li class="site-menu-category">活动管理</li>
-                <li class="site-menu-item has-sub {{ Ekko::isActiveRoute(['activity.*', 'club.*', 'salesman.*'], 'open') }}">
+                <li class="site-menu-item has-sub {{ Ekko::isActiveRoute(['activity.*', 'club.*', 'salesman.*', 'house.*'], 'open') }}">
                     <a href="javascript:;">
                         <i class="site-menu-icon fa-share-alt" aria-hidden="true"></i>
                         <span class="site-menu-title">活动管理</span>
