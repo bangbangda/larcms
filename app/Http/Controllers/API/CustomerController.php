@@ -101,11 +101,10 @@ class CustomerController extends Controller
 
                 Cache::tags('phone')->put($phone, "1");
 
-                // IP地址查询
+                // IP地址验证
                 $ipSearch = new GdIpSearch();
-                $ipInfo = $ipSearch->getInfo($request->ip());
 
-                if ($ipInfo['city'] == '包头市' || true) {
+                if ($ipSearch->isValid($request->ip())) {
                     // 触发绑定手机号事件
                     event(new CustomerPhoneBound($customer));
                 } else {

@@ -30,10 +30,10 @@ class GdIpSearch
     /**
      * 获取IP归属地
      *
-     * @param  string  $ip
-     * @return array
+     * @param string $ip
+     * @return bool
      */
-    public function getInfo(string $ip): array
+    public function isValid(string $ip): bool
     {
         $ipResult = Http::get($this->url, [
             'key' => $this->key,
@@ -44,11 +44,11 @@ class GdIpSearch
         if ($ipResult['status'] === '1') {
             Log::debug($ipResult);
 
-            return $ipResult;
+            return $ipResult['city'] == '包头市';
         }
 
         Log::error("IP地址归属地查询错误  {$ipResult['msg']}");
 
-        return [];
+        return false;
     }
 }

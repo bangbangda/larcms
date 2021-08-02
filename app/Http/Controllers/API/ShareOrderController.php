@@ -58,11 +58,10 @@ class ShareOrderController extends Controller
 
             Cache::tags('share')->put($customer->openid, 1);
 
-            // IP地址查询
+            // IP地址验证
             $ipSearch = new GdIpSearch();
-            $ipInfo = $ipSearch->getInfo($request->ip());
 
-            if ($ipInfo['city'] == '包头市' || true) {
+            if ($ipSearch->isValid($request->ip())) {
                 ShareOrder::firstOrCreate([
                     'sub_openid' => $customer->openid,
                 ], [
