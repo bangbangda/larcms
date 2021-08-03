@@ -55,11 +55,11 @@ class EventMessageHandler implements EventHandlerInterface
         if (isset($message['EventKey']) &&
             Customer::where('unionid', $wechatUser['unionid'])->whereNull('parent_id')->exists()) {
             // 更新上级编号
-            $customer = Customer::where('unionid', $wechatUser['unionid'])->get();
+            $customer = Customer::where('unionid', $wechatUser['unionid'])->first();
             $customer->parent_id = $this->getQrScene($message);
             $customer->save();
 
-            // 发送小程序卡片
+            // 用户关注公众号事件
             CustomerSubscribed::dispatch($message);
         }
 
@@ -77,7 +77,7 @@ class EventMessageHandler implements EventHandlerInterface
                 'parent_id' => $this->getQrScene($message),
             ]);
 
-            // 扫码关注场景
+            // 用户关注公众号事件
             CustomerSubscribed::dispatch($message);
         }
 
