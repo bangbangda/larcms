@@ -37,7 +37,8 @@ class ShareImageController extends Controller
             'headImage' => 'https://baotouyuanzhou.oss-cn-huhehaote.aliyuncs.com/wx/ARoNwpdhmORu9Ru9AuY2.jpg',
             'popupAd' => $popupAd ?? [],
             'shareImages' => $images,
-            'news' => []
+            'news' => [],
+            'subscribe_url' => "https://mp.weixin.qq.com/s/IQfK1RPsJKRBjI_cxtEb5Q",
         ]);
     }
 }
