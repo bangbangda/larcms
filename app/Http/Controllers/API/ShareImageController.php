@@ -40,7 +40,7 @@ class ShareImageController extends Controller
             'news' => [],
             'subscribe_url' => "https://mp.weixin.qq.com/s/IQfK1RPsJKRBjI_cxtEb5Q",
             'ad' => [
-                'image' => 'https://baotouyuanzhou.oss-cn-huhehaote.aliyuncs.com/wx/rUFU1T6UL.png',
+                'image' => 'https://baotouyuanzhou.oss-cn-huhehaote.aliyuncs.com/wx/Ef4q6KUXoqxx.jpeg',
                 'url' => 'https://mk.attcg.cn/appProject/yuanZhouDaDuHui/indexAgain.html',
             ]
         ]);
