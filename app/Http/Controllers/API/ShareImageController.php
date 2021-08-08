@@ -34,7 +34,7 @@ class ShareImageController extends Controller
                 'avatar_url' => $request->user()->avatar_url,
                 'qrCode' => $request->user()->qrcode_url
             ],
-            'headImage' => 'https://baotouyuanzhou.oss-cn-huhehaote.aliyuncs.com/wx/ARoNwpdhmORu9Ru9AuY2.jpg',
+            'headImage' => 'https://baotouyuanzhou.oss-cn-huhehaote.aliyuncs.com/wx/opMKBZS7H08ldMjO.jpg',
             'popupAd' => $popupAd ?? [],
             'shareImages' => $images,
             'news' => [],
