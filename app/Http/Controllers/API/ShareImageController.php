@@ -38,10 +38,10 @@ class ShareImageController extends Controller
             'popupAd' => $popupAd ?? [],
             'shareImages' => $images,
             'news' => [],
-            'subscribe_url' => "https://mp.weixin.qq.com/s/IQfK1RPsJKRBjI_cxtEb5Q",
+            'subscribe_url' => "https://mp.weixin.qq.com/s/YKfHifcGDUQoDw_MMffpgQ",
             'ad' => [
                 'image' => 'https://baotouyuanzhou.oss-cn-huhehaote.aliyuncs.com/wx/Ef4q6KUXoqxx.jpeg',
-                'url' => 'https://mk.attcg.cn/appProject/yuanZhouDaDuHui/indexAgain.html',
+                'url' => 'https://mp.weixin.qq.com/s/URqeKtsAQ8Mfo4A5PBRH0A',
             ]
         ]);
     }
