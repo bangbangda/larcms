@@ -26,7 +26,7 @@ class VideoController extends Controller
 
         return response()->json([
             'headImage' => 'https://baotouyuanzhou.oss-cn-huhehaote.aliyuncs.com/wx/zaIpb0F30.jpg',
-            'videos' => WechatMaterialResource::collection($videoMaterial),
+            'videos' => [], // WechatMaterialResource::collection($videoMaterial),
             'footerImage' => '',
         ]);
     }
