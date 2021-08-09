@@ -34,9 +34,9 @@ class EventMessageHandler implements EventHandlerInterface
 
             // 关注欢迎词
             return $this->sayHello();
-        } else if ($message['Event'] == 'CLICK') {  // 点击事件
-            // 根据不同的 key 返回欢迎词
-            return $this->clickMessage($message['EventKey']);
+        } else if ($message['Event'] == 'SCAN') {  // 已关注用户，扫码二维码时自动发送小程序名片
+            // 用户关注公众号事件
+            CustomerSubscribed::dispatch($message);
         }
     }
 
@@ -133,23 +133,6 @@ class EventMessageHandler implements EventHandlerInterface
 项目地址：新市政府东200米";
 
         return $text;
-    }
-
-
-    /**
-     * 处理点击事件返回信息
-     *
-     * @param  string  $eventKey
-     * @return Text
-     */
-    private function clickMessage(string $eventKey)
-    {
-        if ($eventKey == 'tel') {
-            $text = new Text();
-            $text->content = '汝悦春秋咨询热线：0519-8599 3333';
-
-            return $text;
-        }
     }
 
     /**
