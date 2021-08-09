@@ -2,9 +2,12 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Customer;
+use App\Models\TransferLog;
 use EasyWeChat\Factory;
 use Illuminate\Console\Command;
-use Illuminate\Support\Str;
+use App\Jobs\SendWechatRedPack;
+use Illuminate\Support\Facades\DB;
 
 class WechatSendRedPack extends Command
 {
@@ -39,24 +42,22 @@ class WechatSendRedPack extends Command
      */
     public function handle()
     {
-        $wechatPay = Factory::payment(config('wechat.pay'));
+        // 查询发送失败红包
+        $reSendData = TransferLog::whereNull('payment_no')->where('created_at', '<', now()->toDateTimeString())
+            ->where('customer_id', '117')
+            ->select('customer_id', DB::raw('sum(amount) as s_amount'))
+            ->groupBy('customer_id')
+            ->having('s_amount', '>', 100)
+            ->get();
 
-        $result = $wechatPay->redpack->sendNormal([
-            'mch_billno' => Str::random(9),
-            'send_name' => '远洲大都汇分享红包礼（团队红包）',
-            're_openid' => 'onvDwwLkeUvDL4UHfh3oQPeD5Kz4',
-            'total_amount' => 1,
-            'total_num' => 1,
-            'wishing' => '感谢您参加【远洲周年庆 狂欢嗨购月】活动',
-            'act_name' => '远洲周年庆 狂欢嗨购月',
-            'remark' => '分享越多 红包越多',
-            'scene_id' => 'PRODUCT_2',
-        ]);
+        foreach ($reSendData as $data) {
+            $customer = Customer::find($data->customer_id);
 
-        if ($result['return_code'] == 'SUCCESS' && $result['result_code'] == 'SUCCESS') {
-            $this->info('红包发放成功');
-        } else {
-            $this->error('红包发放失败' . $result['err_code']);
+            SendWechatRedPack::dispatch([
+                'mp_openid' => $customer->mp_openid,
+                'amount' => $data['s_amount'],
+                'customer_id' => $data->customer_id,
+            ]);
         }
 
         return 0;
