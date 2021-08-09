@@ -44,7 +44,6 @@ class WechatSendRedPack extends Command
     {
         // 查询发送失败红包
         $reSendData = TransferLog::whereNull('payment_no')->where('created_at', '<', now()->toDateTimeString())
-            ->where('customer_id', '9400')
             ->select('customer_id', DB::raw('sum(amount) as s_amount'))
             ->groupBy('customer_id')
             ->having('s_amount', '>', 100)

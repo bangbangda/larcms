@@ -18,7 +18,7 @@ class CreateTransferLogsTable extends Migration
             $table->foreignId('customer_id')->comment('用户编号');
             $table->foreignId('share_order_id')->nullable()->comment('分享订单编号');
             $table->integer('amount')->comment('支付金额 单位分');
-            $table->enum('type', ['basis', 'newcomer', 'top'])->comment('支付类型');
+            $table->string('type')->comment('支付类型');
             $table->string('payment_no')->nullable()->comment('微信转账订单号');
             $table->dateTime('payment_time')->nullable()->comment('微信转账时间');
             $table->json('api_result')->comment('接口返回信息');
