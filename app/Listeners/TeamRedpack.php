@@ -43,9 +43,6 @@ class TeamRedpack implements ShouldQueue
             if ($total % 8 == 0) {
                 $transferMoney = new TransferMoney(Customer::find($customerId));
                 $transferMoney->toBalance(800, self::TYPE);
-            } else if ($total % 6 == 0) {
-                $transferMoney = new TransferMoney(Customer::find($customerId));
-                $transferMoney->toBalance(600, self::TYPE);
             }
         });
     }
