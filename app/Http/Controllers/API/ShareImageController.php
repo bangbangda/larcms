@@ -22,7 +22,7 @@ class ShareImageController extends Controller
      */
     public function index(Request $request)
     {
-        $images = ShareImage::select('url')->active()->get();
+        $images = ShareImage::select('url')->active()->orderBy('updated_at')->get();
 
         $news = News::orderBy('updated_at', 'desc')->get();
 
