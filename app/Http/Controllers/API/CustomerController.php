@@ -68,7 +68,7 @@ class CustomerController extends Controller
             'token' => $customer->updateToken('mini-app')->plainTextToken,
             'bindPhone' => $customer->hasBindPhone(),
             'bindMp' => $customer->hasSubscribeMp(),
-            'distance' => 32 * 1000, // 可领取红包距离 单位米
+            'distance' => 320 * 1000, // 可领取红包距离 单位米
         ]);
     }
 
