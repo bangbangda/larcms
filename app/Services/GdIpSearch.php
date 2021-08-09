@@ -44,7 +44,9 @@ class GdIpSearch
         if ($ipResult['status'] === '1') {
             Log::debug($ipResult);
 
-            return $ipResult['city'] == '包头市';
+            return $ipResult['city'] == '包头市' ||
+                $ipResult['city'] == '呼和浩特' ||
+                $ipResult['city'] == '呼和浩特市';
         }
 
         Log::error("IP地址归属地查询错误  {$ipResult['msg']}");
