@@ -68,6 +68,7 @@ class SendWechatRedPack implements ShouldQueue
                 ->update([
                     'payment_no' => $result['mch_billno'],
                     'payment_time' => now()->toDateTimeString(),
+                    'api_result' => json_encode($result),
                 ]);
 
         } else {

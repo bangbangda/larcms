@@ -13,7 +13,7 @@ class TransferLog extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $fillable = ['payment_no', 'payment_time'];
+    protected $fillable = ['payment_no', 'payment_time', 'api_result'];
 
     /**
      * 获取支付状态
