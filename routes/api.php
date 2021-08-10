@@ -25,7 +25,7 @@ Route::namespace('App\Http\Controllers\API')->prefix('v1')->group(function () {
         Route::get('shareImage', 'ShareImageController@index')->name('shareImage.index');
         Route::middleware('throttle:api-redpack')->post('randomCodeRedpack', 'HomeController@randomCodeRedpack')->name('home.randomCodeRedpack');
         Route::get('shareOrder', 'ShareOrderController@index')->name('shareOrder.index');
-        Route::post('shareOrder', 'ShareOrderController@store')->name('shareOrder.store');
+        Route::middleware('throttle:api-share')->post('shareOrder', 'ShareOrderController@store')->name('shareOrder.store');
         Route::get('customerIncome', 'CustomerIncomeController@index')->name('customerIncome');
         Route::get('activityRule', 'ActivityRuleController@index')->name('activityRule');
         Route::middleware('throttle:api-redpack')->post('decryptPhone', 'CustomerController@decryptPhone')->name('decryptPhone');

@@ -63,5 +63,9 @@ class RouteServiceProvider extends ServiceProvider
         RateLimiter::for('api-redpack', function (Request $request) {
             return Limit::perMinute(2)->by(optional($request->user())->id ?: $request->ip());
         });
+        // 分享小程序限流
+        RateLimiter::for('api-share', function (Request $request) {
+            return Limit::perMinute(1)->by(optional($request->user())->id ?: $request->ip());
+        });
     }
 }
