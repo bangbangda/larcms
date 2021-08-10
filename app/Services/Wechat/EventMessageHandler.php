@@ -113,9 +113,7 @@ class EventMessageHandler implements EventHandlerInterface
     private function sayHello(): Text
     {
         $text = new Text();
-        $text->content = "公众号欢迎语更新
- 
-欢迎关注【远洲·大都汇】公众号！
+        $text->content = "欢迎关注【远洲·大都汇】公众号！
  
 新都核芯 市政府旁 
 钢三小远洲校区正式动工

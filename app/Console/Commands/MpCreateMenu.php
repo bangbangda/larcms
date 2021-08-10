@@ -106,9 +106,11 @@ class MpCreateMenu extends Command
                     ]
                 ],
             ], [
-                'type' => 'view',
-                'name' => '水世界',
-                'url' => 'https://a.eqxiu.com/s/2eGleXzD'
+                'type' => 'miniprogram',
+                'name' => '享·红包',
+                'url' => 'https://a.eqxiu.com/s/2eGleXzD',
+                'appid' => 'wxacffa76fc620ce33',
+                'pagepath' => 'pages/home/home'
             ]
         ];
     }
