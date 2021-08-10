@@ -49,6 +49,10 @@ class ShareOrderController extends Controller
      */
     public function store(Request $request)
     {
+        if (str_contains($request->server('HTTP_REFERER'), 'servicewechat.com')) {
+            Log::error('【Share】发现水军 停止操作');
+            return '';
+        }
         $customer = $request->user();
         // 上级用户编号
         $parentUserId = request()->post('parent_id') ?? null;
