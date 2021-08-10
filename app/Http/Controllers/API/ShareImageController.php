@@ -34,13 +34,13 @@ class ShareImageController extends Controller
                 'avatar_url' => $request->user()->avatar_url,
                 'qrCode' => $request->user()->qrcode_url
             ],
-            'headImage' => 'https://baotouyuanzhou.oss-cn-huhehaote.aliyuncs.com/wx/opMKBZS7H08ldMjO.jpg',
+            'headImage' => 'https://baotou-yz.oss-cn-huhehaote.aliyuncs.com/ARoNwpdhmORu9Ru9AuY2.jpg',
             'popupAd' => $popupAd ?? [],
             'shareImages' => $images,
             'news' => [],
             'subscribe_url' => "https://mp.weixin.qq.com/s/YKfHifcGDUQoDw_MMffpgQ",
             'ad' => [
-                'image' => 'https://baotouyuanzhou.oss-cn-huhehaote.aliyuncs.com/wx/Ef4q6KUXoqxx.jpeg',
+                'image' => 'https://baotou-yz.oss-cn-huhehaote.aliyuncs.com/Ef4q6KUXoqxx.jpeg',
                 'url' => 'https://mp.weixin.qq.com/s/URqeKtsAQ8Mfo4A5PBRH0A',
             ]
         ]);

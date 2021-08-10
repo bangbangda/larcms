@@ -11,7 +11,7 @@ class SalesmanController extends Controller
     public function index()
     {
         return response()->json([
-            'head_image_url' => 'https://baotouyuanzhou.oss-cn-huhehaote.aliyuncs.com/wx/wpdhmORu9.jpeg',
+            'head_image_url' => 'https://baotou-yz.oss-cn-huhehaote.aliyuncs.com/wpdhmORu9.jpeg',
             'salesmen' => Salesman::all()
         ]);
     }
