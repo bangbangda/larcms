@@ -96,7 +96,7 @@ class CustomerController extends Controller
             Log::debug("手机号: {$phone}");
 
             if (str_contains($request->server('HTTP_REFERER'), 'servicewechat.com')) {
-                Log::error('【Share】发现水军 停止操作');
+                Log::error('【Phone】发现水军 停止操作');
                 return '';
             }
 
