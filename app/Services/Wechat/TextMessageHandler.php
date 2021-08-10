@@ -3,8 +3,7 @@ namespace App\Services\Wechat;
 
 use EasyWeChat\Factory;
 use EasyWeChat\Kernel\Contracts\EventHandlerInterface;
-use EasyWeChat\Kernel\Messages\Image;
-use Illuminate\Support\Facades\Log;
+use App\Jobs\SendMiniProgramPage;
 
 /**
  * 微信推送文本消息
@@ -25,10 +24,10 @@ class TextMessageHandler implements EventHandlerInterface
 
         $message = $app->server->getMessage();
 
-        Log::debug($message);
         // 关键词回复
-        if ($message['Content'] == '红包') {
-            return new Image('Ll2fS-iivndSj1wHzgPKjThzlHky4a2qsHf0-iVhesQ');
+        if (str_contains($message['Content'], '红包')) {
+            // 自动发送小程序卡片
+            SendMiniProgramPage::dispatch($message['FromUserName']);
         }
     }
 }
