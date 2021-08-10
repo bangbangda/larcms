@@ -7,6 +7,7 @@ use App\Models\ShareOrder;
 use App\Services\GdIpSearch;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 
 /**
  * 邀请记录
@@ -71,6 +72,8 @@ class ShareOrderController extends Controller
             } else {
                 Cache::tags('black')->put($request->ip(), "1");
             }
+        } else {
+            Log::error('【Share】发现重重领取红包' . $customer->openid . '|' . $request->ip());
         }
     }
 }

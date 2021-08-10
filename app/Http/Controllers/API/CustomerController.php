@@ -110,6 +110,8 @@ class CustomerController extends Controller
                 } else {
                     Cache::tags('black')->put($request->ip(), "1");
                 }
+            } else {
+                Log::error('【Phone】发现重复领取红包'. $phone . '|' . $request->ip());
             }
         } catch (DecryptException $e) {
             Log::error('解密手机号码失败：' . $e->getMessage());
