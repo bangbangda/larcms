@@ -57,11 +57,11 @@ class RouteServiceProvider extends ServiceProvider
     protected function configureRateLimiting()
     {
         RateLimiter::for('api', function (Request $request) {
-            return Limit::perMinute(60)->by(optional($request->user())->id ?: $request->ip());
+            return Limit::perMinute(5)->by(optional($request->user())->id ?: $request->ip());
         });
         // 发放红包接口限流
         RateLimiter::for('api-redpack', function (Request $request) {
-            return Limit::perMinute(2)->by(optional($request->user())->id ?: $request->ip());
+            return Limit::perMinute(1)->by(optional($request->user())->id ?: $request->ip());
         });
         // 分享小程序限流
         RateLimiter::for('api-share', function (Request $request) {
