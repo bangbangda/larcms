@@ -51,7 +51,7 @@ class ShareOrderController extends Controller
     public function store(Request $request)
     {
         $tenCaptcha = new TenCaptcha();
-        if (! $tenCaptcha->verifyCaptcha($request->post('ticket'), $request->ip())) {
+        if ($request->has('ticket') && ! $tenCaptcha->verifyCaptcha($request->post('ticket'), $request->ip())) {
             Log::error('【Share】验证码错误');
             return ;
         }
