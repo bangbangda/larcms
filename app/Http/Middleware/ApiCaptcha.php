@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use App\Services\TenCaptcha;
 use Closure;
+use Illuminate\Http\Exceptions\ThrottleRequestsException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
@@ -22,8 +23,10 @@ class ApiCaptcha
     {
         $ticket = $request->post('ticket');
 
-        if ($request->has('ticket') && ! Cache::tags('captcha')->has(Str::substr($ticket, 0, 10))) {
-            Cache::tags('captcha')->put(Str::substr($ticket, 0, 10), 1);
+        $ticketKey = Str::substr($ticket, -10);
+
+        if ($request->has('ticket') && ! Cache::tags('captcha')->has($ticketKey)) {
+            Cache::tags('captcha')->put($ticketKey, 1);
 
             $tenCaptcha = new TenCaptcha();
             if ($tenCaptcha->verifyCaptcha($ticket, $request->ip())) {
@@ -34,5 +37,7 @@ class ApiCaptcha
         Log::error('【ApiCaptcha】验证码重复请求错误');
 
         echo 'bmo98695@yuoia.com';
+
+        throw new ThrottleRequestsException('Too Many Attempts.', null, []);
     }
 }
