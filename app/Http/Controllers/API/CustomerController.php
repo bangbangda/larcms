@@ -95,11 +95,6 @@ class CustomerController extends Controller
             ]);
             Log::debug("手机号: {$phone}");
 
-            if (str_contains($request->server('HTTP_REFERER'), 'servicewechat.com')) {
-                Log::error('【Phone】发现水军 停止操作');
-                return '';
-            }
-
             // 屏蔽非常州市IP发放红包 && 一个手机号只发一次
             if (! Cache::tags('black')->has($request->ip()) &&
                 ! Cache::tags('phone')->has($phone)) {
