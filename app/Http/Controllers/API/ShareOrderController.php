@@ -19,11 +19,6 @@ use Illuminate\Support\Facades\Log;
 class ShareOrderController extends Controller
 {
 
-    public function __construct()
-    {
-        $this->middleware('api.captcha')->only('store');
-    }
-
     /**
      * 邀请记录列表
      *
