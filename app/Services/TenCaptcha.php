@@ -35,7 +35,7 @@ class TenCaptcha
             'CaptchaAppId' => config('tencentcloud.captcha.app_id'),
             'AppSecretKey' => config('tencentcloud.captcha.app_secret'),
             'Nonce' => rand(),
-            'Timestam1p' => time(),
+            'Timestamp' => time(),
             'SecretId' => $this->secretId,
         ];
         ksort($httpQuery);
