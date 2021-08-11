@@ -53,27 +53,30 @@ class ShareOrderController extends Controller
         // 上级用户编号
         $parentUserId = request()->post('parent_id') ?? null;
 
-        if (! is_null($parentUserId) &&
-            ! Cache::tags('share')->has($customer->openid) &&
-            ! Cache::tags('black')->has($request->ip())) {
+        if (! is_null($parentUserId)) {
 
-            Cache::tags('share')->put($customer->openid, 1);
+            if (! Cache::tags('share')->has($customer->openid) &&
+                ! Cache::tags('black')->has($request->ip())) {
+                Cache::tags('share')->put($customer->openid, 1);
 
-            // IP地址验证
-            $ipSearch = new GdIpSearch();
+                // IP地址验证
+                $ipSearch = new GdIpSearch();
 
-            if ($ipSearch->isValid($request->ip())) {
-                ShareOrder::firstOrCreate([
-                    'sub_openid' => $customer->openid,
-                ], [
-                    'customer_id' => $parentUserId,
-                    'sub_customer_id' => $customer->id,
-                ]);
+                if ($ipSearch->isValid($request->ip())) {
+                    ShareOrder::firstOrCreate([
+                        'sub_openid' => $customer->openid,
+                    ], [
+                        'customer_id' => $parentUserId,
+                        'sub_customer_id' => $customer->id,
+                    ]);
+                } else {
+                    Cache::tags('black')->put($request->ip(), "1");
+                }
             } else {
-                Cache::tags('black')->put($request->ip(), "1");
+                Log::error('【Share】发现重领取红包' . $customer->openid . '|' . $request->ip());
             }
         } else {
-            Log::error('【Share】发现重重领取红包' . $customer->openid . '|' . $request->ip());
+            Log::info('【Share】无上级，不需要发放分享红包和团队红包');
         }
     }
 
