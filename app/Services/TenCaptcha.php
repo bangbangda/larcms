@@ -76,7 +76,12 @@ class TenCaptcha
     {
         ksort($httpQuery);
 
-        $signStr = "GETcaptcha.tencentcloudapi.com/?" . http_build_query($httpQuery);
+        $signStr = "GETcaptcha.tencentcloudapi.com/?";
+        foreach ( $httpQuery as $key => $value ) {
+            $signStr = $signStr . $key . "=" . $value . "&";
+        }
+        $signStr = substr($signStr, 0, -1);
+
         Log::debug('【captcha】签名字符串：' . $signStr);
         return base64_encode(hash_hmac("sha1", $signStr, $this->secretKey, true));
     }
