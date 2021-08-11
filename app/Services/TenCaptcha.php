@@ -5,6 +5,9 @@ namespace App\Services;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
+/**
+ * 腾讯验证码
+ */
 class TenCaptcha
 {
     private string $secretId;
@@ -24,30 +27,15 @@ class TenCaptcha
      * @param string $ip
      * @return bool
      */
-    public function verifyCaptcha(string $ticket, string $ip)
+    public function verifyCaptcha(string $ticket, string $ip): bool
     {
-        $httpQuery = [
-            'Action' => 'DescribeCaptchaMiniResult',
-            'Version' => '2019-07-22',
-            'CaptchaType' => 9,
+        $httpQuery = array_merge($this->getDefaultQuery(), [
             'Ticket' => $ticket,
             'UserIp' => $ip,
-            'CaptchaAppId' => config('tencentcloud.captcha.app_id'),
-            'AppSecretKey' => config('tencentcloud.captcha.app_secret'),
-            'Nonce' => rand(),
-            'Timestamp' => time(),
-            'SecretId' => $this->secretId,
-        ];
-        ksort($httpQuery);
-        $signStr = "GETcaptcha.tencentcloudapi.com/?";
-        foreach ( $httpQuery as $key => $value ) {
-            $signStr = $signStr . $key . "=" . $value . "&";
-        }
-        $signStr = substr($signStr, 0, -1);
-        $signature = base64_encode(hash_hmac("sha1", $signStr, $this->secretKey, true));
+        ]);
 
         $result = Http::get('https://captcha.tencentcloudapi.com/',
-            array_merge($httpQuery, ['Signature' => $signature])
+            array_merge($httpQuery, ['Signature' => $this->sign($httpQuery)])
         )->json();
 
         Log::info($result);
@@ -57,5 +45,39 @@ class TenCaptcha
         }
 
         return $result['Response']['CaptchaCode'] == 1;
+    }
+
+    /**
+     * 获取默认请求参数
+     *
+     * @return array
+     */
+    private function getDefaultQuery(): array
+    {
+        return [
+            'Action' => 'DescribeCaptchaMiniResult',
+            'Version' => '2019-07-22',
+            'CaptchaType' => 9,
+            'CaptchaAppId' => config('tencentcloud.captcha.app_id'),
+            'AppSecretKey' => config('tencentcloud.captcha.app_secret'),
+            'Nonce' => rand(),
+            'Timestamp' => time(),
+            'SecretId' => $this->secretId,
+        ];
+    }
+
+    /**
+     * 签名
+     *
+     * @param array $httpQuery
+     * @return string
+     */
+    private function sign(array $httpQuery): string
+    {
+        ksort($httpQuery);
+
+        $signStr = "GETcaptcha.tencentcloudapi.com/?" . http_build_query($httpQuery);
+        Log::debug('【captcha】签名字符串：' . $signStr);
+        return base64_encode(hash_hmac("sha1", $signStr, $this->secretKey, true));
     }
 }
