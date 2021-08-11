@@ -5,7 +5,6 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Models\ShareOrder;
 use App\Services\GdIpSearch;
-use App\Services\TenCaptcha;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
@@ -19,6 +18,11 @@ use Illuminate\Support\Facades\Log;
  */
 class ShareOrderController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('api.captcha')->only('store');
+    }
 
     /**
      * 邀请记录列表
@@ -50,12 +54,6 @@ class ShareOrderController extends Controller
      */
     public function store(Request $request)
     {
-        $tenCaptcha = new TenCaptcha();
-        if ($request->has('ticket') && ! $tenCaptcha->verifyCaptcha($request->post('ticket'), $request->ip())) {
-            Log::error('【Share】验证码错误');
-            return ;
-        }
-
         $customer = $request->user();
         // 上级用户编号
         $parentUserId = request()->post('parent_id') ?? null;
