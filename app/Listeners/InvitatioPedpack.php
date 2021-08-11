@@ -53,7 +53,7 @@ class InvitatioPedpack implements ShouldQueue
     {
         $randomNumber = mt_rand(1, 1000);
 
-        if ($randomNumber >= 1 && $randomNumber <= 1000)  {
+        if ($randomNumber >= 1 && $randomNumber <= 800)  {
             $money = 0.88;
         } else if ($randomNumber >= 801 && $randomNumber <= 900) {
             $money = 1.88;
