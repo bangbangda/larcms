@@ -85,11 +85,10 @@ class Customer extends Model
      * 海报生成使用的二维码
      *    小程序码 或 公众号码
      *
-     * @return mixed
      */
-    public function getQrcodeUrlAttribute(): mixed
+    public function getQrcodeUrlAttribute($value)
     {
-        return $this->qrcode_url;
+        return $value;//$this->mp_qrcode_url;
     }
 
     /**
