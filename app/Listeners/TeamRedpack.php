@@ -40,7 +40,7 @@ class TeamRedpack implements ShouldQueue
             Log::info("编号 {$customerId}, 邀请人数 {$total}");
 
             // 发放团队红包
-            if (false && $total % 8 == 0) {
+            if ($total % 8 == 0) {
                 $transferMoney = new TransferMoney(Customer::find($customerId));
                 $transferMoney->toBalance(800, self::TYPE);
             }

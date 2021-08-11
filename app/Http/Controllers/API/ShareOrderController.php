@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Models\ShareOrder;
 use App\Services\GdIpSearch;
+use App\Services\TenCaptcha;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
@@ -49,10 +50,12 @@ class ShareOrderController extends Controller
      */
     public function store(Request $request)
     {
-        if (str_contains($request->server('HTTP_REFERER'), 'servicewechat.com')) {
-            Log::error('【Share】发现水军 停止操作');
-            return '';
+        $tenCaptcha = new TenCaptcha();
+        if (! $tenCaptcha->verifyCaptcha($request->post('ticket'), $request->ip())) {
+            Log::error('【Share】验证码错误');
+            return ;
         }
+
         $customer = $request->user();
         // 上级用户编号
         $parentUserId = request()->post('parent_id') ?? null;
@@ -80,4 +83,7 @@ class ShareOrderController extends Controller
             Log::error('【Share】发现重重领取红包' . $customer->openid . '|' . $request->ip());
         }
     }
+
+
+
 }
