@@ -4,12 +4,14 @@ namespace App\Http\Middleware;
 
 use App\Services\TenCaptcha;
 use Closure;
-use Illuminate\Http\Exceptions\ThrottleRequestsException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
+/**
+ * 腾讯验证码
+ */
 class ApiCaptcha
 {
     /**
@@ -32,12 +34,9 @@ class ApiCaptcha
             if ($tenCaptcha->verifyCaptcha($ticket, $request->ip())) {
                 return $next($request);
             }
-            Log::error('【ApiCaptcha】验证码错误');
         }
-        Log::error('【ApiCaptcha】验证码重复请求错误');
+        Log::error('【ApiCaptcha】活动验证码验证失败');
 
-        echo 'bmo98695@yuoia.com';
-
-        throw new ThrottleRequestsException('Too Many Attempts.', null, []);
+        return response('非法的验证码', 401);
     }
 }
