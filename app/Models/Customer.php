@@ -88,7 +88,7 @@ class Customer extends Model
      */
     public function getQrcodeUrlAttribute($value)
     {
-        return $value;//$this->mp_qrcode_url;
+        return $this->mp_qrcode_url;
     }
 
     /**
