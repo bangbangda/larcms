@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use App\Services\TenCaptcha;
+use App\Services\Tencent\CloudApi;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
@@ -30,8 +31,18 @@ class ApiCaptcha
         if ($request->has('ticket') && ! Cache::tags('captcha')->has($ticketKey)) {
             Cache::tags('captcha')->put($ticketKey, 1);
 
-            $tenCaptcha = new TenCaptcha();
-            if ($tenCaptcha->verifyCaptcha($ticket, $request->ip())) {
+            // 调用腾讯接口确认验证码是否正确
+            $cloudApi = new CloudApi('DescribeCaptchaMiniRiskResult', 'captcha', '2019-07-22');
+            $result = $cloudApi->post([
+                'CaptchaType' => 9,
+                'CaptchaAppId' => (int) config('tencentcloud.captcha.app_id'),
+                'AppSecretKey' => config('tencentcloud.captcha.app_secret'),
+                'Ticket' => $ticket,
+                'UserIp' => $request->ip(),
+            ]);
+
+            if (! isset($result['Response']['Error']) &&
+                $result['Response']['CaptchaCode'] === 1) {
                 return $next($request);
             }
         }

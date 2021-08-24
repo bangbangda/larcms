@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title','新闻管理')
+@section('title','户型管理')
 
 @section('content')
     <div class="page animation-fade page-forms">
@@ -25,7 +25,7 @@
                         </a>
                     </div>
                     <h3 class="panel-title">
-                        新闻管理
+                        户型管理
                         <span class="panel-desc">设置户型信息</span>
                     </h3>
                 </div>
