@@ -24,7 +24,7 @@ class Customer extends Model
 
     protected $fillable = [
         'unionid', 'openid', 'mp_openid', 'session_key', 'phone', 'nickname', 'avatar_url',
-        'qrcode_url', 'mp_qrcode_url', 'subscribe_scene', 'qr_scene', 'qr_scene_str', 'parent_id'
+        'qrcode_url', 'mp_qrcode_url', 'subscribe_time', 'subscribe_scene', 'qr_scene', 'qr_scene_str', 'parent_id'
     ];
 
     protected $casts = [
@@ -110,7 +110,6 @@ class Customer extends Model
     {
         return $this->mp_openid ?? false;
     }
-
 
     public function updateToken(string $name, array $abilities = ['*'])
     {

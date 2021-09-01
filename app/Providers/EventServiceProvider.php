@@ -3,9 +3,7 @@
 namespace App\Providers;
 
 use App\Events\CustomerSubscribed;
-use App\Events\WechatUserRegistered;
 use App\Listeners\CreateCustomerMpQrcode;
-use App\Listeners\SendGroupRedpack;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -55,9 +53,6 @@ class EventServiceProvider extends ServiceProvider
             // 公众号自动发送小程序
             SendMiniProgramPage::class,
         ],
-        WechatUserRegistered::class => [
-            SendGroupRedpack::class
-        ]
     ];
 
     /**

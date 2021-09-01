@@ -23,12 +23,15 @@ Route::namespace('App\Http\Controllers\API')->prefix('v1')->group(function () {
 
     Route::middleware(['auth:sanctum'])->name('miniApp.')->group(function () {
         Route::get('shareImage', 'ShareImageController@index')->name('shareImage.index');
-        Route::middleware('throttle:api-redpack')->post('randomCodeRedpack', 'HomeController@randomCodeRedpack')->name('home.randomCodeRedpack');
         Route::get('shareOrder', 'ShareOrderController@index')->name('shareOrder.index');
         Route::middleware(['throttle:api-share', 'api.captcha'])->post('shareOrder', 'ShareOrderController@store')->name('shareOrder.store');
         Route::get('customerIncome', 'CustomerIncomeController@index')->name('customerIncome');
         Route::get('activityRule', 'ActivityRuleController@index')->name('activityRule');
-        Route::middleware('throttle:api-redpack')->post('decryptPhone', 'CustomerController@decryptPhone')->name('decryptPhone');
+        Route::middleware('throttle:api-redpack')->group(function () {
+            Route::post('decryptPhone', 'CustomerController@decryptPhone')->name('decryptPhone');
+            Route::post('randomCodeRedpack', 'HomeController@randomCodeRedpack')->name('home.randomCodeRedpack');
+            Route::get('saveImageNotification', 'HomeController@saveImageNotification')->name('home.saveImageNotification');
+        });
         Route::get('hasSubscribeMp', 'CustomerController@hasSubscribeMp')->name('hasSubscribeMp');
         Route::post('hasSubscribeMpByCode', 'CustomerController@hasSubscribeMpByCode')->name('hasSubscribeMpByCode');
         Route::get('my', 'CustomerController@show')->name('customerShow');

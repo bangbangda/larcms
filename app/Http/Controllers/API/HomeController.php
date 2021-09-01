@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\API\HomeRequest;
 use App\Models\Banner;
 use App\Models\Customer;
+use App\Models\CustomerIncome;
+use App\Models\GroupRedPacket;
 use App\Models\House;
 use App\Models\News;
 use App\Models\RandomCodeRedpack;
@@ -16,6 +18,7 @@ use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 
 class HomeController extends Controller
 {
@@ -33,7 +36,6 @@ class HomeController extends Controller
             'news' => News::orderBy('updated_at', 'desc')->get(),
         ]);
     }
-
 
     /**
      * 发放随机码红包红包
@@ -104,5 +106,42 @@ class HomeController extends Controller
                 ])
             );
         }
+    }
+
+    /**
+     * 小程序端保存海报成功通知
+     */
+    public function saveImageNotification(Request $request)
+    {
+        $customer = $request->user();
+        // 参与活动时间在指定日期之前
+        if ($customer->created_at > '2021-09-01 00:00:00') {
+            return ;
+        }
+
+        // 已经关注公众号且绑定手机号
+        if (! $customer->hasSubscribeMp && ! $customer->hasBindPhone) {
+            return ;
+        }
+
+        // 已经分享过海报且得过红包
+        if (CustomerIncome::where('customer_id' , $customer->id)->doesntExist()) {
+            return ;
+        }
+
+        $key = 'group.'.$customer->id;
+
+        Cache::lock($key, 5)->get(function () use ($key, $customer) {
+            if (! Cache::has($key)) {
+                Cache::put($key, time());
+                // 记录裂变红包数据
+                GroupRedPacket::create([
+                    'bill_no' => Str::random(),
+                    'openid' => $customer->mp_openid,
+                    'total_amount' => 666,
+                    'total_num' => 6,
+                ]);
+            }
+        });
     }
 }
