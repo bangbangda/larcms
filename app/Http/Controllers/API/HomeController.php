@@ -120,7 +120,7 @@ class HomeController extends Controller
         }
 
         // 已经关注公众号且绑定手机号
-        if (! $customer->hasSubscribeMp && ! $customer->hasBindPhone) {
+        if (! $customer->hasSubscribeMp() && ! $customer->hasBindPhone()) {
             return ;
         }
 
