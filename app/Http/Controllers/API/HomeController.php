@@ -131,17 +131,15 @@ class HomeController extends Controller
 
         $key = 'group.'.$customer->id;
 
-        Cache::lock($key, 5)->get(function () use ($key, $customer) {
-            if (! Cache::has($key)) {
-                Cache::put($key, time());
-                // 记录裂变红包数据
-                GroupRedPacket::create([
-                    'bill_no' => Str::random(),
-                    'openid' => $customer->mp_openid,
-                    'total_amount' => 666,
-                    'total_num' => 6,
-                ]);
-            }
-        });
+        if (! Cache::tags('group')->has($key)) {
+            Cache::tags('group')->put($key, time());
+            // 记录裂变红包数据
+            GroupRedPacket::create([
+                'bill_no' => Str::random(),
+                'openid' => $customer->mp_openid,
+                'total_amount' => 666,
+                'total_num' => 6,
+            ]);
+        }
     }
 }
