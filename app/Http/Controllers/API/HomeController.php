@@ -128,6 +128,12 @@ class HomeController extends Controller
         if (CustomerIncome::where('customer_id' , $customer->id)->doesntExist()) {
             return ;
         }
+        // 最多发放5000个 6.66 红包
+        if (Cache::tags('group')->get('group.count', 0) > 5000) {
+            return ;
+        }
+
+        Cache::tags('group')->increment('group.count');
 
         $key = 'group.'.$customer->id;
 
