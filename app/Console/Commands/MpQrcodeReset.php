@@ -40,7 +40,7 @@ class MpQrcodeReset extends Command
      */
     public function handle()
     {
-        Customer::select('id')->orderBy('id')->limit(10)->chunk(100, function ($users) {
+        Customer::select('id')->orderBy('id')->chunk(100, function ($users) {
             ResetMpQrcodeUrl::dispatch(Arr::pluck($users, 'id'));
         });
 
