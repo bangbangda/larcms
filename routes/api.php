@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::namespace('App\Http\Controllers\API')->prefix('v1')->group(function () {
+Route::namespace('App\Http\Controllers\API')->name('api')->prefix('v1')->group(function () {
     Route::post('login', 'CustomerController@login')->name('miniApp.login');
 
     Route::get('home', 'HomeController@index')->name('home');
