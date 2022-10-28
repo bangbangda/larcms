@@ -8,6 +8,7 @@ use App\Http\Controllers\NewsController;
 use App\Http\Controllers\Redpack\RandomCodeController;
 use App\Http\Controllers\Redpack\SettingController;
 use App\Http\Controllers\SalesmanController;
+use App\Http\Controllers\SearchQuestionController;
 use App\Http\Controllers\ShareImageController;
 use App\Http\Controllers\SmsController;
 use App\Http\Controllers\SmsReportController;
@@ -31,6 +32,11 @@ use App\Http\Controllers\WechatPushController;
 Route::get('/', function () {
     return redirect('/login');
 });
+
+Route::get('search', function () {
+    return view('mobile.search');
+});
+Route::post('search', SearchQuestionController::class)->name('search-question');
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', DashboardController::class)->name('dashboard');
