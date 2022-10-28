@@ -9,16 +9,32 @@
 
     <script type="text/javascript">
         function search() {
+            $("#no-result").hide();
+            $("#list").html("");
+
             axios.post('/search', {
                 'search_key': document.getElementById('search_key').value,
             }).then(function (response) {
                 if (response.data.data.length == 0) {
                     $("#no-result").show();
                 } else {
-                    $("#correct_answer").html(response.data.data[0].correct_answer);
-                    $("#type").html(response.data.data[0].type);
-                    $("#content").html(response.data.data[0].content);
-                    $("#result").show();
+                    response.data.data.forEach(function (value) {
+                        $("#list").append('' +
+                            '<div class="pricing-list">' +
+                            '    <div class="pricing-header">' +
+                            '        <div class="pricing-title">'+value.type+'</div>' +
+                            '        <div class="pricing-price">' +
+                            '            <span class="pricing-amount">'+value.correct_answer+'</span>' +
+                            '        </div>' +
+                            '    </div>' +
+                            '    <ul class="pricing-features">' +
+                            '        <li>' +
+                            '            <strong>'+value.content+'</strong>' +
+                            '        </li>' +
+                            '    </ul>' +
+                            '</div>' +
+                            '');
+                    })
                 }
             });
         }
@@ -60,10 +76,54 @@
             background-color: #3e8ef7;
             border-color: #3e8ef7;
             box-shadow: none; }
+        .pricing-list {
+            margin-bottom: 22px;
+            text-align: center;
+            border: 1px solid #e4eaec;
+            border-radius: 0.215rem; }
+        .pricing-list [class^="bg-"],
+        .pricing-list [class^="bg-"] *,
+        .pricing-list [class*="bg-"],
+        .pricing-list [class*="bg-"] * {
+            color: #fff; }
+        .pricing-list .pricing-header {
+            border-bottom: 1px solid #e4eaec;
+            border-radius: 0.215rem 0.215rem 0 0; }
+        .pricing-list .pricing-title {
+            background-color: #ff4c52 !important;
+            padding: 15px 30px;
+            color: white;
+            font-size: 1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border-radius: 0.215rem 0.215rem 0 0; }
+        .pricing-list .pricing-price {
+            padding: 20px 30px;
+            margin: 0;
+            font-size: 2.358rem;
+            font-weight: 700;
+            color: #37474f; }
+        .pricing-list .pricing-period {
+            font-size: 1rem;
+            font-weight: 400; }
+        .pricing-list .pricing-features {
+            padding: 0 18px;
+            margin: 0; }
+        .pricing-list .pricing-features li {
+            display: block;
+            padding: 15px;
+            list-style: none;
+            border-top: 1px dashed #e4eaec; }
+        .pricing-list .pricing-features li:first-child {
+            border-top: none; }
+        .pricing-list .pricing-footer {
+            padding: 30px;
+            border-radius: 0 0 0.215rem 0.215rem; }
     </style>
 </head>
 <body>
-    <div>
+    <div style="margin-bottom: 15px;">
         <input name="search_key" id="search_key" class="form-control">
         <button class="btn btn-block btn-primary" type="button" onclick="search();">检索</button>
     </div>
@@ -71,10 +131,6 @@
     <div id="no-result" style="display: none">
         <h1>未查询到指定的考题</h1>
     </div>
-
-    <div id="result" style="display: none">
-        <h1 id="correct_answer"></h1>
-        <h3 id="type"></h3> <h3 id="content"></h3>
-    </div>
+    <div id="list"></div>
 </body>
 </html>
